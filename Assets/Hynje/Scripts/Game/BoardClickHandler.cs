@@ -54,8 +54,8 @@ public class BoardClickHandler : MonoBehaviour
         Vector2 halfGridArea = gridArea / 2f;
         _boardOrigin = boardCenter - halfGridArea;
 
-        Debug.Log($"Board World Size: {_boardWorldSize}, Grid Cell Size: {_gridCellSize}");
-        Debug.Log($"Board Origin (Bottom-Left): {_boardOrigin}");
+        //Debug.Log($"Board World Size: {_boardWorldSize}, Grid Cell Size: {_gridCellSize}");
+        //Debug.Log($"Board Origin (Bottom-Left): {_boardOrigin}");
     }
 
     private void OnMouseDrag()
@@ -71,9 +71,16 @@ public class BoardClickHandler : MonoBehaviour
     private void OnMouseUp()
     {
         Vector2Int gridPos = GetGridPositionFromClick();
-        Debug.Log($"Clicked on grid: {gridPos}");
+        //Debug.Log($"Clicked on grid: {gridPos}");
     }
 
+    public (Vector2Int, Vector3) GetSelectedPosition()
+    {
+        var selectedPos = positionSelector.transform.position;
+        var gridPos = GetGridPositionFromWorldPoint(selectedPos);
+        return (gridPos, selectedPos);
+    }
+    
     private void SetPositionSelector(Vector2Int gridPos)
     {
         positionSelector.SetActive(true);
