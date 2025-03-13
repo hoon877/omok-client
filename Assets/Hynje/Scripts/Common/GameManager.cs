@@ -6,16 +6,16 @@ public class GameManager : MonoBehaviour
     private GameController _gameController;
     private void Awake()
     {
-        StartGame();
+        InitializeGame();
     }
 
-    private void StartGame()
+    private void InitializeGame()
     {
         _gameController = new GameController(Constants.GameType.DualPlay);
     }
 
     public void OnClickSetStoneButton()
     {
-        _gameController.SetMarkerOnBoard();
+        _gameController.ExecuteCurrentTurn();
     }
 }

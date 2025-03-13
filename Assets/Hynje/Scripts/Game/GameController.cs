@@ -11,16 +11,17 @@ public class GameController
     
     public GameController(Constants.GameType gameType)
     {
-        _turnManager = new TurnManager(gameType);
+        _board = new Constants.MarkerType[Constants.BoardSize, Constants.BoardSize];
+        InitBoard();
+        
         _boardController = Object.FindObjectOfType<BoardController>();
         _boardClickHandler = Object.FindObjectOfType<BoardClickHandler>();
+        _turnManager = new TurnManager(gameType, this);
         
-        InitBoard();
     }
 
     private void InitBoard()
     {
-        _board = new Constants.MarkerType[Constants.BoardSize, Constants.BoardSize];
         
         for (int i = 0; i < Constants.BoardSize; i++)
         {
@@ -31,28 +32,51 @@ public class GameController
         }
     }
     
-    public void SetMarkerOnBoard()
+    public void ExecuteCurrentTurn()
     {
-        var (girdPos,markerPos) = _boardClickHandler.GetSelectedPosition();
-        var marker = _turnManager.IsBlackPlayerTurn() ? Constants.MarkerType.Black : Constants.MarkerType.White;
-
-        if (!IsValidPosition(girdPos)) return;
+        _turnManager.ExecuteCurrentTurn();
+    }
+    
+    public bool TryPlaceMarker(bool isBlackPlayer)
+    {
+        var (gridPos, markerPos) = _boardClickHandler.GetSelectedPosition();
         
-        // _board에 마커 타입 저장
-        _board[girdPos.x, girdPos.y] = marker;
+        if (!IsValidPosition(gridPos)) return false;
         
-        // 보드에 마커 표시 
+        var marker = isBlackPlayer ? Constants.MarkerType.Black : Constants.MarkerType.White;
+        
+        // 보드에 마커 저장 및 표시
+        _board[gridPos.x, gridPos.y] = marker;
         _boardController.SetMarker(marker, markerPos);
         
-        // todo : 결과 체크
+        // todo : 승리 조건 확인 등의 게임 로직 처리
+        //CheckGameResult(gridPos, marker);
         
-        _turnManager.ChangeTurn();
+        return true;
     }
 
     private bool IsValidPosition(Vector2Int gridPos)
     {
-        // todo : black 턴일 때 금수 체크 
+        // 기본 유효성 검사
+        if (gridPos.x < 0 || gridPos.x >= Constants.BoardSize || 
+            gridPos.y < 0 || gridPos.y >= Constants.BoardSize)
+            return false;
+            
+        // 이미 마커가 있는지 확인
+        if (_board[gridPos.x, gridPos.y] != Constants.MarkerType.None)
+            return false;
+            
+        // todo : 흑돌 특수 규칙 검사 (금수 등)
+        if (_turnManager.IsBlackPlayerTurn())
+        {
+            // 금수 검사 로직
+        }
         
-        return _board[gridPos.x, gridPos.y] == Constants.MarkerType.None;
+        return true;
+    }
+    
+    private void CheckGameResult(Vector2Int position, Constants.MarkerType marker)
+    {
+        // 승리 조건 확인 로직
     }
 }
