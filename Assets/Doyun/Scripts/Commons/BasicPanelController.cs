@@ -9,6 +9,7 @@ public abstract class BasicPanelController : MonoBehaviour
 
     private Vector2 hiddenPosition;
     private Vector2 showPosition = Vector2.zero;
+    private bool isShow;
 
     private void Awake()
     {
@@ -18,11 +19,15 @@ public abstract class BasicPanelController : MonoBehaviour
 
     public void ShowPanel()
     {
-        rectTransform.anchoredPosition = showPosition;
+        // 화면에 표시되지 않을때
+        if (!isShow)
+            rectTransform.anchoredPosition = showPosition;
     }
 
     public void HidePanel()
     {
-        rectTransform.anchoredPosition = hiddenPosition;
+        // 화면에 표시되고 있을때
+        if (isShow)
+            rectTransform.anchoredPosition = hiddenPosition;
     }
 }

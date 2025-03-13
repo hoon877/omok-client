@@ -29,15 +29,31 @@ public class CoinManager : MonoBehaviour, ISubject
     /// </summary>
     private const string m_coinPath = "CoinData";
     private int m_coins;
+    
+    /// <summary>
+    /// 코인개수 변화시 옵저버들에게 자동적으로 알림
+    /// </summary>
+    public int CoinsCount
+    { 
+        get { return m_coins; }
+        set 
+        {
+            m_coins = value;
+            NotifyToObserver();
+        }
+    }
 
+    // 코인갯수를 확인하는 옵저버들
     public List<IObserver> observers;
+
+    // 결제, 광고등 외부에 입력이 있을때 실행시킬 델리게이트
     public event Action CoinEvent;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     private void Start()
     {
+        observers = new List<IObserver>();
         LoadCoin();
-        NotifyToObserver();
     }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -49,9 +65,7 @@ public class CoinManager : MonoBehaviour, ISubject
     /// <param name="value"></param>
     public void AddCoin(int value)
     {
-        m_coins += value;
-
-        NotifyToObserver();
+        CoinsCount += value;
     }
 
     /// <summary>
@@ -60,21 +74,27 @@ public class CoinManager : MonoBehaviour, ISubject
     /// <param name="value"></param>
     public void RemoveCoin(int value)
     {
-        m_coins -= value;
-
-        NotifyToObserver();
+        CoinsCount -= value;
     }
     #endregion
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     #region 옵저버
     
-    public void AddObservers(IObserver observer)
+    /// <summary>
+    /// 관찰자 추가
+    /// </summary>
+    /// <param name="observer"></param>
+    public void AddObserver(IObserver observer)
     {
         observers.Add(observer);
     }
 
-    public void RemoveObservers(IObserver observer)
+    /// <summary>
+    /// 관찰자 제거
+    /// </summary>
+    /// <param name="observer"></param>
+    public void RemoveObserver(IObserver observer)
     {
         observers.Remove(observer);
     }
@@ -97,6 +117,20 @@ public class CoinManager : MonoBehaviour, ISubject
 
     #region Subscribe 패턴
 
+    public void Subscribe(Action callBack)
+    {
+        CoinEvent += callBack;
+    }
+
+    public void UnSubscribe(Action callBack)
+    {
+        CoinEvent -= callBack;
+    }
+
+    public void TriggerCoinEvent()
+    {
+        CoinEvent?.Invoke();
+    }
     #endregion
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -108,7 +142,7 @@ public class CoinManager : MonoBehaviour, ISubject
     /// <param name="value"></param>
     public void LoadCoin()
     {
-        m_coins = PlayerPrefs.GetInt(m_coinPath, 0);
+        CoinsCount = PlayerPrefs.GetInt(m_coinPath, 0);
     }
 
     /// <summary>
