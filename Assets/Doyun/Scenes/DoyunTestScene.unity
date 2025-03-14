@@ -985,11 +985,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985676055686195724, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1985676055686195724, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1985676055686195724, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
@@ -997,11 +997,11 @@ PrefabInstance:
       objectReference: {fileID: 915511989}
     - target: {fileID: 2010299464221549496, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2010299464221549496, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2010299464221549496, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
@@ -1081,11 +1081,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5795793895629909152, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 8000
       objectReference: {fileID: 0}
     - target: {fileID: 5795793895629909152, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 5795793895629909152, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
@@ -1185,11 +1185,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7989446758812722136, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 7989446758812722136, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 7989446758812722136, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
@@ -1273,11 +1273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9119405990034963847, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 9119405990034963847, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 9119405990034963847, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
@@ -1285,11 +1285,11 @@ PrefabInstance:
       objectReference: {fileID: 915511989}
     - target: {fileID: 9209412057026117887, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: price
-      value: 100
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 9209412057026117887, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: amount
-      value: 10
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 9209412057026117887, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
       propertyPath: paymentPanel
