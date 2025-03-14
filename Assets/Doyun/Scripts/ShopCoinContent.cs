@@ -11,16 +11,23 @@ public class ShopCoinContent : MonoBehaviour
     [SerializeField] private TMP_Text firstText;
     [SerializeField] private TMP_Text secondText;
 
-    [SerializeField] private BasicPanelController paymentPanel;
+    [SerializeField] private PaymentPanel paymentPanel;
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     private void Start()
     {
         firstText.text = $"코인 {amount}개";
         secondText.text = "₩" + price.ToString();
     }
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     public void OnClickedButton()
     {
+        if (paymentPanel == null)
+            return;
 
+        paymentPanel.Subscribe(() => { CoinManager.Instance.AddCoin(amount); });
+        paymentPanel.InitPanel(amount, price);
+        paymentPanel.ShowPanel();
     }
 }
