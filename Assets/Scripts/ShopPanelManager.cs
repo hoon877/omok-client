@@ -1,69 +1,72 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class ShopPanelManager : MonoBehaviour
 {
-    ShopPanel shopPanel;
-    public Image shopFadeImage;
-    private bool isShopPanelOpened = false;
-    private float shopFadeTime;
+    private bool isShopPanelOpened;
+    private float shopFadeTime = 1.0f;
     private float shopFadeTimer;
     private float shopFadeAmount;
 
-    public void ShopOpenClose()
+    private GameObject _shopPanel;
+    private Image _shopPanelImage;
+
+    void Start()
     {
-        StartCoroutine(ShopPanelEnumerator());
+        if (ShopPanel.Instance != null)
+        {
+            _shopPanel = ShopPanel.Instance.shopPanel;
+            _shopPanelImage = ShopPanel.Instance.shopPanelImage;
+        }
+
+        isShopPanelOpened = false;
+
+        if (_shopPanel != null)
+        {
+            _shopPanel.SetActive(false);
+        }
     }
 
-    void ShopPanelSwitch()
+    public void ShopOpenClose()
     {
-        shopFadeAmount = 0;
-        shopFadeTimer = 0;
+        if (_shopPanel == null || _shopPanelImage == null)
+        {
+            Debug.LogWarning("ShopPanel이 초기화되지 않음.");
+            return;
+        }
 
-        if (isShopPanelOpened)
-            isShopPanelOpened = false;
-        else
-            isShopPanelOpened = true;
+        StartCoroutine(ShopPanelEnumerator());
     }
 
     IEnumerator ShopPanelEnumerator()
     {
-        while (shopFadeAmount <= 1.5f)
+        if (!isShopPanelOpened) // 패널 열기
+        {
+            _shopPanel.SetActive(true);
+        }
+
+        shopFadeAmount = 0;
+        shopFadeTimer = 0;
+        Color panelColor = _shopPanelImage.color;
+
+        while (shopFadeAmount <= 1.0f)
         {
             shopFadeTimer += Time.deltaTime;
             shopFadeAmount = shopFadeTimer / shopFadeTime;
 
-            if (isShopPanelOpened && shopFadeAmount >= 1f)
-            {
-                ShopPanelSwitch();
-                break;
-            }
-
-            if (isShopPanelOpened)
-            {
-                shopPanel.GetComponent(Image.color) = new Color(shopFadeImage.color.r, shopFadeImage.color.g, shopFadeImage.color.b,
-                    1 - shopFadeAmount);
-            }
-
-            if (!isShopPanelOpened && shopFadeAmount >= 1f)
-            {
-                ShopPanelSwitch();
-                break;
-            }
-
-            if (!isShopPanelOpened)
-            {
-                shopFadeImage.color = new Color(shopFadeImage.color.r, shopFadeImage.color.g, shopFadeImage.color.b,
-                    shopFadeAmount);
-            }
+            // 알파 값 조절
+            panelColor.a = isShopPanelOpened ? (1 - shopFadeAmount) : shopFadeAmount;
+            _shopPanelImage.color = panelColor; // **여기서 적용해야 함**
 
             yield return null;
         }
 
+        isShopPanelOpened = !isShopPanelOpened;
+
+        if (!isShopPanelOpened)
+        {
+            _shopPanel.SetActive(false); // 페이드아웃 완료 후 비활성화
+        }
     }
 }
