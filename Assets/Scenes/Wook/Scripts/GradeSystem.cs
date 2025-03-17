@@ -20,7 +20,9 @@ public class GradeSystem : MonoBehaviour
         {
             grade = PlayerPrefs.GetInt("Grade");
             score = PlayerPrefs.GetInt("Score");
-            MaxValueCheck();
+            Debug.Log(sdGrade.maxValue);
+            MaxValueSet();
+            Debug.Log(sdGrade.maxValue);
         }
         else
         {
@@ -68,7 +70,7 @@ public class GradeSystem : MonoBehaviour
         PlayerPrefs.SetInt("Score", (int)sdGrade.value);
     }
     
-    void MaxValueCheck()
+    void MaxValueSet()
     {
         switch (grade)
         {
@@ -95,8 +97,8 @@ public class GradeSystem : MonoBehaviour
     {
         txtState.text = "YOU WIN";
         sdGrade.value += 10;
-
-        if (sdGrade.value >= sdGrade.maxValue)
+        score += 10;
+        if (score == (int)sdGrade.maxValue)
         {
             UpGrade();
         }
@@ -114,8 +116,8 @@ public class GradeSystem : MonoBehaviour
         {
             txtState.text = "Your Grade is Up";
             grade--;
-            MaxValueCheck();
-            sdGrade.value = 30;
+            MaxValueSet();
+            score = 30;
         }
     }
 
@@ -123,8 +125,9 @@ public class GradeSystem : MonoBehaviour
     {
         txtState.text = "YOU LOSE";
         sdGrade.value -= 10;
+        score -= 10;
         
-        if (sdGrade.value <= 0)
+        if (score == 0)
         {
             DownGrade();
         }
@@ -142,8 +145,8 @@ public class GradeSystem : MonoBehaviour
         {
             txtState.text = "Your Grade is Down";
             grade++;
-            MaxValueCheck();
-            sdGrade.value = sdGrade.maxValue - 30;
+            MaxValueSet();
+            score = (int)sdGrade.maxValue - 30;
         }
     }
 }
