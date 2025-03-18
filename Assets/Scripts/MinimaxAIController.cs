@@ -160,22 +160,86 @@ public static class MinimaxAIController
     /// <returns></returns>
     private static bool CheckGameWin(GameManager.PlayerType playerType, GameManager.PlayerType[,] board)
     {
-        // 가로로 마커가 일치하는지 확인
-        for (var row = 0; row < board.GetLength(0); row++)
-            if (board[row, 0] == playerType && board[row, 1] == playerType && board[row, 2] == playerType)
-                return true;
-        
-        // 세로로 마커가 일치하는지 확인
-        for (var col = 0; col < board.GetLength(1); col++)
-            if (board[0, col] == playerType && board[1, col] == playerType && board[2, col] == playerType)
-                return true;
-        
-        // 대각선 마커 일치 확인
-        if (board[0, 0] == playerType && board[1, 1] == playerType && board[2, 2] == playerType)
-            return true;
-        if (board[0, 2] == playerType && board[1, 1] == playerType && board[2, 0] == playerType)
-            return true;
-        
+        int numRows = board.GetLength(0);
+        int numCols = board.GetLength(1);
+        int winCount = 5;
+
+        // 보드의 모든 셀에 대해 검사
+        for (int row = 0; row < numRows; row++)
+        {
+            for (int col = 0; col < numCols; col++)
+            {
+                // 현재 셀이 지정된 플레이어의 마커가 아니라면 넘어감
+                if (board[row, col] != playerType)
+                    continue;
+
+                // 가로 방향 (오른쪽)
+                if (col <= numCols - winCount)
+                {
+                    bool win = true;
+                    for (int i = 0; i < winCount; i++)
+                    {
+                        if (board[row, col + i] != playerType)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win)
+                        return true;
+                }
+
+                // 세로 방향 (아래쪽)
+                if (row <= numRows - winCount)
+                {
+                    bool win = true;
+                    for (int i = 0; i < winCount; i++)
+                    {
+                        if (board[row + i, col] != playerType)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win)
+                        return true;
+                }
+
+                // 대각선 방향 (아래쪽 오른쪽)
+                if (row <= numRows - winCount && col <= numCols - winCount)
+                {
+                    bool win = true;
+                    for (int i = 0; i < winCount; i++)
+                    {
+                        if (board[row + i, col + i] != playerType)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win)
+                        return true;
+                }
+
+                // 역대각선 방향 (아래쪽 왼쪽)
+                if (row <= numRows - winCount && col >= winCount - 1)
+                {
+                    bool win = true;
+                    for (int i = 0; i < winCount; i++)
+                    {
+                        if (board[row + i, col - i] != playerType)
+                        {
+                            win = false;
+                            break;
+                        }
+                    }
+                    if (win)
+                        return true;
+                }
+            }
+        }
+
         return false;
     }
+
 }

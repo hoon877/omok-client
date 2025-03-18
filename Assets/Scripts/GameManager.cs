@@ -55,18 +55,6 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     private void StartGame()
     {
-        // _blockController와 _gameUIController가 null이면 게임 실행을 중단
-        if (_blockController == null)
-        {
-            Debug.LogError("BlockController가 null입니다. 씬에 BlockController 컴포넌트가 있는지 확인하세요.");
-            return;
-        }
-        if (_gameUIController == null)
-        {
-            Debug.LogError("GameUIController가 null입니다. 씬에 GameUIController 컴포넌트가 있는지 확인하세요.");
-            return;
-        }
-        
         // _board 초기화
         _board = new PlayerType[15, 15];
         
@@ -214,46 +202,104 @@ public class GameManager : Singleton<GameManager>
     }
     
     // 게임의 승패를 판단하는 함수
-    private bool CheckGameWin(PlayerType playerType)
-    {
-        // 가로로 마커가 일치하는지 확인
-        for (var row = 0; row < _board.GetLength(0); row++)
-        {
-            if (_board[row, 0] == playerType && _board[row, 1] == playerType && _board[row, 2] == playerType)
-            {
-                (int, int)[] blocks = { (row, 0), (row, 1), (row, 2) };
-                _blockController.SetBlockColor(playerType, blocks);
-                return true;
-            }
-        }
-        
-        // 세로로 마커가 일치하는지 확인
-        for (var col = 0; col < _board.GetLength(1); col++)
-        {
-            if (_board[0, col] == playerType && _board[1, col] == playerType && _board[2, col] == playerType)
-            {
-                (int, int)[] blocks = { (0, col), (1, col), (2, col) };
-                _blockController.SetBlockColor(playerType, blocks);
-                return true;
-            }
-        }
-        
-        // 대각선 확인
-        if (_board[0, 0] == playerType && _board[1, 1] == playerType && _board[2, 2] == playerType)
-        {
-            (int, int)[] blocks = { (0, 0), (1, 1), (2, 2) };
-            _blockController.SetBlockColor(playerType, blocks);
-            return true;
-        }
-        if (_board[0, 2] == playerType && _board[1, 1] == playerType && _board[2, 0] == playerType)
-        {
-            (int, int)[] blocks = { (0, 2), (1, 1), (2, 0) };
-            _blockController.SetBlockColor(playerType, blocks);
-            return true;
-        }
+    private bool CheckGameWin(GameManager.PlayerType playerType)
+{
+    int winCount = 5;
+    int numRows = _board.GetLength(0);
+    int numCols = _board.GetLength(1);
 
-        return false;
+    for (int row = 0; row < numRows; row++)
+    {
+        for (int col = 0; col < numCols; col++)
+        {
+            if (_board[row, col] != playerType)
+                continue;
+
+            // 가로 방향 (오른쪽)
+            if (col <= numCols - winCount)
+            {
+                bool win = true;
+                (int, int)[] blocks = new (int, int)[winCount];
+                for (int i = 0; i < winCount; i++)
+                {
+                    blocks[i] = (row, col + i);
+                    if (_board[row, col + i] != playerType)
+                    {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win)
+                {
+                    return true;
+                }
+            }
+
+            // 세로 방향 (아래쪽)
+            if (row <= numRows - winCount)
+            {
+                bool win = true;
+                (int, int)[] blocks = new (int, int)[winCount];
+                for (int i = 0; i < winCount; i++)
+                {
+                    blocks[i] = (row + i, col);
+                    if (_board[row + i, col] != playerType)
+                    {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win)
+                {
+                    return true;
+                }
+            }
+
+            // 대각선 방향 (오른쪽 아래)
+            if (row <= numRows - winCount && col <= numCols - winCount)
+            {
+                bool win = true;
+                (int, int)[] blocks = new (int, int)[winCount];
+                for (int i = 0; i < winCount; i++)
+                {
+                    blocks[i] = (row + i, col + i);
+                    if (_board[row + i, col + i] != playerType)
+                    {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win)
+                {
+                    return true;
+                }
+            }
+
+            // 역대각선 방향 (왼쪽 아래)
+            if (row <= numRows - winCount && col >= winCount - 1)
+            {
+                bool win = true;
+                (int, int)[] blocks = new (int, int)[winCount];
+                for (int i = 0; i < winCount; i++)
+                {
+                    blocks[i] = (row + i, col - i);
+                    if (_board[row + i, col - i] != playerType)
+                    {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win)
+                {
+                    return true;
+                }
+            }
+        }
     }
+    return false;
+}
+
+
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
