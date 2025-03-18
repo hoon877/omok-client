@@ -27,11 +27,6 @@ public class BoardClickHandler : MonoBehaviour
         CalculateBoardDimensions();
     }
 
-    private void Start()
-    {
-        positionSelector.SetActive(false);
-    }
-
     private void CalculateBoardDimensions()
     {
         // 스프라이트의 실제 월드 크기 계산

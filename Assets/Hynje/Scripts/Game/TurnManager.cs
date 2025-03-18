@@ -65,7 +65,7 @@ public class AIState : ITurnState
 
 public class TurnManager
 {
-    public event Action<ITurnState> OnTurnChanged;
+    public event Action OnTurnChanged;
     
     private ITurnState _currentState;
     private Dictionary<Constants.PlayerType, ITurnState> _states = new();
@@ -112,8 +112,8 @@ public class TurnManager
             ? Constants.PlayerType.WhitePlayer 
             : Constants.PlayerType.BlackPlayer;
             
+        OnTurnChanged?.Invoke();
         SetState(_states[nextPlayerType]);
-        OnTurnChanged?.Invoke(_currentState);
     }
 
     private void SetState(ITurnState newState)

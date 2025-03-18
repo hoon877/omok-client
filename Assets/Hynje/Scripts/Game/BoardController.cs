@@ -4,22 +4,30 @@ public class BoardController : MonoBehaviour
 {
     [SerializeField] private GameObject blackMarkerPrefab;
     [SerializeField] private GameObject whiteMarkerPrefab;
-    [SerializeField] private GameObject lastPositionMarker;
-    private void Start()
-    {
-        lastPositionMarker.SetActive(false);
-    }
+    [SerializeField] private GameObject forbiddenMarkerPrefab;
+
+    private MarkerController _lastMarker;
     
     public void SetMarker(Constants.MarkerType markerType, Vector3 position)
     {
+        _lastMarker?.SetLastPositionMarker(false);
+        
         var markerPrefab = (markerType == Constants.MarkerType.Black) ? blackMarkerPrefab : whiteMarkerPrefab;
-        Instantiate(markerPrefab, position, Quaternion.identity);
-        SetLastPositionMarker(position);
+        var markerObject = Instantiate(markerPrefab, position, Quaternion.identity);
+        var markerController = markerObject.GetComponent<MarkerController>();
+        
+        _lastMarker = markerController;
+        
+        _lastMarker.SetLastPositionMarker(true);
     }
 
-    private void SetLastPositionMarker(Vector3 position)
+    public void SetForbiddenMarker(Vector3 position)
     {
-        lastPositionMarker.SetActive(true);
-        lastPositionMarker.transform.position = position;
+        Instantiate(forbiddenMarkerPrefab, position, Quaternion.identity);
+    }
+
+    public void HideForbiddenMarkers()
+    {
+        
     }
 }

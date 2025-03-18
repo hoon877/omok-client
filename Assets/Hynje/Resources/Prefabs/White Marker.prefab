@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2972705444038911931}
   - component: {fileID: 8061052912190128826}
+  - component: {fileID: 6077055318117543703}
   m_Layer: 0
   m_Name: White Marker
   m_TagString: Untagged
@@ -29,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5432197647271968793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8061052912190128826
@@ -84,3 +86,88 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6077055318117543703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7817648471818506403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1607f4bc2c0f3405b83059ae016ce7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastPositionMarker: {fileID: 1280995322858859616}
+  markerNumberText: {fileID: 0}
+--- !u!1001 &7120285628190878331
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2972705444038911931}
+    m_Modifications:
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293190114378679835, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_Name
+      value: Last Position Marker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293190114378679835, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+--- !u!1 &1280995322858859616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8293190114378679835, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+  m_PrefabInstance: {fileID: 7120285628190878331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5432197647271968793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3004847594006981218, guid: 884e32a59a09f4a228f4b13d9202dbdc, type: 3}
+  m_PrefabInstance: {fileID: 7120285628190878331}
+  m_PrefabAsset: {fileID: 0}
