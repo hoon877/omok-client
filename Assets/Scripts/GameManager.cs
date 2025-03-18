@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject confirmPanel;
-    [SerializeField] private GameObject signinPanel;
-    [SerializeField] private GameObject signupPanel;
+    //[SerializeField] private GameObject settingsPanel;
+    //[SerializeField] private GameObject confirmPanel;
+    //[SerializeField] private GameObject signinPanel;
+    //[SerializeField] private GameObject signupPanel;
     
     private BlockController _blockController;
     private GameUIController _gameUIController;
@@ -33,13 +33,15 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        // 로그인
-        OpenSigninPanel();
+        // 로그인 관련 처리
+        //OpenSigninPanel();
+        ChangeToGameScene(GameType.SinglePlayer);
     }
 
     public void ChangeToGameScene(GameType gameType)
     {
         _gameType = gameType;
+        // 씬 전환이 필요한 경우 주석 해제
         SceneManager.LoadScene("Game");
     }
 
@@ -48,48 +50,25 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("Main");
     }
 
-    /*public void OpenSettingsPanel()
-    {
-        if (_canvas != null)
-        {
-            var settingsPanelObject = Instantiate(settingsPanel, _canvas.transform);
-            settingsPanelObject.GetComponent<PanelController>().Show();
-        }
-    }
-
-    public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClick onConfirmButtonClick)
-    {
-        if (_canvas != null)
-        {
-            var confirmPanelObject = Instantiate(confirmPanel, _canvas.transform);
-            confirmPanelObject.GetComponent<ConfirmPanelController>()
-                .Show(message, onConfirmButtonClick);
-        }
-    }*/
-
-    public void OpenSigninPanel()
-    {
-        if (_canvas != null)
-        {
-            var signinPanelObject = Instantiate(signinPanel, _canvas.transform);
-        }
-    }
-
-    public void OpenSignupPanel()
-    {
-        if (_canvas != null)
-        {
-            var signupPanelObject = Instantiate(signupPanel, _canvas.transform);
-        }
-    }
-
     /// <summary>
     /// 게임 시작
     /// </summary>
     private void StartGame()
     {
+        // _blockController와 _gameUIController가 null이면 게임 실행을 중단
+        if (_blockController == null)
+        {
+            Debug.LogError("BlockController가 null입니다. 씬에 BlockController 컴포넌트가 있는지 확인하세요.");
+            return;
+        }
+        if (_gameUIController == null)
+        {
+            Debug.LogError("GameUIController가 null입니다. 씬에 GameUIController 컴포넌트가 있는지 확인하세요.");
+            return;
+        }
+        
         // _board 초기화
-        _board = new PlayerType[3, 3];
+        _board = new PlayerType[15, 15];
         
         // 블록 초기화
         _blockController.InitBlocks();
@@ -103,16 +82,13 @@ public class GameManager : Singleton<GameManager>
 
     /// <summary>
     /// 게임 오버시 호출되는 함수
-    /// gameResult에 따라 결과 출력
     /// </summary>
     /// <param name="gameResult">win, lose, draw</param>
     private void EndGame(GameResult gameResult)
     {
-        // 게임오버 표시
         _gameUIController.SetGameUIMode(GameUIController.GameUIMode.GameOver);
         _blockController.OnBlockClickedDelegate = null;
         
-        // TODO: 나중에 구현!!
         switch (gameResult)
         {
             case GameResult.Win:
@@ -158,7 +134,7 @@ public class GameManager : Singleton<GameManager>
         switch (turnType)
         {
             case TurnType.PlayerA:
-                _gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnA);
+                //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnA);
                 _blockController.OnBlockClickedDelegate = (row, col) =>
                 {
                     if (SetNewBoardValue(PlayerType.PlayerA, row, col))
@@ -171,13 +147,12 @@ public class GameManager : Singleton<GameManager>
                     }
                     else
                     {
-                        // TODO: 이미 있는 곳을 터치했을 때 처리
+                        // 이미 있는 곳을 터치했을 때 처리
                     }
                 };
-                
                 break;
             case TurnType.PlayerB:
-                _gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnB);
+                //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnB);
 
                 if (_gameType == GameType.SinglePlayer)
                 {
@@ -194,7 +169,7 @@ public class GameManager : Singleton<GameManager>
                         }
                         else
                         {
-                            // TODO: 이미 있는 곳을 터치했을 때 처리
+                            // 이미 있는 곳을 터치했을 때 처리
                         }
                     }
                     else
@@ -217,7 +192,7 @@ public class GameManager : Singleton<GameManager>
                         }
                         else
                         {
-                            // TODO: 이미 있는 곳을 터치했을 때 처리
+                            // 이미 있는 곳을 터치했을 때 처리
                         }
                     };
                 }
@@ -238,7 +213,7 @@ public class GameManager : Singleton<GameManager>
         return GameResult.None;
     }
     
-    //게임의 승패를 판단하는 함수
+    // 게임의 승패를 판단하는 함수
     private bool CheckGameWin(PlayerType playerType)
     {
         // 가로로 마커가 일치하는지 확인
@@ -246,7 +221,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (_board[row, 0] == playerType && _board[row, 1] == playerType && _board[row, 2] == playerType)
             {
-                (int, int)[] blocks = { ( row, 0 ), ( row, 1 ), ( row, 2 ) };
+                (int, int)[] blocks = { (row, 0), (row, 1), (row, 2) };
                 _blockController.SetBlockColor(playerType, blocks);
                 return true;
             }
@@ -257,22 +232,22 @@ public class GameManager : Singleton<GameManager>
         {
             if (_board[0, col] == playerType && _board[1, col] == playerType && _board[2, col] == playerType)
             {
-                (int, int)[] blocks = { ( 0, col ), ( 1, col ), ( 2, col ) };
+                (int, int)[] blocks = { (0, col), (1, col), (2, col) };
                 _blockController.SetBlockColor(playerType, blocks);
                 return true;
             }
         }
         
-        // 대각선 마커 일치하는지 확인
+        // 대각선 확인
         if (_board[0, 0] == playerType && _board[1, 1] == playerType && _board[2, 2] == playerType)
         {
-            (int, int)[] blocks = { ( 0, 0 ), ( 1, 1 ), ( 2, 2 ) };
+            (int, int)[] blocks = { (0, 0), (1, 1), (2, 2) };
             _blockController.SetBlockColor(playerType, blocks);
             return true;
         }
         if (_board[0, 2] == playerType && _board[1, 1] == playerType && _board[2, 0] == playerType)
         {
-            (int, int)[] blocks = { ( 0, 2 ), ( 1, 1 ), ( 2, 0 ) };
+            (int, int)[] blocks = { (0, 2), (1, 1), (2, 0) };
             _blockController.SetBlockColor(playerType, blocks);
             return true;
         }
@@ -282,15 +257,31 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Game")
+        // "Game" 씬이 아닌 경우에는 초기화하지 않음
+        if (scene.name != "Game")
+            return;
+        
+        _blockController = GameObject.FindObjectOfType<BlockController>();
+        if (_blockController == null)
         {
-            _blockController = GameObject.FindObjectOfType<BlockController>();
-            _gameUIController = GameObject.FindObjectOfType<GameUIController>();
+            Debug.LogError("Scene에 BlockController 컴포넌트가 없습니다.");
+            return;
+        }
 
-            // 게임 시작
-            StartGame();
+        _gameUIController = GameObject.FindObjectOfType<GameUIController>();
+        if (_gameUIController == null)
+        {
+            Debug.LogError("Scene에 GameUIController 컴포넌트가 없습니다.");
+            return;
         }
         
         _canvas = GameObject.FindObjectOfType<Canvas>();
+        if (_canvas == null)
+        {
+            Debug.LogWarning("Scene에 Canvas 컴포넌트가 없습니다.");
+        }
+        
+        // 컴포넌트가 모두 준비되었으면 게임 시작
+        StartGame();
     }
 }

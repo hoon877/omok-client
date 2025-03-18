@@ -69,8 +69,10 @@ public class Block : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("OnMouseUpAsButton");
             return;
         }
+        Debug.Log($"OnMouseUpAsButton called for block {_blockIndex}. Delegate assigned: {_onBlockClicked != null}");
         _onBlockClicked?.Invoke(_blockIndex);
     }
 }

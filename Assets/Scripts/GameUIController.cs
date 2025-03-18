@@ -7,7 +7,7 @@ public class GameUIController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroupA;
     [SerializeField] private CanvasGroup canvasGroupB;
-    [SerializeField] private Button gameOverButton;
+    //[SerializeField] private Button gameOverButton;
 
     public enum GameUIMode
     {
@@ -27,7 +27,7 @@ public class GameUIController : MonoBehaviour
             case GameUIMode.Init:
                 canvasGroupA.gameObject.SetActive(true);
                 canvasGroupB.gameObject.SetActive(true);
-                gameOverButton.gameObject.SetActive(false);
+                //gameOverButton.gameObject.SetActive(false);
                 
                 canvasGroupA.alpha = DisableAlpha;
                 canvasGroupB.alpha = DisableAlpha;
@@ -35,7 +35,7 @@ public class GameUIController : MonoBehaviour
             case GameUIMode.TurnA:
                 canvasGroupA.gameObject.SetActive(true);
                 canvasGroupB.gameObject.SetActive(true);
-                gameOverButton.gameObject.SetActive(false);
+                //gameOverButton.gameObject.SetActive(false);
                 
                 canvasGroupA.alpha = EnableAlpha;
                 canvasGroupB.alpha = DisableAlpha;
@@ -43,7 +43,7 @@ public class GameUIController : MonoBehaviour
             case GameUIMode.TurnB:
                 canvasGroupA.gameObject.SetActive(true);
                 canvasGroupB.gameObject.SetActive(true);
-                gameOverButton.gameObject.SetActive(false);
+                //gameOverButton.gameObject.SetActive(false);
                 
                 canvasGroupA.alpha = DisableAlpha;
                 canvasGroupB.alpha = EnableAlpha;
@@ -51,7 +51,7 @@ public class GameUIController : MonoBehaviour
             case GameUIMode.GameOver:
                 canvasGroupA.gameObject.SetActive(false);
                 canvasGroupB.gameObject.SetActive(false);
-                gameOverButton.gameObject.SetActive(true);
+                //gameOverButton.gameObject.SetActive(true);
                 break;
         }
     }
