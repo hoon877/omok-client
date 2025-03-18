@@ -54,4 +54,67 @@ public class NetworkManager : Singleton<NetworkManager>
             }
         }
     }
+    
+    public IEnumerator Signin(LoginData loginData, Action success, Action<int> failure)
+    {
+        string jsonString = JsonUtility.ToJson(loginData);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
+
+        using (UnityWebRequest www =
+               new UnityWebRequest(Constants.ServerURL + "/users/signin", UnityWebRequest.kHttpVerbPOST))
+        {
+            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            www.downloadHandler = new DownloadHandlerBuffer();
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError ||
+                www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                
+            }
+            else
+            {
+                var cookie = www.GetResponseHeader("set-cookie");
+                if (!string.IsNullOrEmpty(cookie))
+                {
+                    int lastIndex = cookie.LastIndexOf(";");
+                    string sid = cookie.Substring(0, lastIndex);
+                    PlayerPrefs.SetString("sid", sid); 
+                }
+                
+                var resultString = www.downloadHandler.text;
+                var result = JsonUtility.FromJson<LoginResult>(resultString);
+
+                if (result.result == 0)
+                {
+                    Debug.Log("실패");
+                    // 유저네임 유효하지 않음
+                    // GameManager.Instance.OpenConfirmPanel("유저네임이 유효하지 않습니다.", () =>
+                    // {
+                    //     failure?.Invoke(0);
+                    // });
+                }
+                else if (result.result == 1)
+                {
+                    Debug.Log("실패");
+                    // 패스워드가 유효하지 않음
+                    // GameManager.Instance.OpenConfirmPanel("패스워드가 유효하지 않습니다.", () =>
+                    // {
+                    //     failure?.Invoke(1);
+                    // });
+                }
+                else if (result.result == 2)
+                {
+                    Debug.Log("성공");
+                    // 성공
+                    // GameManager.Instance.OpenConfirmPanel("로그인에 성공하였습니다.", () =>
+                    // {
+                    //     success?.Invoke();
+                    // });
+                }
+            }
+        }
+    }
 }

@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1993615721617631483}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 830100340363583510}
+        m_TargetAssemblyTypeName: SignupPanelController, Assembly-CSharp
+        m_MethodName: OnClickProfileButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1669566780443317374
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +229,10 @@ MonoBehaviour:
   _nicknameInputField: {fileID: 7265586864395825377}
   _passwordInputField: {fileID: 4278562180981074529}
   _confirmPasswordInputField: {fileID: 791948278732429073}
+  _profileImagePanel: {fileID: 8121244147319950441, guid: 3d4c5bcae35cb594ea000b468eff4f2a, type: 3}
+  _profileButton: {fileID: 7011839333380588764}
+  _manProfileSprite: {fileID: 1679719784, guid: 26af0bf01d8ccf945b926698f5077eaa, type: 3}
+  _womanProfileSprite: {fileID: -706547532, guid: 26af0bf01d8ccf945b926698f5077eaa, type: 3}
 --- !u!1 &1688555201102137368
 GameObject:
   m_ObjectHideFlags: 0
