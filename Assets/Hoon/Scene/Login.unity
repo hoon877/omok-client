@@ -338,6 +338,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1545358042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545358044}
+  - component: {fileID: 1545358043}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1545358043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545358042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d363529b767fdef45a65bfa4c09df835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirmPanel: {fileID: 3322007610722072902, guid: 3261f9e8ca415ad48b4d5ab787b2369e, type: 3}
+--- !u!4 &1545358044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545358042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1763663206 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 434515985513262926, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
@@ -361,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _signupPanel: {fileID: 1669566780443317374, guid: 4ff5efbdf6f4d90458e233c32d748011, type: 3}
+  confirmPanel: {fileID: 3322007610722072902, guid: 3261f9e8ca415ad48b4d5ab787b2369e, type: 3}
   _usernameInputField: {fileID: 477865187}
   _passwordInputField: {fileID: 304590185}
 --- !u!1001 &1838186177
@@ -402,6 +448,10 @@ PrefabInstance:
     - target: {fileID: 434515985513262926, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
       propertyPath: m_Name
       value: Login Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 434515985513262926, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 828395008509865743, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -650,3 +700,4 @@ SceneRoots:
   - {fileID: 978612566}
   - {fileID: 2097302476}
   - {fileID: 263772496}
+  - {fileID: 1545358044}

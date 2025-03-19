@@ -35,10 +35,10 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     // TODO: 중복 사용자 생성 팝업 표시
                     Debug.Log("중복사용자");
-                    // GameManager.Instance.OpenConfirmPanel("이미 존재하는 사용자입니다.", () =>
-                    // {
-                    //     failure?.Invoke();
-                    // });
+                    GameManager.Instance.OpenConfirmPanel("This user already exists.", () =>
+                    {
+                        failure?.Invoke();
+                    });
                 }
             }
             else
@@ -47,10 +47,10 @@ public class NetworkManager : Singleton<NetworkManager>
                 Debug.Log("Result: " + result);
                 
                 // 회원가입 성공 팝업 표시
-                // GameManager.Instance.OpenConfirmPanel("회원 가입이 완료 되었습니다.", () =>
-                // {
-                //     success?.Invoke();
-                // });
+                GameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
+                {
+                    success?.Invoke();
+                });
             }
         }
     }
@@ -91,28 +91,28 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     Debug.Log("실패");
                     // 유저네임 유효하지 않음
-                    // GameManager.Instance.OpenConfirmPanel("유저네임이 유효하지 않습니다.", () =>
-                    // {
-                    //     failure?.Invoke(0);
-                    // });
+                    GameManager.Instance.OpenConfirmPanel("ID is invalid.", () =>
+                    {
+                        failure?.Invoke(0);
+                    });
                 }
                 else if (result.result == 1)
                 {
                     Debug.Log("실패");
                     // 패스워드가 유효하지 않음
-                    // GameManager.Instance.OpenConfirmPanel("패스워드가 유효하지 않습니다.", () =>
-                    // {
-                    //     failure?.Invoke(1);
-                    // });
+                    GameManager.Instance.OpenConfirmPanel("Password is invalid.", () =>
+                    {
+                        failure?.Invoke(1);
+                    });
                 }
                 else if (result.result == 2)
                 {
                     Debug.Log("성공");
                     // 성공
-                    // GameManager.Instance.OpenConfirmPanel("로그인에 성공하였습니다.", () =>
-                    // {
-                    //     success?.Invoke();
-                    // });
+                    GameManager.Instance.OpenConfirmPanel("Login Success.", () =>
+                    {
+                        success?.Invoke();
+                    });
                 }
             }
         }

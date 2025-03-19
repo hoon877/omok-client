@@ -50,11 +50,20 @@ public class SignupPanelController : MonoBehaviour
                 if (www.responseCode == 409)
                 {
                     Debug.Log("중복사용자");
+                    GameManager.Instance.OpenConfirmPanel("user already exists.", () =>
+                    {
+                        failure?.Invoke();
+                    });
                 }
             }
             else
             {
                 Debug.Log("회원가입 성공!");
+                // 회원가입 성공 팝업 표시
+                GameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
+                {
+                    success?.Invoke();
+                });
             }
         }
     }
@@ -147,5 +156,11 @@ public class SignupPanelController : MonoBehaviour
         {
             _profileButton.image.sprite = _womanProfileSprite; //여자 프로필 변경
         }
+    }
+
+    public void OnClickBackButton()
+    {
+        ForDestroy = GameObject.Find("Signup Panel(Clone)");
+        Destroy(ForDestroy);
     }
 }

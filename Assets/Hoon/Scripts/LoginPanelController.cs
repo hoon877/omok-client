@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct LoginData
@@ -18,8 +19,10 @@ public struct LoginResult
 public class LoginPanelController : MonoBehaviour
 {
     [SerializeField] private GameObject _signupPanel;
+    [SerializeField] private GameObject confirmPanel;
     [SerializeField] private TMP_InputField _usernameInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
+    private Canvas _canvas;
     
     public void OnClickLogin()
     {
@@ -57,4 +60,6 @@ public class LoginPanelController : MonoBehaviour
     {
         Instantiate(_signupPanel, transform);
     }
+    
+
 }
