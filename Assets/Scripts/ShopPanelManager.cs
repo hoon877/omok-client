@@ -57,7 +57,7 @@ public class ShopPanelManager : MonoBehaviour
 
             // 알파 값 조절
             panelColor.a = isShopPanelOpened ? (1 - shopFadeAmount) : shopFadeAmount;
-            _shopPanelImage.color = panelColor; // **여기서 적용해야 함**
+            _shopPanelImage.color = panelColor;
 
             yield return null;
         }
