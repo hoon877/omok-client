@@ -2,27 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CoinManager : MonoBehaviour, ISubject
+public class CoinManager : Singleton<CoinManager>, ISubject
 {
-    #region 싱글톤(추후 Singleton 클래스 상속받기)
-    private static CoinManager instance;
-    public static CoinManager Instance { get { return instance; } }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-    #endregion
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     // PS. Edit > ProjectSetting > Script Execution Order 에서 스크립트 우선순위를 조정하였음
 
@@ -143,6 +126,8 @@ public class CoinManager : MonoBehaviour, ISubject
         if (resetCoin)
             PlayerPrefs.DeleteKey(m_coinPath);
     }
-
     #endregion
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
 }
