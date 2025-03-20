@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class CoinManager : Singleton<CoinManager>, ISubject
 {
-
     // PS. Edit > ProjectSetting > Script Execution Order 에서 스크립트 우선순위를 조정하였음
 
     /// <summary>
@@ -33,6 +32,10 @@ public class CoinManager : Singleton<CoinManager>, ISubject
 
     // 코인갯수를 확인하는 옵저버들
     public List<IObserver> observers;
+
+    public bool isPaymentShow { get; set; }
+    public bool isShopShow {  get; set; }
+
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     private void Start()
@@ -129,5 +132,13 @@ public class CoinManager : Singleton<CoinManager>, ISubject
     #endregion
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (observers != null)
+        {
+            observers.Clear();
+        }
+        isPaymentShow = false;
+        isShopShow = false;
+    }
 }

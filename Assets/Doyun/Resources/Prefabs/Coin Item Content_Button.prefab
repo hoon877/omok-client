@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: e8009df9018fee144ad5198332917858, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -151,7 +151,7 @@ MonoBehaviour:
   price: 0
   firstText: {fileID: 5864852224130768553}
   secondText: {fileID: 81100103322024585}
-  paymentPanel: {fileID: 0}
+  paymentPanelPrefab: {fileID: 7299179244966018366, guid: ac06d9ee4aa873f4d8399bd3dd75d412, type: 3}
 --- !u!1 &2061673591606912800
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,11 +318,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2033779677338057394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -170, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 35, y: 0}
+  m_SizeDelta: {x: 300, y: 50}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5238374192298445669
 CanvasRenderer:
   m_ObjectHideFlags: 0

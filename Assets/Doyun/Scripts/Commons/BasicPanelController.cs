@@ -1,42 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public abstract class BasicPanelController : MonoBehaviour
 {
-    [SerializeField] private Canvas canvas;
-    private RectTransform rectTransform;
+    [SerializeField] private RectTransform rectTransform;
 
-    private Vector2 showPosition = Vector2.zero;
-    [SerializeField] private Vector2 hiddenPosition;
-    [SerializeField] private bool isShow;
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-    private void Awake()
-    {
-        isShow = false;
-        rectTransform = GetComponent<RectTransform>();
-        hiddenPosition = rectTransform.anchoredPosition;
-    }
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     public void ShowPanel()
     {
-        // 화면에 표시되지 않을때
-        if (!isShow)
-        {
-            rectTransform.anchoredPosition = showPosition;
-            isShow = true;
-        }
+        // 표시 애니메이션
+        rectTransform.localScale = Vector3.zero;
+        rectTransform.DOScale(1, 0.3f).SetEase(Ease.OutBack);
     }
 
     public void HidePanel()
     {
-        // 화면에 표시되고 있을때
-        if (isShow)
-        {
-            rectTransform.anchoredPosition = hiddenPosition;
-            isShow = false;
-        }
+        // 숨김 애니메이션
+        rectTransform.localScale = Vector3.one;
+        rectTransform.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete( () => { Destroy(gameObject); });
     }
 }
