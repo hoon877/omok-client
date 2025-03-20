@@ -13,20 +13,12 @@ public class GameManager : Singleton<GameManager>
     
     private BlockController _blockController;
     private GameUIController _gameUIController;
+    private GameLogic _gameLogic;
     private Canvas _canvas;
     
-    public enum PlayerType { None, PlayerA, PlayerB }
-    private PlayerType[,] _board;
+    private Constants.PlayerType[,] _board;
     
     private enum TurnType { PlayerA, PlayerB }
-
-    private enum GameResult
-    {
-        None,   // 게임 진행 중
-        Win,    // 플레이어 승
-        Lose,   // 플레이어 패
-        Draw    // 비김
-    }
     
     public enum GameType { SinglePlayer, DualPlayer }
     private GameType _gameType;
@@ -35,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     {
         // 로그인 관련 처리
         //OpenSigninPanel();
-        ChangeToGameScene(GameType.SinglePlayer);
+        ChangeToGameScene(GameType.DualPlayer);
     }
 
     public void ChangeToGameScene(GameType gameType)
@@ -56,7 +48,12 @@ public class GameManager : Singleton<GameManager>
     private void StartGame()
     {
         // _board 초기화
-        _board = new PlayerType[15, 15];
+        _board = new Constants.PlayerType[15, 15];
+        
+        //GameLogic 초기화
+        _gameLogic = GameObject.FindObjectOfType<GameLogic>();
+        _gameLogic.SetBoard(_board);
+        Debug.Log("Board passed to GameLogic");
         
         // 블록 초기화
         _blockController.InitBlocks();
@@ -72,20 +69,20 @@ public class GameManager : Singleton<GameManager>
     /// 게임 오버시 호출되는 함수
     /// </summary>
     /// <param name="gameResult">win, lose, draw</param>
-    private void EndGame(GameResult gameResult)
+    private void EndGame(Constants.GameResult gameResult)
     {
         _gameUIController.SetGameUIMode(GameUIController.GameUIMode.GameOver);
         _blockController.OnBlockClickedDelegate = null;
         
         switch (gameResult)
         {
-            case GameResult.Win:
+            case Constants.GameResult.Win:
                 Debug.Log("Player A win");
                 break;
-            case GameResult.Lose:
+            case Constants.GameResult.Lose:
                 Debug.Log("Player B win");
                 break;
-            case GameResult.Draw:
+            case Constants.GameResult.Draw:
                 Debug.Log("Draw");
                 break;
         }
@@ -98,17 +95,17 @@ public class GameManager : Singleton<GameManager>
     /// <param name="row">Row</param>
     /// <param name="col">Col</param>
     /// <returns>False가 반환되면 할당할 수 없음, True는 할당이 완료됨</returns>
-    private bool SetNewBoardValue(PlayerType playerType, int row, int col)
+    private bool SetNewBoardValue(Constants.PlayerType playerType, int row, int col)
     {
-        if (_board[row, col] != PlayerType.None) return false;
+        if (_board[row, col] != Constants.PlayerType.None) return false;
         
-        if (playerType == PlayerType.PlayerA)
+        if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
             _blockController.PlaceMarker(Block.MarkerType.Black, row, col);
             return true;
         }
-        else if (playerType == PlayerType.PlayerB)
+        else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
             _blockController.PlaceMarker(Block.MarkerType.White, row, col);
@@ -125,10 +122,10 @@ public class GameManager : Singleton<GameManager>
                 //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnA);
                 _blockController.OnBlockClickedDelegate = (row, col) =>
                 {
-                    if (SetNewBoardValue(PlayerType.PlayerA, row, col))
+                    if (SetNewBoardValue(Constants.PlayerType.PlayerA, row, col))
                     {
-                        var gameResult = CheckGameResult();
-                        if (gameResult == GameResult.None)
+                        var gameResult = _gameLogic.CheckGameResult();
+                        if (gameResult == Constants.GameResult.None)
                             SetTurn(TurnType.PlayerB);
                         else
                             EndGame(gameResult);
@@ -147,10 +144,10 @@ public class GameManager : Singleton<GameManager>
                     var result = MinimaxAIController.GetBestMove(_board);
                     if (result.HasValue)
                     {
-                        if (SetNewBoardValue(PlayerType.PlayerB, result.Value.row, result.Value.col))
+                        if (SetNewBoardValue(Constants.PlayerType.PlayerB, result.Value.row, result.Value.col))
                         {
-                            var gameResult = CheckGameResult();
-                            if (gameResult == GameResult.None)
+                            var gameResult = _gameLogic.CheckGameResult();
+                            if (gameResult == Constants.GameResult.None)
                                 SetTurn(TurnType.PlayerA);
                             else
                                 EndGame(gameResult);
@@ -162,7 +159,7 @@ public class GameManager : Singleton<GameManager>
                     }
                     else
                     {
-                        EndGame(GameResult.Win);
+                        EndGame(Constants.GameResult.Win);
                     }
                     break;
                 }
@@ -170,10 +167,10 @@ public class GameManager : Singleton<GameManager>
                 {
                     _blockController.OnBlockClickedDelegate = (row, col) =>
                     {
-                        if (SetNewBoardValue(PlayerType.PlayerB, row, col))
+                        if (SetNewBoardValue(Constants.PlayerType.PlayerB, row, col))
                         {
-                            var gameResult = CheckGameResult();
-                            if (gameResult == GameResult.None)
+                            var gameResult = _gameLogic.CheckGameResult();
+                            if (gameResult == Constants.GameResult.None)
                                 SetTurn(TurnType.PlayerA);
                             else
                                 EndGame(gameResult);
@@ -188,119 +185,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    /// <summary>
-    /// 게임 결과 확인 함수
-    /// </summary>
-    /// <returns>플레이어 기준 게임 결과</returns>
-    private GameResult CheckGameResult()
-    {
-        if (CheckGameWin(PlayerType.PlayerA)) { return GameResult.Win; }
-        if (CheckGameWin(PlayerType.PlayerB)) { return GameResult.Lose; }
-        if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
-        
-        return GameResult.None;
-    }
     
-    // 게임의 승패를 판단하는 함수
-    private bool CheckGameWin(GameManager.PlayerType playerType)
-{
-    int winCount = 5;
-    int numRows = _board.GetLength(0);
-    int numCols = _board.GetLength(1);
-
-    for (int row = 0; row < numRows; row++)
-    {
-        for (int col = 0; col < numCols; col++)
-        {
-            if (_board[row, col] != playerType)
-                continue;
-
-            // 가로 방향 (오른쪽)
-            if (col <= numCols - winCount)
-            {
-                bool win = true;
-                (int, int)[] blocks = new (int, int)[winCount];
-                for (int i = 0; i < winCount; i++)
-                {
-                    blocks[i] = (row, col + i);
-                    if (_board[row, col + i] != playerType)
-                    {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win)
-                {
-                    return true;
-                }
-            }
-
-            // 세로 방향 (아래쪽)
-            if (row <= numRows - winCount)
-            {
-                bool win = true;
-                (int, int)[] blocks = new (int, int)[winCount];
-                for (int i = 0; i < winCount; i++)
-                {
-                    blocks[i] = (row + i, col);
-                    if (_board[row + i, col] != playerType)
-                    {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win)
-                {
-                    return true;
-                }
-            }
-
-            // 대각선 방향 (오른쪽 아래)
-            if (row <= numRows - winCount && col <= numCols - winCount)
-            {
-                bool win = true;
-                (int, int)[] blocks = new (int, int)[winCount];
-                for (int i = 0; i < winCount; i++)
-                {
-                    blocks[i] = (row + i, col + i);
-                    if (_board[row + i, col + i] != playerType)
-                    {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win)
-                {
-                    return true;
-                }
-            }
-
-            // 역대각선 방향 (왼쪽 아래)
-            if (row <= numRows - winCount && col >= winCount - 1)
-            {
-                bool win = true;
-                (int, int)[] blocks = new (int, int)[winCount];
-                for (int i = 0; i < winCount; i++)
-                {
-                    blocks[i] = (row + i, col - i);
-                    if (_board[row + i, col - i] != playerType)
-                    {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win)
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-
-
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // "Game" 씬이 아닌 경우에는 초기화하지 않음

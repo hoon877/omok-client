@@ -8,7 +8,7 @@ public static class MinimaxAIController
     // 최대 탐색 깊이 제한 (예시: 3)
     public static int MaxDepth = 3;
     
-    private static List<(int row, int col)> GenerateMoves(GameManager.PlayerType[,] board)
+    private static List<(int row, int col)> GenerateMoves(Constants.PlayerType[,] board)
     {
         List<(int row, int col)> moves = new List<(int row, int col)>();
         int rows = board.GetLength(0);
@@ -20,7 +20,7 @@ public static class MinimaxAIController
         {
             for (int j = 0; j < cols; j++)
             {
-                if (board[i, j] != GameManager.PlayerType.None)
+                if (board[i, j] != Constants.PlayerType.None)
                 {
                     boardEmpty = false;
                     break;
@@ -40,7 +40,7 @@ public static class MinimaxAIController
         {
             for (int j = 0; j < cols; j++)
             {
-                if (board[i, j] == GameManager.PlayerType.None)
+                if (board[i, j] == Constants.PlayerType.None)
                 {
                     bool adjacent = false;
                     // 8방향(또는 원하는 범위)으로 인접한 셀 확인
@@ -49,7 +49,7 @@ public static class MinimaxAIController
                         for (int dj = -1; dj <= 1 && !adjacent; dj++)
                         {
                             int ni = i + di, nj = j + dj;
-                            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols && board[ni, nj] != GameManager.PlayerType.None)
+                            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols && board[ni, nj] != Constants.PlayerType.None)
                             {
                                 adjacent = true;
                             }
@@ -63,7 +63,7 @@ public static class MinimaxAIController
         return moves;
     }
 
-    public static (int row, int col)? GetBestMove(GameManager.PlayerType[,] board)
+    public static (int row, int col)? GetBestMove(Constants.PlayerType[,] board)
     {
         float bestScore = -1000;
         (int row, int col)? bestMove = null;
@@ -72,9 +72,9 @@ public static class MinimaxAIController
         foreach (var move in moves)
         {
             int row = move.row, col = move.col;
-            board[row, col] = GameManager.PlayerType.PlayerB;
+            board[row, col] = Constants.PlayerType.PlayerB;
             var score = DoMinimax(board, 0, false);
-            board[row, col] = GameManager.PlayerType.None;
+            board[row, col] = Constants.PlayerType.None;
         
             if (score > bestScore)
             {
@@ -86,14 +86,14 @@ public static class MinimaxAIController
         return bestMove;
     }
 
-    private static float DoMinimax(GameManager.PlayerType[,] board, int depth, bool isMaximizing)
+    private static float DoMinimax(Constants.PlayerType[,] board, int depth, bool isMaximizing)
     {
         if (depth >= MaxDepth)
             return EvaluateBoard(board);
 
-        if (CheckGameWin(GameManager.PlayerType.PlayerA, board))
+        if (CheckGameWin(Constants.PlayerType.PlayerA, board))
             return -10 + depth;
-        if (CheckGameWin(GameManager.PlayerType.PlayerB, board))
+        if (CheckGameWin(Constants.PlayerType.PlayerB, board))
             return 10 - depth;
         if (IsAllBlocksPlaced(board))
             return 0;
@@ -106,9 +106,9 @@ public static class MinimaxAIController
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
-                board[row, col] = GameManager.PlayerType.PlayerB;
+                board[row, col] = Constants.PlayerType.PlayerB;
                 var score = DoMinimax(board, depth + 1, false);
-                board[row, col] = GameManager.PlayerType.None;
+                board[row, col] = Constants.PlayerType.None;
                 bestScore = Math.Max(bestScore, score);
             }
             return bestScore;
@@ -119,9 +119,9 @@ public static class MinimaxAIController
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
-                board[row, col] = GameManager.PlayerType.PlayerA;
+                board[row, col] = Constants.PlayerType.PlayerA;
                 var score = DoMinimax(board, depth + 1, true);
-                board[row, col] = GameManager.PlayerType.None;
+                board[row, col] = Constants.PlayerType.None;
                 bestScore = Math.Min(bestScore, score);
             }
             return bestScore;
@@ -130,7 +130,7 @@ public static class MinimaxAIController
     
     // 평가 함수: 최대 깊이에 도달했을 때 보드 상태를 평가합니다.
     // 현재는 단순히 0을 반환하도록 구현했으나, 실제 상황에 맞게 보드의 유리/불리 정도를 계산해야 합니다.
-    private static float EvaluateBoard(GameManager.PlayerType[,] board)
+    private static float EvaluateBoard(Constants.PlayerType[,] board)
     {
         return 0;
     }
@@ -139,13 +139,13 @@ public static class MinimaxAIController
     /// 모든 마커가 보드에 배치 되었는지 확인하는 함수
     /// </summary>
     /// <returns>True: 모두 배치</returns>
-    public static bool IsAllBlocksPlaced(GameManager.PlayerType[,] board)
+    public static bool IsAllBlocksPlaced(Constants.PlayerType[,] board)
     {
         for (var row = 0; row < board.GetLength(0); row++)
         {
             for (var col = 0; col < board.GetLength(1); col++)
             {
-                if (board[row, col] == GameManager.PlayerType.None)
+                if (board[row, col] == Constants.PlayerType.None)
                     return false;
             }
         }
@@ -158,7 +158,7 @@ public static class MinimaxAIController
     /// <param name="playerType"></param>
     /// <param name="board"></param>
     /// <returns></returns>
-    private static bool CheckGameWin(GameManager.PlayerType playerType, GameManager.PlayerType[,] board)
+    private static bool CheckGameWin(Constants.PlayerType playerType, Constants.PlayerType[,] board)
     {
         int numRows = board.GetLength(0);
         int numCols = board.GetLength(1);
