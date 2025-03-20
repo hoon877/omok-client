@@ -4838,7 +4838,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &463810900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16317,6 +16317,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1951195125}
   - component: {fileID: 1951195124}
+  - component: {fileID: 1951195127}
+  - component: {fileID: 1951195126}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -16351,6 +16353,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1951195126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951195123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ede98271c80c9b4f8e6e358e3143647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1951195127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951195123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5705750f3f8f714898b13e1ee667934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blockController: {fileID: 100079872}
 --- !u!1001 &1954340722
 PrefabInstance:
   m_ObjectHideFlags: 0

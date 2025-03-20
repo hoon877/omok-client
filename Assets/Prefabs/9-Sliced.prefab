@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackSprite: {fileID: 21300000, guid: 5120c3c2ea80e644ea344c547d2abc72, type: 3}
   whiteSprite: {fileID: 21300000, guid: 301971f3559b14e4b8d52ba634681202, type: 3}
+  forbiddenSprite: {fileID: 21300000, guid: b8b77215c943ace47825bd4821dadfe9, type: 3}
   markerSpriteRenderer: {fileID: 3520857533909329454}
 --- !u!61 &-7065284204660019135
 BoxCollider2D:

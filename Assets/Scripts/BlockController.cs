@@ -55,4 +55,5 @@ public class BlockController : MonoBehaviour
             blocks[blockIndex].SetColor(markerColor);
         }
     }
+    
 }

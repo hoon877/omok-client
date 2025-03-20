@@ -7,9 +7,10 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private Sprite blackSprite;
     [SerializeField] private Sprite whiteSprite;
+    [SerializeField] private Sprite forbiddenSprite;
     [SerializeField] private SpriteRenderer markerSpriteRenderer;
 
-    public enum MarkerType { None, Black, White }
+    public enum MarkerType { None, Black, White, Forbidden }
     
     public delegate void OnBlockClicked(int index);
     private OnBlockClicked _onBlockClicked;
@@ -58,6 +59,9 @@ public class Block : MonoBehaviour
                 break;
             case MarkerType.White:
                 markerSpriteRenderer.sprite = whiteSprite;
+                break;
+            case MarkerType.Forbidden:
+                markerSpriteRenderer.sprite = forbiddenSprite;
                 break;
             case MarkerType.None:
                 markerSpriteRenderer.sprite = null;

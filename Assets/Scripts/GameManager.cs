@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     private BlockController _blockController;
     private GameUIController _gameUIController;
     private GameLogic _gameLogic;
+    private RenjuRuleChecker _renjuRuleChecker;
     private Canvas _canvas;
     
     private Constants.PlayerType[,] _board;
@@ -53,7 +54,6 @@ public class GameManager : Singleton<GameManager>
         //GameLogic 초기화
         _gameLogic = GameObject.FindObjectOfType<GameLogic>();
         _gameLogic.SetBoard(_board);
-        Debug.Log("Board passed to GameLogic");
         
         // 블록 초기화
         _blockController.InitBlocks();
@@ -116,17 +116,25 @@ public class GameManager : Singleton<GameManager>
 
     private void SetTurn(TurnType turnType)
     {
+        ForbiddenMarker(Constants.PlayerType.PlayerA);
         switch (turnType)
         {
             case TurnType.PlayerA:
                 //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnA);
                 _blockController.OnBlockClickedDelegate = (row, col) =>
                 {
+                    // 금수 판정을 먼저 수행합니다.
+                    if (_renjuRuleChecker.IsMoveForbidden(_board, row, col, Constants.PlayerType.PlayerA))
+                    {
+                        return; // 금수이면 이동 무효화
+                    }
                     if (SetNewBoardValue(Constants.PlayerType.PlayerA, row, col))
                     {
                         var gameResult = _gameLogic.CheckGameResult();
                         if (gameResult == Constants.GameResult.None)
+                        {
                             SetTurn(TurnType.PlayerB);
+                        }
                         else
                             EndGame(gameResult);
                     }
@@ -138,7 +146,6 @@ public class GameManager : Singleton<GameManager>
                 break;
             case TurnType.PlayerB:
                 //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnB);
-
                 if (_gameType == GameType.SinglePlayer)
                 {
                     var result = MinimaxAIController.GetBestMove(_board);
@@ -171,7 +178,9 @@ public class GameManager : Singleton<GameManager>
                         {
                             var gameResult = _gameLogic.CheckGameResult();
                             if (gameResult == Constants.GameResult.None)
+                            {
                                 SetTurn(TurnType.PlayerA);
+                            }
                             else
                                 EndGame(gameResult);
                         }
@@ -184,6 +193,30 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
     }
+    
+    private void ForbiddenMarker(Constants.PlayerType player)
+    {
+        
+        int rows = _board.GetLength(0);
+        int cols = _board.GetLength(1);
+    
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                // 해당 위치가 빈 칸인 경우에만 체크
+                if (_board[row, col] == Constants.PlayerType.None)
+                {
+                    bool isForbidden = _renjuRuleChecker.IsMoveForbidden(_board, row, col, player);
+                    if (isForbidden)
+                    {
+                        // BlockController에서 금수 표시를 위한 메서드를 호출
+                        _blockController.PlaceMarker(Block.MarkerType.Forbidden, row, col);
+                    }
+                }
+            }
+        }
+    }
 
     
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -193,24 +226,9 @@ public class GameManager : Singleton<GameManager>
             return;
         
         _blockController = GameObject.FindObjectOfType<BlockController>();
-        if (_blockController == null)
-        {
-            Debug.LogError("Scene에 BlockController 컴포넌트가 없습니다.");
-            return;
-        }
-
         _gameUIController = GameObject.FindObjectOfType<GameUIController>();
-        if (_gameUIController == null)
-        {
-            Debug.LogError("Scene에 GameUIController 컴포넌트가 없습니다.");
-            return;
-        }
-        
+        _renjuRuleChecker = GameObject.FindObjectOfType<RenjuRuleChecker>();
         _canvas = GameObject.FindObjectOfType<Canvas>();
-        if (_canvas == null)
-        {
-            Debug.LogWarning("Scene에 Canvas 컴포넌트가 없습니다.");
-        }
         
         // 컴포넌트가 모두 준비되었으면 게임 시작
         StartGame();
