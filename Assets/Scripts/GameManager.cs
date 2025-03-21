@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>
     {
         // 로그인 관련 처리
         //OpenSigninPanel();
-        ChangeToGameScene(GameType.DualPlayer);
+        ChangeToGameScene(GameType.SinglePlayer);
     }
 
     public void ChangeToGameScene(GameType gameType)

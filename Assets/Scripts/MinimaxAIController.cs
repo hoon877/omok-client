@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Unity.Mathematics;
 using UnityEngine;
 
 public static class MinimaxAIController
 {
-    // 최대 탐색 깊이 제한 (예시: 3)
-    public static int MaxDepth = 3;
-    
+    // 최대 탐색 깊이 제한 (깊이 3이하는 게임이 안 됨)
+    public static int MaxDepth = 4;
+
+    // 이전 평가값을 저장하는 transposition table.
+    // key: board 상태의 해시, value: (평가 점수, 남은 탐색 깊이)
+    private static Dictionary<string, (float score, int depth)> transpositionTable = new Dictionary<string, (float, int)>();
+
     private static List<(int row, int col)> GenerateMoves(Constants.PlayerType[,] board)
     {
         List<(int row, int col)> moves = new List<(int row, int col)>();
@@ -63,17 +68,68 @@ public static class MinimaxAIController
         return moves;
     }
 
+    // 주변에 놓인 돌의 개수를 기반으로 후보 수의 우선순위를 평가하는 함수
+    private static int GetAdjacentScore(Constants.PlayerType[,] board, int row, int col)
+    {
+        int score = 0;
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        for (int dr = -1; dr <= 1; dr++)
+        {
+            for (int dc = -1; dc <= 1; dc++)
+            {
+                if (dr == 0 && dc == 0)
+                    continue;
+                int nr = row + dr, nc = col + dc;
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr, nc] != Constants.PlayerType.None)
+                {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
+
+    // 보드 상태를 문자열로 변환하여 해시로 사용합니다.
+    private static string BoardToString(Constants.PlayerType[,] board)
+    {
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        StringBuilder sb = new StringBuilder(rows * cols);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // Constants.PlayerType은 열거형(enum)이라 가령 정수형 값으로 변환
+                sb.Append((int)board[i, j]);
+            }
+        }
+        return sb.ToString();
+    }
+    
     public static (int row, int col)? GetBestMove(Constants.PlayerType[,] board)
     {
-        float bestScore = -1000;
+        // 새로운 탐색을 시작할 때 이전 평가값 캐시를 초기화합니다.
+        transpositionTable.Clear();
+        
+        float bestScore = -100;
         (int row, int col)? bestMove = null;
     
         var moves = GenerateMoves(board);
+        // 상위 레벨에서도 후보 순서를 정렬하여 알파-베타 가지치기를 보다 효과적으로 만듭니다.
+        moves.Sort((move1, move2) =>
+        {
+            int score1 = GetAdjacentScore(board, move1.row, move1.col);
+            int score2 = GetAdjacentScore(board, move2.row, move2.col);
+            return score2.CompareTo(score1);
+        });
+    
         foreach (var move in moves)
         {
             int row = move.row, col = move.col;
             board[row, col] = Constants.PlayerType.PlayerB;
-            var score = DoMinimax(board, 0, false);
+            // 초기 alpha는 -∞, beta는 +∞로 설정
+            var score = DoMinimax(board, 0, false, float.MinValue, float.MaxValue);
             board[row, col] = Constants.PlayerType.None;
         
             if (score > bestScore)
@@ -86,8 +142,23 @@ public static class MinimaxAIController
         return bestMove;
     }
 
-    private static float DoMinimax(Constants.PlayerType[,] board, int depth, bool isMaximizing)
+    // alpha-beta pruning 및 이동 순서 정렬과 이전 평가값 저장(transposition table)을 적용한 minimax 함수
+    private static float DoMinimax(Constants.PlayerType[,] board, int depth, bool isMaximizing, float alpha, float beta)
     {
+        // 남은 탐색 깊이
+        int remainingDepth = MaxDepth - depth;
+        
+        // 보드 상태의 해시값을 생성합니다.
+        string boardHash = BoardToString(board);
+        // 캐시된 값이 존재하고, 저장된 남은 깊이가 현재 남은 깊이보다 크거나 같으면 재사용합니다.
+        if (transpositionTable.TryGetValue(boardHash, out var entry))
+        {
+            if (entry.depth >= remainingDepth)
+            {
+                return entry.score;
+            }
+        }
+
         if (depth >= MaxDepth)
             return EvaluateBoard(board);
 
@@ -99,33 +170,49 @@ public static class MinimaxAIController
             return 0;
     
         var moves = GenerateMoves(board);
+        // 이동 순서 정렬: 주변에 돌이 많은 후보를 우선적으로 탐색
+        moves.Sort((move1, move2) =>
+        {
+            int score1 = GetAdjacentScore(board, move1.row, move1.col);
+            int score2 = GetAdjacentScore(board, move2.row, move2.col);
+            return score2.CompareTo(score1);
+        });
     
+        float bestScore;
         if (isMaximizing)
         {
-            var bestScore = float.MinValue;
+            bestScore = float.MinValue;
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
                 board[row, col] = Constants.PlayerType.PlayerB;
-                var score = DoMinimax(board, depth + 1, false);
+                float score = DoMinimax(board, depth + 1, false, alpha, beta);
                 board[row, col] = Constants.PlayerType.None;
                 bestScore = Math.Max(bestScore, score);
+                alpha = Math.Max(alpha, bestScore);
+                if (beta <= alpha)
+                    break; // 가지치기
             }
-            return bestScore;
         }
         else
         {
-            var bestScore = float.MaxValue;
+            bestScore = float.MaxValue;
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
                 board[row, col] = Constants.PlayerType.PlayerA;
-                var score = DoMinimax(board, depth + 1, true);
+                float score = DoMinimax(board, depth + 1, true, alpha, beta);
                 board[row, col] = Constants.PlayerType.None;
                 bestScore = Math.Min(bestScore, score);
+                beta = Math.Min(beta, bestScore);
+                if (beta <= alpha)
+                    break; // 가지치기
             }
-            return bestScore;
         }
+    
+        // 계산된 값을 캐시에 저장합니다.
+        transpositionTable[boardHash] = (bestScore, remainingDepth);
+        return bestScore;
     }
     
     // 평가 함수: 최대 깊이에 도달했을 때 보드 상태를 평가합니다.
@@ -169,7 +256,6 @@ public static class MinimaxAIController
         {
             for (int col = 0; col < numCols; col++)
             {
-                // 현재 셀이 지정된 플레이어의 마커가 아니라면 넘어감
                 if (board[row, col] != playerType)
                     continue;
 
@@ -241,5 +327,4 @@ public static class MinimaxAIController
 
         return false;
     }
-
 }
