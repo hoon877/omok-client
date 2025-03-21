@@ -2,28 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CoinManager : MonoBehaviour, ISubject
+public class CoinManager : Singleton<CoinManager>, ISubject
 {
-    #region 싱글톤(추후 Singleton 클래스 상속받기)
-    private static CoinManager instance;
-    public static CoinManager Instance { get { return instance; } }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-    #endregion
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
     // PS. Edit > ProjectSetting > Script Execution Order 에서 스크립트 우선순위를 조정하였음
 
     /// <summary>
@@ -50,6 +32,10 @@ public class CoinManager : MonoBehaviour, ISubject
 
     // 코인갯수를 확인하는 옵저버들
     public List<IObserver> observers;
+
+    public bool isPaymentShow { get; set; }
+    public bool isShopShow {  get; set; }
+
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     private void Start()
@@ -143,6 +129,16 @@ public class CoinManager : MonoBehaviour, ISubject
         if (resetCoin)
             PlayerPrefs.DeleteKey(m_coinPath);
     }
-
     #endregion
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (observers != null)
+        {
+            observers.Clear();
+        }
+        isPaymentShow = false;
+        isShopShow = false;
+    }
 }

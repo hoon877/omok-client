@@ -7,16 +7,19 @@ using UnityEngine.UI;
 
 public class PaymentPanel : BasicPanelController, ICallBack
 {
+    [Space]
     [SerializeField] private Button acceptButton;
     [SerializeField] private Button denyButton;
 
+    [Space]
     [SerializeField] private GameObject payingImage;
     [SerializeField] private TMP_Text amountTxt;
     [SerializeField] private TMP_Text priceTxt;
 
-    private string defaultAmountTxt = "갯수가 설정되지 않음" ;
-    private string defaultPriceTxt = "가격이 설정되지 않음";
+    private const string defaultAmountTxt = "갯수가 설정되지 않음" ;
+    private const string defaultPriceTxt = "가격이 설정되지 않음";
 
+    [Space]
     [SerializeField] private int payingTime;
 
     private int amount;
@@ -27,11 +30,22 @@ public class PaymentPanel : BasicPanelController, ICallBack
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    #region 판넬 설정
-    public void InitPanel(int amount, int price)
+    private void Start()
     {
-        this.amount = amount;
-        this.price = price;
+        if (CoinManager.Instance.isPaymentShow)
+        {
+            Debug.Log("이미 결제창이 존재함");
+            Destroy(gameObject);
+        }
+        CoinManager.Instance.isPaymentShow = true;
+    }
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    #region 판넬 설정
+    public void InitPanel(int coinAmount, int coinPrice)
+    {
+        amount = coinAmount;
+        price = coinPrice;
 
         amountTxt.text = $"코인 {amount.ToString()}개";
         priceTxt.text = $"₩{price.ToString()}";
@@ -67,6 +81,7 @@ public class PaymentPanel : BasicPanelController, ICallBack
         if (isPaying)
             return;
 
+        CoinManager.Instance.isPaymentShow = false;
         Unsubscribe();
         HidePanel();
     }
@@ -84,12 +99,15 @@ public class PaymentPanel : BasicPanelController, ICallBack
 
         TriggerEvent();
         Unsubscribe();
-        HidePanel();
-        ResetPanel();
 
-        Debug.Log("결제 완료");
+        Debug.Log($"코인{amount}개 {price}원 결제 완료");
+        // ResetPanel();
+
         isPaying = false;
         payingImage.SetActive(isPaying);
+
+        CoinManager.Instance.isPaymentShow = false;
+        HidePanel();
     }
     #endregion
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
