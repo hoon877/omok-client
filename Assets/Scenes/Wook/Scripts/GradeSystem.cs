@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 
 public class GradeSystem : MonoBehaviour
 {
-    public Button btnWin, btnLose, btnReset;
+    public Button btnWin, btnLose, btnReset;        // Test
     public Slider sdGrade;
-    public GameObject line;
-    public TextMeshProUGUI txtGrade, txtState;
+    public GameObject line, zero;
+    public TextMeshProUGUI txtGrade, txtState, txtMax;
 
     private int grade, score, div;
     private float bar;
@@ -32,14 +34,15 @@ public class GradeSystem : MonoBehaviour
             grade = 18;
         }
         
+        txtState.text = "Your Score is : " + (score - 30);
         GradeView();
     }
     
     void Start()
     {
-        btnWin.onClick.AddListener(Win);
-        btnLose.onClick.AddListener(Lose);
-        btnReset.onClick.AddListener(Reset);
+        btnWin.onClick.AddListener(Win);        // Test
+        btnLose.onClick.AddListener(Lose);      // Test
+        btnReset.onClick.AddListener(Reset);    // Test
     }
 
     void Reset()
@@ -105,6 +108,7 @@ public class GradeSystem : MonoBehaviour
         }
 
         sdGrade.maxValue = div * 10;
+        txtMax.text = (div*10-30).ToString();
         
         // DevideLine
         for (int i = 1; i < div; i++)
@@ -112,6 +116,11 @@ public class GradeSystem : MonoBehaviour
             Vector2 pos = new Vector2((i - div / 2) * bar / (div * 192), sdGrade.transform.position.y);
             GameObject obj = Instantiate(line, pos, Quaternion.identity, transform.Find("/Canvas/UI").transform);
             obj.name = "Line" + i;
+
+            if (i == 3)
+            {
+                zero.transform.position = pos - new Vector2(0, 50) / 192;
+            }
         }
     }
 
