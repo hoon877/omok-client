@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CoinManager : Singleton<CoinManager>, ISubject
+public class CoinManager : HSingleton<CoinManager>, ISubject
 {
     // PS. Edit > ProjectSetting > Script Execution Order 에서 스크립트 우선순위를 조정하였음
 

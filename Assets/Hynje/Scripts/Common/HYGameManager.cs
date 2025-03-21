@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class HYGameManager : MonoBehaviour
 {
     private GameController _gameController;
     private void Awake()
@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        _gameController = new GameController(Constants.GameType.DualPlay);
+        _gameController = new GameController(HYConstants.GameType.DualPlay);
     }
 
     public void OnClickSetStoneButton()

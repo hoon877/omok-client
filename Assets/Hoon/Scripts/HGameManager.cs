@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : Singleton<GameManager>
+public class HGameManager : HSingleton<HGameManager>
 {
     private Canvas _canvas;
     [SerializeField] private GameObject confirmPanel;

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RenjuRuleChecker
+public class HYRenjuRuleChecker
 {
-    private Constants.MarkerType[,] _board;
+    private HYConstants.MarkerType[,] _board;
     private TurnManager _turnManager;
     private bool[,] _forbiddenPositions;
     
@@ -17,7 +17,7 @@ public class RenjuRuleChecker
     // 패턴 재사용을 위한 StringBuilder (메모리 할당 최적화)
     private System.Text.StringBuilder _patternBuilder;
 
-    public RenjuRuleChecker(Constants.MarkerType[,] board, TurnManager turnManager)
+    public HYRenjuRuleChecker(HYConstants.MarkerType[,] board, TurnManager turnManager)
     {
         _board = board;
         _turnManager = turnManager;
@@ -50,7 +50,7 @@ public class RenjuRuleChecker
         {
             for (int y = 0; y < _board.GetLength(1); y++)
             {
-                if (_board[x, y] != Constants.MarkerType.None) continue;
+                if (_board[x, y] != HYConstants.MarkerType.None) continue;
                 Vector2Int pos = new Vector2Int(x, y);
                 tempForbiddenPositions[x, y] = CheckBasicForbiddenRules(pos);
             }
@@ -64,7 +64,7 @@ public class RenjuRuleChecker
         {
             for (int y = 0; y < _board.GetLength(1); y++)
             {
-                if (_board[x, y] != Constants.MarkerType.None) 
+                if (_board[x, y] != HYConstants.MarkerType.None) 
                 {
                     finalForbiddenPositions[x, y] = false;
                     continue;
@@ -104,7 +104,7 @@ public class RenjuRuleChecker
         {
             for (int y = 0; y < _board.GetLength(1); y++)
             {
-                if (_board[x, y] != Constants.MarkerType.None || !finalForbiddenPositions[x, y]) continue;
+                if (_board[x, y] != HYConstants.MarkerType.None || !finalForbiddenPositions[x, y]) continue;
                 
                 Vector2Int pos = new Vector2Int(x, y);
                 
@@ -160,9 +160,9 @@ public class RenjuRuleChecker
             Vector2Int pos = position + direction * i;
             if (IsInBoardRange(pos))
             {
-                if (_board[pos.x, pos.y] == Constants.MarkerType.Black)
+                if (_board[pos.x, pos.y] == HYConstants.MarkerType.Black)
                     _patternBuilder.Append(BLACK);
-                else if (_board[pos.x, pos.y] == Constants.MarkerType.White)
+                else if (_board[pos.x, pos.y] == HYConstants.MarkerType.White)
                     _patternBuilder.Append(WHITE);
                 else
                     _patternBuilder.Append(EMPTY);
@@ -178,9 +178,9 @@ public class RenjuRuleChecker
             if (IsInBoardRange(pos))
             {
                 char stone;
-                if (_board[pos.x, pos.y] == Constants.MarkerType.Black)
+                if (_board[pos.x, pos.y] == HYConstants.MarkerType.Black)
                     stone = BLACK;
-                else if (_board[pos.x, pos.y] == Constants.MarkerType.White)
+                else if (_board[pos.x, pos.y] == HYConstants.MarkerType.White)
                     stone = WHITE;
                 else
                     stone = EMPTY;
@@ -787,7 +787,7 @@ public class RenjuRuleChecker
     // 열린 3 검사 함수
     private bool CheckOpenThree(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
     
         int openThreeCount = 0;
         Vector2Int[] directions = GetDirections();
@@ -812,7 +812,7 @@ public class RenjuRuleChecker
     // 33 금수 검사 (빈 공간의 금수 여부 고려)
     private bool CheckOpenThreeWithForbiddenCheck(Vector2Int position, bool[,] forbiddenMap)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
     
         Vector2Int[] directions = GetDirections();
         int openThreeCount = 0;
@@ -827,7 +827,7 @@ public class RenjuRuleChecker
                 if (dist == 0) continue; // 중앙 위치는 건너뜀 (검사 위치)
             
                 Vector2Int checkPos = position + dir * dist;
-                if (IsInBoardRange(checkPos) && _board[checkPos.x, checkPos.y] == Constants.MarkerType.None && 
+                if (IsInBoardRange(checkPos) && _board[checkPos.x, checkPos.y] == HYConstants.MarkerType.None && 
                     forbiddenMap[checkPos.x, checkPos.y])
                 {
                     hasForbiddenInDirection = true;
@@ -861,7 +861,7 @@ public class RenjuRuleChecker
     // 해당 위치에 열린 4가 하나라도 있는지 확인
     private bool HasOpenFour(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
     
         bool hasOpenFour = CheckAnyDirectionPattern(position, pattern => IsOpenFourPattern(pattern));
     
@@ -873,7 +873,7 @@ public class RenjuRuleChecker
     // 열린 4 갯수 확인 함수 (사사 금수용)
     private bool CheckOpenFour(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
     
         Vector2Int[] directions = GetDirections();
     
@@ -962,14 +962,14 @@ public class RenjuRuleChecker
     // 오목 검사 함수
     private bool CheckFive(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
         
         bool hasFive = false;
         Vector2Int[] directions = GetDirections();
         
         foreach (Vector2Int dir in directions)
         {
-            int count = CountStonesInDirection(position, dir, Constants.MarkerType.Black, false);
+            int count = CountStonesInDirection(position, dir, HYConstants.MarkerType.Black, false);
             
             if (count == 5)
             {
@@ -987,14 +987,14 @@ public class RenjuRuleChecker
     // 장목 검사 함수
     private bool CheckOverline(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
         
         bool hasOverline = false;
         Vector2Int[] directions = GetDirections();
         
         foreach (Vector2Int dir in directions)
         {
-            int count = CountStonesInDirection(position, dir, Constants.MarkerType.Black, false);
+            int count = CountStonesInDirection(position, dir, HYConstants.MarkerType.Black, false);
             
             if (count > 5)
             {
@@ -1012,7 +1012,7 @@ public class RenjuRuleChecker
     // 미래에 장목이 형성되는지 확인
     private bool CheckFutureSixInRow(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.Black, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.Black, out HYConstants.MarkerType originalValue);
         
         bool willFormSixInRow = false;
         Vector2Int[] directions = GetDirections();
@@ -1074,14 +1074,14 @@ public class RenjuRuleChecker
     // 상대방의 4목을 막는지 확인하는 함수
     private bool CheckBlockingFour(Vector2Int position)
     {
-        SimulatePlacement(position, Constants.MarkerType.White, out Constants.MarkerType originalValue);
+        SimulatePlacement(position, HYConstants.MarkerType.White, out HYConstants.MarkerType originalValue);
         
         bool blocksFour = false;
         Vector2Int[] directions = GetDirections();
         
         foreach (Vector2Int dir in directions)
         {
-            int count = CountStonesInDirection(position, dir, Constants.MarkerType.White, false);
+            int count = CountStonesInDirection(position, dir, HYConstants.MarkerType.White, false);
             
             if (count >= 4)
             {
@@ -1097,7 +1097,7 @@ public class RenjuRuleChecker
     }
     
     // 특정 방향으로 연속된 돌 개수 세기
-    private int CountStonesInDirection(Vector2Int position, Vector2Int direction, Constants.MarkerType stoneType, bool allowGap)
+    private int CountStonesInDirection(Vector2Int position, Vector2Int direction, HYConstants.MarkerType stoneType, bool allowGap)
     {
         int count = 1; // 자기 자신
         bool gapUsed = false;
@@ -1111,7 +1111,7 @@ public class RenjuRuleChecker
                 count++;
                 currentPos += direction;
             }
-            else if (allowGap && _board[currentPos.x, currentPos.y] == Constants.MarkerType.None && !gapUsed)
+            else if (allowGap && _board[currentPos.x, currentPos.y] == HYConstants.MarkerType.None && !gapUsed)
             {
                 // 공백 허용 옵션이 켜져 있을 때만 처리
                 gapUsed = true;
@@ -1144,7 +1144,7 @@ public class RenjuRuleChecker
                 count++;
                 currentPos -= direction;
             }
-            else if (allowGap && _board[currentPos.x, currentPos.y] == Constants.MarkerType.None && !gapUsed)
+            else if (allowGap && _board[currentPos.x, currentPos.y] == HYConstants.MarkerType.None && !gapUsed)
             {
                 gapUsed = true;
                 Vector2Int nextPos = currentPos - direction;
@@ -1192,7 +1192,7 @@ public class RenjuRuleChecker
     }
     
     // 헬퍼 함수: 임시로 돌 놓기
-    private void SimulatePlacement(Vector2Int position, Constants.MarkerType stoneType, out Constants.MarkerType originalValue)
+    private void SimulatePlacement(Vector2Int position, HYConstants.MarkerType stoneType, out HYConstants.MarkerType originalValue)
     {
         originalValue = _board[position.x, position.y];
         _board[position.x, position.y] = stoneType;

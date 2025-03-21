@@ -9,30 +9,30 @@ public class GameController
     private TurnManager _turnManager;
     private BoardController _boardController;
     private BoardClickHandler _boardClickHandler;
-    private RenjuRuleChecker _renjuRuleChecker;
+    private HYRenjuRuleChecker _renjuRuleChecker;
     
-    private Constants.MarkerType[,] _board;
+    private HYConstants.MarkerType[,] _board;
 
-    public GameController(Constants.GameType gameType)
+    public GameController(HYConstants.GameType gameType)
     {
-        _board = new Constants.MarkerType[Constants.BoardSize, Constants.BoardSize];
+        _board = new HYConstants.MarkerType[HYConstants.BoardSize, HYConstants.BoardSize];
         InitBoard();
 
         _boardController = Object.FindObjectOfType<BoardController>();
         _boardClickHandler = Object.FindObjectOfType<BoardClickHandler>();
         _turnManager = new TurnManager(gameType, this);
-        _renjuRuleChecker = new RenjuRuleChecker(_board, _turnManager);
+        _renjuRuleChecker = new HYRenjuRuleChecker(_board, _turnManager);
 
         _turnManager.OnTurnChanged += HandleTurnChanged;
     }
 
     private void InitBoard()
     {
-        for (int i = 0; i < Constants.BoardSize; i++)
+        for (int i = 0; i < HYConstants.BoardSize; i++)
         {
-            for (int j = 0; j < Constants.BoardSize; j++)
+            for (int j = 0; j < HYConstants.BoardSize; j++)
             {
-                _board[i, j] = Constants.MarkerType.None;
+                _board[i, j] = HYConstants.MarkerType.None;
             }
         }
     }
@@ -78,7 +78,7 @@ public class GameController
 
         if (!IsValidPosition(gridPos)) return false;
 
-        var marker = isBlackPlayer ? Constants.MarkerType.Black : Constants.MarkerType.White;
+        var marker = isBlackPlayer ? HYConstants.MarkerType.Black : HYConstants.MarkerType.White;
 
         // 보드에 마커 저장 및 표시
         _board[gridPos.x, gridPos.y] = marker;
@@ -92,7 +92,7 @@ public class GameController
 
     private bool IsInBoardRange(Vector2Int pos)
     {
-        return pos.x >= 0 && pos.x < Constants.BoardSize && pos.y >= 0 && pos.y < Constants.BoardSize;
+        return pos.x >= 0 && pos.x < HYConstants.BoardSize && pos.y >= 0 && pos.y < HYConstants.BoardSize;
     }
 
     private bool IsValidPosition(Vector2Int gridPos)
@@ -102,7 +102,7 @@ public class GameController
             return false;
 
         // 이미 마커가 있는지 확인
-        if (_board[gridPos.x, gridPos.y] != Constants.MarkerType.None)
+        if (_board[gridPos.x, gridPos.y] != HYConstants.MarkerType.None)
             return false;
         
         // 흑돌일 때 금수인지 확인
@@ -116,7 +116,7 @@ public class GameController
     
     #region CHECK_GAME_RESULT
     // 오목 완성 확인 
-    private bool CheckGameResult(Vector2Int position, Constants.MarkerType marker)
+    private bool CheckGameResult(Vector2Int position, HYConstants.MarkerType marker)
     {
         // 방향 벡터 : 가로, 세로, 대각선 
         Vector2Int[] directions = new Vector2Int[]
@@ -145,7 +145,7 @@ public class GameController
             // 오목 완성, 승리 
             if (count >= 5)
             {
-                string winner = marker == Constants.MarkerType.Black ? "흑돌" : "백돌";
+                string winner = marker == HYConstants.MarkerType.Black ? "흑돌" : "백돌";
                 Debug.Log($"{winner} 플레이어가 승리했습니다!");
                 return true;
             }
@@ -156,7 +156,7 @@ public class GameController
     }
 
     // 연속된 마커 검사 
-    private int CountConsecutiveMarkers(Vector2Int startPos, Vector2Int direction, Constants.MarkerType marker)
+    private int CountConsecutiveMarkers(Vector2Int startPos, Vector2Int direction, HYConstants.MarkerType marker)
     {
         int count = 0;
         Vector2Int currentPos = startPos + direction;

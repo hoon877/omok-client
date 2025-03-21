@@ -39,10 +39,10 @@ public class BoardClickHandler : MonoBehaviour
         );
 
         // 보드 테두리를 제외한 실제 격자 영역 크기 
-        Vector2 gridArea = _boardWorldSize * Constants.GridAreaRatio;
+        Vector2 gridArea = _boardWorldSize * HYConstants.GridAreaRatio;
         
         // 격자 셀 하나의 크기 계산
-        _gridCellSize = gridArea.x / (Constants.BoardSize - 1);
+        _gridCellSize = gridArea.x / (HYConstants.BoardSize - 1);
         
         // 보드의 좌측 하단 좌표 계산 (실제 격자의 시작점)
         Vector2 boardCenter = (Vector2)transform.position;
@@ -97,8 +97,8 @@ public class BoardClickHandler : MonoBehaviour
         int y = Mathf.RoundToInt(relativePos.y / _gridCellSize);
         
         // 범위 제한
-        x = Mathf.Clamp(x, 0, Constants.BoardSize - 1);
-        y = Mathf.Clamp(y, 0, Constants.BoardSize - 1);
+        x = Mathf.Clamp(x, 0, HYConstants.BoardSize - 1);
+        y = Mathf.Clamp(y, 0, HYConstants.BoardSize - 1);
         
         return new Vector2Int(x, y);
     }
@@ -123,6 +123,6 @@ public class BoardClickHandler : MonoBehaviour
     // 유효한 그리드 위치인지 확인
     private bool IsValidGridPosition(Vector2Int gridPos)
     {
-        return gridPos.x >= 0 && gridPos.x < Constants.BoardSize && gridPos.y >= 0 && gridPos.y < Constants.BoardSize;
+        return gridPos.x >= 0 && gridPos.x < HYConstants.BoardSize && gridPos.y >= 0 && gridPos.y < HYConstants.BoardSize;
     }
 }

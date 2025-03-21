@@ -12,14 +12,14 @@ public interface ITurnState
 
 public class PlayerState : ITurnState
 {
-    private Constants.PlayerType _playerType;
+    private HYConstants.PlayerType _playerType;
     private TurnManager _turnManager;
     private bool _isBlackPlayer;
 
     public PlayerState(bool isBlackPlayer, TurnManager turnManager)
     {
         _isBlackPlayer = isBlackPlayer;
-       _playerType = isBlackPlayer ? Constants.PlayerType.BlackPlayer : Constants.PlayerType.WhitePlayer;
+       _playerType = isBlackPlayer ? HYConstants.PlayerType.BlackPlayer : HYConstants.PlayerType.WhitePlayer;
        _turnManager = turnManager;
     }
     public void OnEnter(GameController gameController)
@@ -68,28 +68,28 @@ public class TurnManager
     public event Action OnTurnChanged;
     
     private ITurnState _currentState;
-    private Dictionary<Constants.PlayerType, ITurnState> _states = new();
+    private Dictionary<HYConstants.PlayerType, ITurnState> _states = new();
     private GameController _gameController;
 
-    public TurnManager(Constants.GameType gameType, GameController gameController)
+    public TurnManager(HYConstants.GameType gameType, GameController gameController)
     {
         _gameController = gameController;
         InitializeStates(gameType);
         SetInitialTurn();
     }
 
-    private void InitializeStates(Constants.GameType gameType)
+    private void InitializeStates(HYConstants.GameType gameType)
     {
         switch (gameType)
         {
-            case Constants.GameType.SinglePlay:
+            case HYConstants.GameType.SinglePlay:
                 // todo: AI 기능 추가 
                 break;
-            case Constants.GameType.DualPlay:
-                _states[Constants.PlayerType.BlackPlayer] = new PlayerState(true, this);
-                _states[Constants.PlayerType.WhitePlayer] = new PlayerState(false, this);
+            case HYConstants.GameType.DualPlay:
+                _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this);
+                _states[HYConstants.PlayerType.WhitePlayer] = new PlayerState(false, this);
                 break;
-            case Constants.GameType.MultiPlay:
+            case HYConstants.GameType.MultiPlay:
                 // todo: 멀티 기능 추가 
                 break;
             
@@ -98,7 +98,7 @@ public class TurnManager
 
     private void SetInitialTurn()
     {
-        SetState(_states[Constants.PlayerType.BlackPlayer]);
+        SetState(_states[HYConstants.PlayerType.BlackPlayer]);
     }
 
     public void ExecuteCurrentTurn()
@@ -108,9 +108,9 @@ public class TurnManager
 
     public void AdvanceToNextTurn()
     {
-        Constants.PlayerType nextPlayerType = _currentState == _states[Constants.PlayerType.BlackPlayer] 
-            ? Constants.PlayerType.WhitePlayer 
-            : Constants.PlayerType.BlackPlayer;
+        HYConstants.PlayerType nextPlayerType = _currentState == _states[HYConstants.PlayerType.BlackPlayer] 
+            ? HYConstants.PlayerType.WhitePlayer 
+            : HYConstants.PlayerType.BlackPlayer;
             
         OnTurnChanged?.Invoke();
         SetState(_states[nextPlayerType]);
@@ -125,6 +125,6 @@ public class TurnManager
 
     public bool IsBlackPlayerTurn()
     {
-        return _currentState == _states[Constants.PlayerType.BlackPlayer];
+        return _currentState == _states[HYConstants.PlayerType.BlackPlayer];
     }
 }

@@ -13,7 +13,7 @@ public static class MinimaxAIController
     // key: board 상태의 해시, value: (평가 점수, 남은 탐색 깊이)
     private static Dictionary<string, (float score, int depth)> transpositionTable = new Dictionary<string, (float, int)>();
 
-    private static List<(int row, int col)> GenerateMoves(Constants.PlayerType[,] board)
+    private static List<(int row, int col)> GenerateMoves(LConstants.PlayerType[,] board)
     {
         List<(int row, int col)> moves = new List<(int row, int col)>();
         int rows = board.GetLength(0);
@@ -25,7 +25,7 @@ public static class MinimaxAIController
         {
             for (int j = 0; j < cols; j++)
             {
-                if (board[i, j] != Constants.PlayerType.None)
+                if (board[i, j] != LConstants.PlayerType.None)
                 {
                     boardEmpty = false;
                     break;
@@ -45,7 +45,7 @@ public static class MinimaxAIController
         {
             for (int j = 0; j < cols; j++)
             {
-                if (board[i, j] == Constants.PlayerType.None)
+                if (board[i, j] == LConstants.PlayerType.None)
                 {
                     bool adjacent = false;
                     // 8방향(또는 원하는 범위)으로 인접한 셀 확인
@@ -54,7 +54,7 @@ public static class MinimaxAIController
                         for (int dj = -1; dj <= 1 && !adjacent; dj++)
                         {
                             int ni = i + di, nj = j + dj;
-                            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols && board[ni, nj] != Constants.PlayerType.None)
+                            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols && board[ni, nj] != LConstants.PlayerType.None)
                             {
                                 adjacent = true;
                             }
@@ -69,7 +69,7 @@ public static class MinimaxAIController
     }
 
     // 주변에 놓인 돌의 개수를 기반으로 후보 수의 우선순위를 평가하는 함수
-    private static int GetAdjacentScore(Constants.PlayerType[,] board, int row, int col)
+    private static int GetAdjacentScore(LConstants.PlayerType[,] board, int row, int col)
     {
         int score = 0;
         int rows = board.GetLength(0);
@@ -81,7 +81,7 @@ public static class MinimaxAIController
                 if (dr == 0 && dc == 0)
                     continue;
                 int nr = row + dr, nc = col + dc;
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr, nc] != Constants.PlayerType.None)
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr, nc] != LConstants.PlayerType.None)
                 {
                     score++;
                 }
@@ -91,7 +91,7 @@ public static class MinimaxAIController
     }
 
     // 보드 상태를 문자열로 변환하여 해시로 사용합니다.
-    private static string BoardToString(Constants.PlayerType[,] board)
+    private static string BoardToString(LConstants.PlayerType[,] board)
     {
         int rows = board.GetLength(0);
         int cols = board.GetLength(1);
@@ -100,14 +100,14 @@ public static class MinimaxAIController
         {
             for (int j = 0; j < cols; j++)
             {
-                // Constants.PlayerType은 열거형(enum)이라 가령 정수형 값으로 변환
+                // LConstants.PlayerType은 열거형(enum)이라 가령 정수형 값으로 변환
                 sb.Append((int)board[i, j]);
             }
         }
         return sb.ToString();
     }
     
-    public static (int row, int col)? GetBestMove(Constants.PlayerType[,] board)
+    public static (int row, int col)? GetBestMove(LConstants.PlayerType[,] board)
     {
         // 새로운 탐색을 시작할 때 이전 평가값 캐시를 초기화합니다.
         transpositionTable.Clear();
@@ -127,10 +127,10 @@ public static class MinimaxAIController
         foreach (var move in moves)
         {
             int row = move.row, col = move.col;
-            board[row, col] = Constants.PlayerType.PlayerB;
+            board[row, col] = LConstants.PlayerType.PlayerB;
             // 초기 alpha는 -∞, beta는 +∞로 설정
             var score = DoMinimax(board, 0, false, float.MinValue, float.MaxValue);
-            board[row, col] = Constants.PlayerType.None;
+            board[row, col] = LConstants.PlayerType.None;
         
             if (score > bestScore)
             {
@@ -143,7 +143,7 @@ public static class MinimaxAIController
     }
 
     // alpha-beta pruning 및 이동 순서 정렬과 이전 평가값 저장(transposition table)을 적용한 minimax 함수
-    private static float DoMinimax(Constants.PlayerType[,] board, int depth, bool isMaximizing, float alpha, float beta)
+    private static float DoMinimax(LConstants.PlayerType[,] board, int depth, bool isMaximizing, float alpha, float beta)
     {
         // 남은 탐색 깊이
         int remainingDepth = MaxDepth - depth;
@@ -162,9 +162,9 @@ public static class MinimaxAIController
         if (depth >= MaxDepth)
             return EvaluateBoard(board);
 
-        if (CheckGameWin(Constants.PlayerType.PlayerA, board))
+        if (CheckGameWin(LConstants.PlayerType.PlayerA, board))
             return -10 + depth;
-        if (CheckGameWin(Constants.PlayerType.PlayerB, board))
+        if (CheckGameWin(LConstants.PlayerType.PlayerB, board))
             return 10 - depth;
         if (IsAllBlocksPlaced(board))
             return 0;
@@ -185,9 +185,9 @@ public static class MinimaxAIController
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
-                board[row, col] = Constants.PlayerType.PlayerB;
+                board[row, col] = LConstants.PlayerType.PlayerB;
                 float score = DoMinimax(board, depth + 1, false, alpha, beta);
-                board[row, col] = Constants.PlayerType.None;
+                board[row, col] = LConstants.PlayerType.None;
                 bestScore = Math.Max(bestScore, score);
                 alpha = Math.Max(alpha, bestScore);
                 if (beta <= alpha)
@@ -200,9 +200,9 @@ public static class MinimaxAIController
             foreach (var move in moves)
             {
                 int row = move.row, col = move.col;
-                board[row, col] = Constants.PlayerType.PlayerA;
+                board[row, col] = LConstants.PlayerType.PlayerA;
                 float score = DoMinimax(board, depth + 1, true, alpha, beta);
-                board[row, col] = Constants.PlayerType.None;
+                board[row, col] = LConstants.PlayerType.None;
                 bestScore = Math.Min(bestScore, score);
                 beta = Math.Min(beta, bestScore);
                 if (beta <= alpha)
@@ -217,7 +217,7 @@ public static class MinimaxAIController
     
     // 평가 함수: 최대 깊이에 도달했을 때 보드 상태를 평가합니다.
     // 현재는 단순히 0을 반환하도록 구현했으나, 실제 상황에 맞게 보드의 유리/불리 정도를 계산해야 합니다.
-    private static float EvaluateBoard(Constants.PlayerType[,] board)
+    private static float EvaluateBoard(LConstants.PlayerType[,] board)
     {
         return 0;
     }
@@ -226,13 +226,13 @@ public static class MinimaxAIController
     /// 모든 마커가 보드에 배치 되었는지 확인하는 함수
     /// </summary>
     /// <returns>True: 모두 배치</returns>
-    public static bool IsAllBlocksPlaced(Constants.PlayerType[,] board)
+    public static bool IsAllBlocksPlaced(LConstants.PlayerType[,] board)
     {
         for (var row = 0; row < board.GetLength(0); row++)
         {
             for (var col = 0; col < board.GetLength(1); col++)
             {
-                if (board[row, col] == Constants.PlayerType.None)
+                if (board[row, col] == LConstants.PlayerType.None)
                     return false;
             }
         }
@@ -245,7 +245,7 @@ public static class MinimaxAIController
     /// <param name="playerType"></param>
     /// <param name="board"></param>
     /// <returns></returns>
-    private static bool CheckGameWin(Constants.PlayerType playerType, Constants.PlayerType[,] board)
+    private static bool CheckGameWin(LConstants.PlayerType playerType, LConstants.PlayerType[,] board)
     {
         int numRows = board.GetLength(0);
         int numCols = board.GetLength(1);

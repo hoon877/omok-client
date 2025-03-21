@@ -34,7 +34,7 @@ public class SignupPanelController : MonoBehaviour
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
 
         using (UnityWebRequest www =
-               new UnityWebRequest(Constants.ServerURL + "/users/signup", UnityWebRequest.kHttpVerbPOST))
+               new UnityWebRequest(HConstants.ServerURL + "/users/signup", UnityWebRequest.kHttpVerbPOST))
         {
             www.uploadHandler = new UploadHandlerRaw(bodyRaw);
             www.downloadHandler = new DownloadHandlerBuffer();
@@ -50,7 +50,7 @@ public class SignupPanelController : MonoBehaviour
                 if (www.responseCode == 409)
                 {
                     Debug.Log("중복사용자");
-                    GameManager.Instance.OpenConfirmPanel("user already exists.", () =>
+                    HGameManager.Instance.OpenConfirmPanel("user already exists.", () =>
                     {
                         failure?.Invoke();
                     });
@@ -60,7 +60,7 @@ public class SignupPanelController : MonoBehaviour
             {
                 Debug.Log("회원가입 성공!");
                 // 회원가입 성공 팝업 표시
-                GameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
+                HGameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
                 {
                     success?.Invoke();
                 });

@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Component
+public abstract class HSingleton<T> : MonoBehaviour where T : Component
 {
     private static T _instance;
 

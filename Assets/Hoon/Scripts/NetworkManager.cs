@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 
-public class NetworkManager : Singleton<NetworkManager>
+public class NetworkManager : HSingleton<NetworkManager>
 {
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -18,7 +18,7 @@ public class NetworkManager : Singleton<NetworkManager>
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
 
         using (UnityWebRequest www =
-               new UnityWebRequest(Constants.ServerURL + "/users/signup", UnityWebRequest.kHttpVerbPOST))
+               new UnityWebRequest(HConstants.ServerURL + "/users/signup", UnityWebRequest.kHttpVerbPOST))
         {
             www.uploadHandler = new UploadHandlerRaw(bodyRaw);
             www.downloadHandler = new DownloadHandlerBuffer();
@@ -35,7 +35,7 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     // TODO: 중복 사용자 생성 팝업 표시
                     Debug.Log("중복사용자");
-                    GameManager.Instance.OpenConfirmPanel("This user already exists.", () =>
+                    HGameManager.Instance.OpenConfirmPanel("This user already exists.", () =>
                     {
                         failure?.Invoke();
                     });
@@ -47,7 +47,7 @@ public class NetworkManager : Singleton<NetworkManager>
                 Debug.Log("Result: " + result);
                 
                 // 회원가입 성공 팝업 표시
-                GameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
+                HGameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
                 {
                     success?.Invoke();
                 });
@@ -61,7 +61,7 @@ public class NetworkManager : Singleton<NetworkManager>
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
 
         using (UnityWebRequest www =
-               new UnityWebRequest(Constants.ServerURL + "/users/signin", UnityWebRequest.kHttpVerbPOST))
+               new UnityWebRequest(HConstants.ServerURL + "/users/signin", UnityWebRequest.kHttpVerbPOST))
         {
             www.uploadHandler = new UploadHandlerRaw(bodyRaw);
             www.downloadHandler = new DownloadHandlerBuffer();
@@ -91,7 +91,7 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     Debug.Log("실패");
                     // 유저네임 유효하지 않음
-                    GameManager.Instance.OpenConfirmPanel("ID is invalid.", () =>
+                    HGameManager.Instance.OpenConfirmPanel("ID is invalid.", () =>
                     {
                         failure?.Invoke(0);
                     });
@@ -100,7 +100,7 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     Debug.Log("실패");
                     // 패스워드가 유효하지 않음
-                    GameManager.Instance.OpenConfirmPanel("Password is invalid.", () =>
+                    HGameManager.Instance.OpenConfirmPanel("Password is invalid.", () =>
                     {
                         failure?.Invoke(1);
                     });
@@ -109,7 +109,7 @@ public class NetworkManager : Singleton<NetworkManager>
                 {
                     Debug.Log("성공");
                     // 성공
-                    GameManager.Instance.OpenConfirmPanel("Login Success.", () =>
+                    HGameManager.Instance.OpenConfirmPanel("Login Success.", () =>
                     {
                         success?.Invoke();
                     });

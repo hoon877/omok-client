@@ -10,11 +10,11 @@ public class BoardController : MonoBehaviour
     private MarkerController _lastMarker;
     private List<GameObject> _forbiddenMarkers = new List<GameObject>();
     
-    public void SetMarker(Constants.MarkerType markerType, Vector3 position)
+    public void SetMarker(HYConstants.MarkerType markerType, Vector3 position)
     {
         _lastMarker?.SetLastPositionMarker(false);
         
-        var markerPrefab = (markerType == Constants.MarkerType.Black) ? blackMarkerPrefab : whiteMarkerPrefab;
+        var markerPrefab = (markerType == HYConstants.MarkerType.Black) ? blackMarkerPrefab : whiteMarkerPrefab;
         var markerObject = Instantiate(markerPrefab, position, Quaternion.identity);
         markerObject.transform.SetParent(markersParent);
         var markerController = markerObject.GetComponent<MarkerController>();

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Constants
+public class LConstants
 {
     public enum PlayerType { None, PlayerA, PlayerB }
     public enum GameType { SinglePlayer, DualPlayer, MultiPlayer }
