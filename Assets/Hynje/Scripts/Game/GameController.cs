@@ -10,7 +10,7 @@ public class GameController
     private BoardController _boardController;
     private BoardClickHandler _boardClickHandler;
     private RenjuRuleChecker _renjuRuleChecker;
-
+    
     private Constants.MarkerType[,] _board;
 
     public GameController(Constants.GameType gameType)
@@ -42,18 +42,19 @@ public class GameController
         _turnManager.ExecuteCurrentTurn();
     }
     
+    // 착수 성공시 실행 
     private void HandleTurnChanged()
     {
         if (_turnManager.IsBlackPlayerTurn())
         {
-            // 흑돌 차례가 시작될 때 금수 계산
-            _renjuRuleChecker.CalculateForbiddenPositions();
-            UpdateForbiddenMarkers();
+            // 흑돌을 놓으면 마커 숨기기 
+            _boardController.HideForbiddenMarkers();
         }
         else
         {
-            // 백돌 차례에는 금수 마커 숨기기
-            //HideAllForbiddenMarkers();
+            // 백돌을 놓으면 금수를 계산하여 표시 
+            _renjuRuleChecker.CalculateForbiddenPositions();
+            UpdateForbiddenMarkers();
         }
     }
 

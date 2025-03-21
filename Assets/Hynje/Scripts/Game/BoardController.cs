@@ -1,12 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
     [SerializeField] private GameObject blackMarkerPrefab;
     [SerializeField] private GameObject whiteMarkerPrefab;
-    [SerializeField] private GameObject forbiddenMarkerPrefab;
-
+    [SerializeField] private Transform markersParent;
+    
     private MarkerController _lastMarker;
+    private List<GameObject> _forbiddenMarkers = new List<GameObject>();
     
     public void SetMarker(Constants.MarkerType markerType, Vector3 position)
     {
@@ -14,6 +16,7 @@ public class BoardController : MonoBehaviour
         
         var markerPrefab = (markerType == Constants.MarkerType.Black) ? blackMarkerPrefab : whiteMarkerPrefab;
         var markerObject = Instantiate(markerPrefab, position, Quaternion.identity);
+        markerObject.transform.SetParent(markersParent);
         var markerController = markerObject.GetComponent<MarkerController>();
         
         _lastMarker = markerController;
@@ -23,11 +26,17 @@ public class BoardController : MonoBehaviour
 
     public void SetForbiddenMarker(Vector3 position)
     {
-        Instantiate(forbiddenMarkerPrefab, position, Quaternion.identity);
+        var forbiddenMarkerObject = ObjectPool.Instance.GetObject();
+        forbiddenMarkerObject.transform.position = position;
+        _forbiddenMarkers.Add(forbiddenMarkerObject);
     }
 
     public void HideForbiddenMarkers()
     {
-        
+        foreach (var forbiddenMarker in _forbiddenMarkers)
+        {
+            ObjectPool.Instance.ReturnObject(forbiddenMarker);
+        }
+        _forbiddenMarkers.Clear();
     }
 }
