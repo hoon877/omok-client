@@ -16,10 +16,8 @@ public class PaymentPanel : BasicPanelController, ICallBack
     [SerializeField] private TMP_Text amountTxt;
     [SerializeField] private TMP_Text priceTxt;
 
-    private const string defaultAmountTxt = "갯수가 설정되지 않음" ;
-    private const string defaultPriceTxt = "가격이 설정되지 않음";
-
     [Space]
+    // 임시로 결제 시간을 설정, 추후 서버로 결제 시스템이 될시 변경
     [SerializeField] private int payingTime;
 
     private int amount;
@@ -38,15 +36,16 @@ public class PaymentPanel : BasicPanelController, ICallBack
 
         amountTxt.text = $"코인 {amount.ToString()}개";
         priceTxt.text = $"₩{price.ToString()}";
+
+        SetButton();
     }
 
-    private void ResetPanel()
+    private void SetButton()
     {
-        amount = 0; price = 0;
-
-        amountTxt.text = defaultAmountTxt;
-        priceTxt.text = defaultPriceTxt;
+        acceptButton.onClick.AddListener(OnClickedAcceptButton);
+        denyButton.onClick.AddListener(OnClickedDenyButton);
     }
+
     #endregion
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -85,11 +84,11 @@ public class PaymentPanel : BasicPanelController, ICallBack
 
         yield return new WaitForSeconds(payingTime);
 
+        // 구독된 함수 실행후 제거
         TriggerEvent();
         Unsubscribe();
 
         Debug.Log($"코인{amount}개 {price}원 결제 완료");
-        // ResetPanel();
 
         isPaying = false;
         payingImage.SetActive(isPaying);

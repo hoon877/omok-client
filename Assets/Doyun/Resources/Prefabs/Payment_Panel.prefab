@@ -1151,19 +1151,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 54017507212863860}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8043024446288817022}
-        m_TargetAssemblyTypeName: PaymentPanel, Assembly-CSharp
-        m_MethodName: OnClickedDenyButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7299179244966018366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1382,16 +1370,4 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 557702119331364494}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8043024446288817022}
-        m_TargetAssemblyTypeName: PaymentPanel, Assembly-CSharp
-        m_MethodName: OnClickedAcceptButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []

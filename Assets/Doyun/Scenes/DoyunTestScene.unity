@@ -281,7 +281,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinShopPanelPrefab: {fileID: 9215294402194757037, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
   paymentPanelPrefab: {fileID: 7299179244966018366, guid: ac06d9ee4aa873f4d8399bd3dd75d412, type: 3}
-  canvasTransform: {fileID: 2057527002}
 --- !u!4 &1460174413
 Transform:
   m_ObjectHideFlags: 0
@@ -384,9 +383,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1943890477}
-  - component: {fileID: 1943890478}
   m_Layer: 5
-  m_Name: MainPanelController
+  m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -413,19 +411,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1943890478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943890476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b217af8b37f0d64d8d71d8a98a28a60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shopPanelPrefab: {fileID: 9215294402194757037, guid: a2062c7fb2835c846adca47c0e30f5cd, type: 3}
 --- !u!1 &1991473029
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,10 +567,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1943890477}
     m_Modifications:
-    - target: {fileID: 1184448154693873185, guid: 91d1b121464c77c479d136f4511bd88a, type: 3}
-      propertyPath: animateTime
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6536823097777092550, guid: 91d1b121464c77c479d136f4511bd88a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -666,10 +647,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6603259839341092832, guid: 91d1b121464c77c479d136f4511bd88a, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: db0cae6a1e1d54549b5a32263616c36d, type: 3}
     - target: {fileID: 9035464424317613054, guid: 91d1b121464c77c479d136f4511bd88a, type: 3}
       propertyPath: m_Name
       value: CoinCounter
@@ -687,18 +664,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 18636258}
     m_Modifications:
-    - target: {fileID: 3281395288643571510, guid: e6e2b24f52856124dbeff4a22a517918, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1943890478}
-    - target: {fileID: 3281395288643571510, guid: e6e2b24f52856124dbeff4a22a517918, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickShopButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 3281395288643571510, guid: e6e2b24f52856124dbeff4a22a517918, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MainPanelController, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 5421427373454907748, guid: e6e2b24f52856124dbeff4a22a517918, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
