@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class HYConstants
@@ -10,4 +11,5 @@ public class HYConstants
 
     public enum PlayerType { BlackPlayer, WhitePlayer }
     public enum MarkerType { None, Black , White }
+    public enum GameResult{None, BlackWin, WhiteWin}
 }

@@ -42,6 +42,7 @@ public class PlayerState : ITurnState
     {
         Debug.Log($"{_playerType} 턴 종료");
         // UI 요소 비활성화 등의 작업
+        gameController.HandleTimer();
     }
 }
 

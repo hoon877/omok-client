@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 10885553}
   - component: {fileID: 10885552}
   - component: {fileID: 10885551}
+  - component: {fileID: 10885555}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -225,6 +226,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &10885555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10885550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fe7281173c441fbdb116cc663ef734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackTurnFillImage: {fileID: 1834347758}
+  whiteTurnFillImage: {fileID: 1924793301}
 --- !u!1 &98930817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1322,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -2088,8 +2103,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 681851321}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 10885555}
+        m_TargetAssemblyTypeName: HYGameUIController, Assembly-CSharp
         m_MethodName: OnClickSetStoneButton
         m_Mode: 1
         m_Arguments:

@@ -10,11 +10,16 @@ public class GameController
     private BoardController _boardController;
     private BoardClickHandler _boardClickHandler;
     private HYRenjuRuleChecker _renjuRuleChecker;
+    private HYGameUIController _gameUIController;
+    private Timer _timer;
     
     private HYConstants.MarkerType[,] _board;
 
     public GameController(HYConstants.GameType gameType)
     {
+        _timer = Object.FindObjectOfType<Timer>();
+        _timer.OnTimeout += GameOverOnTimeOut;
+        
         _board = new HYConstants.MarkerType[HYConstants.BoardSize, HYConstants.BoardSize];
         InitBoard();
 
@@ -22,8 +27,12 @@ public class GameController
         _boardClickHandler = Object.FindObjectOfType<BoardClickHandler>();
         _turnManager = new TurnManager(gameType, this);
         _renjuRuleChecker = new HYRenjuRuleChecker(_board, _turnManager);
+        _gameUIController = Object.FindObjectOfType<HYGameUIController>();
+        _gameUIController.InitGameUIController(this);
 
         _turnManager.OnTurnChanged += HandleTurnChanged;
+        
+        _timer.StartTImer(); 
     }
 
     private void InitBoard()
@@ -37,6 +46,12 @@ public class GameController
         }
     }
 
+    public void HandleTimer()
+    {
+        _timer.InitTimer();
+        _timer.StartTImer();
+    }
+
     public void ExecuteCurrentTurn()
     {
         _turnManager.ExecuteCurrentTurn();
@@ -45,7 +60,8 @@ public class GameController
     // 착수 성공시 실행 
     private void HandleTurnChanged()
     {
-        if (_turnManager.IsBlackPlayerTurn())
+        var isBlackTurn = _turnManager.IsBlackPlayerTurn();
+        if (isBlackTurn)
         {
             // 흑돌을 놓으면 마커 숨기기 
             _boardController.HideForbiddenMarkers();
@@ -56,6 +72,8 @@ public class GameController
             _renjuRuleChecker.CalculateForbiddenPositions();
             UpdateForbiddenMarkers();
         }
+        // 다음 턴의 UI로 변경 
+        _gameUIController.OnTurnChanged?.Invoke(!isBlackTurn);
     }
 
     private void UpdateForbiddenMarkers()
@@ -145,9 +163,9 @@ public class GameController
             // 오목 완성, 승리 
             if (count >= 5)
             {
-                string winner = marker == HYConstants.MarkerType.Black ? "흑돌" : "백돌";
-                Debug.Log($"{winner} 플레이어가 승리했습니다!");
-                return true;
+                HYConstants.GameResult gameResult = 
+                    marker == HYConstants.MarkerType.Black ? HYConstants.GameResult.BlackWin : HYConstants.GameResult.WhiteWin;
+                GameOver(gameResult);
             }
             
         }
@@ -167,6 +185,20 @@ public class GameController
             currentPos += direction;
         }
         return count;
+    }
+    
+    private void GameOverOnTimeOut()
+    {
+        HYConstants.GameResult gameResult = 
+            _turnManager.IsBlackPlayerTurn() ? HYConstants.GameResult.WhiteWin : HYConstants.GameResult.BlackWin;
+        GameOver(gameResult);
+    }
+    private void GameOver(HYConstants.GameResult gameResult)
+    {
+        _gameUIController.ShowGameOverUI();
+        _timer.InitTimer();
+        string winner = gameResult.ToString();
+        Debug.Log(winner);
     }
     #endregion
 }
