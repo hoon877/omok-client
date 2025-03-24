@@ -12,16 +12,14 @@ public class RankingBoardCell : MonoBehaviour
     [SerializeField] private TextMeshProUGUI recordText;
 
     public int Index { get; private set; }
-    public void SetData(UserRankingData userRankingData, Sprite sprite, int index)
+    public void SetData(UserRecordData userRecordData, Sprite sprite, int index)
     {
-        Index = index;
-        
-        rankText.text = $"{userRankingData.Rank + 1}";
+        rankText.text       = $"{index + 1}";
         profileImage.sprite = sprite;
-        gradeText.text = $"{userRankingData.Grade}급";
-        nickNameText.text = userRankingData.NickName;
+        gradeText.text      = $"{userRecordData.grade}급";
+        nickNameText.text   = userRecordData.nickName;
+        recordText.text     = $"{userRecordData.totalGameCount}전 {userRecordData.wins}승 {userRecordData.draws}무 {userRecordData.losses}패 {userRecordData.winRate}%";
         
-        float winRate = userRankingData.TotalGameCount > 0 ? (userRankingData.Wins / (float)userRankingData.TotalGameCount) * 100 : 0;
-        recordText.text = $"{userRankingData.TotalGameCount}전 {userRankingData.Wins}승 {userRankingData.Losses}패 {winRate:F1}%";
+        Index = index;
     }
 }

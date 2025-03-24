@@ -210,6 +210,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3336669992578474471, guid: 205c42becc6d4eb439127dd277eaf0b0, type: 3}
+      propertyPath: cellBuffer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7596696307785214619, guid: 205c42becc6d4eb439127dd277eaf0b0, type: 3}
       propertyPath: m_Name
       value: Ranking Board Panel

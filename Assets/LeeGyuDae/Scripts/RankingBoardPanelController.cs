@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class RankingBoardPanelController : MonoBehaviour
 {
@@ -23,7 +22,7 @@ public class RankingBoardPanelController : MonoBehaviour
     private float prevScrollRectYValue = 1f;
     
     // User Data
-    private List<UserRankingData> rankingDataList;
+    public List<UserRecordData> recordDataList = new List<UserRecordData>();
     private LinkedList<RankingBoardCell> visibleCellList;
     private int currentUserRankOrder;
 
@@ -49,31 +48,21 @@ public class RankingBoardPanelController : MonoBehaviour
     private void LoadData()
     {
         // TODO: DB 에서 데이터 가져오기
-        
-        // 임시 리스트 생성
-        rankingDataList = new List<UserRankingData>();
-        for (int i = 0; i < 30; i++)
-        {
-            int rank = i;
-            int profileImageIndex = Random.Range(0, profileImageSprites.Length);
-            int grade = Random.Range(1, 19);
-            string nickName = $"Player {rank + 1}";
-            int totalGameCount = Random.Range(5, 51);
-            int wins = Random.Range(0, totalGameCount + 1);
-            int losses = totalGameCount - wins;
-            
-            UserRankingData newUserRankingData = new UserRankingData(rank, profileImageIndex, grade, nickName, totalGameCount, wins, losses);
-            rankingDataList.Add(newUserRankingData);
-        }
+        StartCoroutine(RankingBoardNetworkManager.GetRecords(
+            successCallback: (data) =>
+            {
+                if (data == null || data.Count == 0)
+                {
+                    Debug.LogWarning("데이터가 비어있습니다.");
+                    return;
+                }
+                
+                recordDataList = new List<UserRecordData>(data);
+                InitializeCells();
+            }
+        ));
         
         // TODO: 현재 유저의 인덱스 값 받아오기
-        
-        // 임시 순위 생성
-        currentUserRankOrder = Random.Range(0, rankingDataList.Count);
-        Debug.Log($"나의 랭크 데이터상 순서: {currentUserRankOrder}");
-        Debug.Log($"나의 랭크 표기: {currentUserRankOrder + 1}");
-        
-        InitializeCells();
     }
 
     /// <summary>
@@ -83,7 +72,7 @@ public class RankingBoardPanelController : MonoBehaviour
     {
         // CellSize 설정, Scroll Rect 의 Content 사이즈 조절
         cellSize = cellHeight + cellSpacing;
-        scrollRect.content.sizeDelta = new Vector2(0, rankingDataList.Count * cellSize);
+        scrollRect.content.sizeDelta = new Vector2(0, recordDataList.Count * cellSize);
 
         // visibleCellList 리스트 초기화 
         visibleCellList = new LinkedList<RankingBoardCell>();
@@ -103,7 +92,7 @@ public class RankingBoardPanelController : MonoBehaviour
     private (int startIndex, int endIndex) GetVisibleIndexRange()
     {
         float visibleHeight = scrollRectRectTransform.rect.height;
-;
+        
         // visibleCount 값 설정 : 화면에 보여질 셀 갯수 + 여유 셀 추가
         int visibleCount = Mathf.CeilToInt(visibleHeight / cellSize) + cellBuffer;
         
@@ -111,7 +100,7 @@ public class RankingBoardPanelController : MonoBehaviour
         int startIndex   = Mathf.Max(0, Mathf.FloorToInt(scrollRect.content.anchoredPosition.y / cellSize ) - 1);
         
         // endIndex 값 설정 : 최대로 만들어야하는 셀의 갯수
-        int endIndex = Mathf.Min(rankingDataList.Count, startIndex + visibleCount);
+        int endIndex = Mathf.Min(recordDataList.Count, startIndex + visibleCount);
         
         return (startIndex, endIndex);
     }
@@ -122,8 +111,8 @@ public class RankingBoardPanelController : MonoBehaviour
         var rankingBoardCell = cellObject.GetComponent<RankingBoardCell>();
         
         rankingBoardCell.SetData(
-            rankingDataList[index],
-            profileImageSprites[rankingDataList[index].ProfileImageIndex],
+            recordDataList[index],
+            profileImageSprites[recordDataList[index].profileIndex],
             index);
         
         rankingBoardCell.transform.localPosition = new Vector3(0, - index * cellSize, 0);
