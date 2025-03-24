@@ -30,17 +30,6 @@ public class PaymentPanel : BasicPanelController, ICallBack
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    private void Start()
-    {
-        if (CoinManager.Instance.isPaymentShow)
-        {
-            Debug.Log("이미 결제창이 존재함");
-            Destroy(gameObject);
-        }
-        CoinManager.Instance.isPaymentShow = true;
-    }
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
     #region 판넬 설정
     public void InitPanel(int coinAmount, int coinPrice)
     {
@@ -81,7 +70,6 @@ public class PaymentPanel : BasicPanelController, ICallBack
         if (isPaying)
             return;
 
-        CoinManager.Instance.isPaymentShow = false;
         Unsubscribe();
         HidePanel();
     }
@@ -106,7 +94,6 @@ public class PaymentPanel : BasicPanelController, ICallBack
         isPaying = false;
         payingImage.SetActive(isPaying);
 
-        CoinManager.Instance.isPaymentShow = false;
         HidePanel();
     }
     #endregion

@@ -14,10 +14,6 @@ public class MainPanelController : MonoBehaviour
 
     public void OnClickShopButton()
     {
-        if (shopPanelPrefab != null)
-        {
-            GameObject go = Instantiate(shopPanelPrefab, canvasTranform);
-            go.GetComponent<CoinShopPanel>().ShowPanel();
-        }
+        CoinUIManager.Instance.ShopPanel.ShowPanel();
     }
 }
