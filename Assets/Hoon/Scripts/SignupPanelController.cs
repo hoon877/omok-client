@@ -28,45 +28,6 @@ public class SignupPanelController : MonoBehaviour
     private GameObject _profileSelectPanelObject; // 프로필 선택 패널 오브젝트 참조 변수
     private GameObject ForDestroy;
     
-    public IEnumerator Signup(SignupData signupData, Action success, Action failure)
-    {
-        string jsonString = JsonUtility.ToJson(signupData);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
-
-        using (UnityWebRequest www =
-               new UnityWebRequest(HConstants.ServerURL + "/users/signup", UnityWebRequest.kHttpVerbPOST))
-        {
-            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            www.downloadHandler = new DownloadHandlerBuffer();
-            www.SetRequestHeader("Content-Type", "application/json");
-
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.ConnectionError ||
-                www.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log("Error: " + www.error);
-
-                if (www.responseCode == 409)
-                {
-                    Debug.Log("중복사용자");
-                    HGameManager.Instance.OpenConfirmPanel("user already exists.", () =>
-                    {
-                        failure?.Invoke();
-                    });
-                }
-            }
-            else
-            {
-                Debug.Log("회원가입 성공!");
-                // 회원가입 성공 팝업 표시
-                HGameManager.Instance.OpenConfirmPanel("Signup Success.", () =>
-                {
-                    success?.Invoke();
-                });
-            }
-        }
-    }
     
     public void OnClickConfirmButton()
     {
@@ -94,7 +55,7 @@ public class SignupPanelController : MonoBehaviour
             Debug.Log(_selectedProfileIndex);
             Debug.Log($"📌 회원가입 데이터: {JsonUtility.ToJson(signupData)}");
             
-            StartCoroutine(Signup(signupData, () =>
+            StartCoroutine(NetworkManager.Instance.Signup(signupData, () =>
             {
                 Debug.Log("회원가입 완료!");
                 Destroy(gameObject);

@@ -117,4 +117,78 @@ public class NetworkManager : HSingleton<NetworkManager>
             }
         }
     }
+    
+    public IEnumerator GetScore(Action<ProfileResult> success, Action failure)
+    {
+        using (UnityWebRequest www =
+               new UnityWebRequest(HConstants.ServerURL + "/users/getprofile", UnityWebRequest.kHttpVerbGET))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            
+            string sid = PlayerPrefs.GetString("sid", "");
+            if (!string.IsNullOrEmpty(sid))
+            {
+                www.SetRequestHeader("Cookie", sid);
+            }
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError ||
+                www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                if (www.responseCode == 403)
+                {
+                    Debug.Log("로그인이 필요합니다.");
+                }
+                
+                failure?.Invoke();
+            }
+            else
+            {
+                var result = www.downloadHandler.text;
+                var userProfileResult = JsonUtility.FromJson<ProfileResult>(result);
+                
+                Debug.Log(userProfileResult.profileIndex);
+                
+                success?.Invoke(userProfileResult);
+            }
+        }
+    }
+    
+    public IEnumerator GetCoin(Action<Coin> success, Action failure)
+    {
+        using (UnityWebRequest www =
+               new UnityWebRequest(HConstants.ServerURL + "/users/coin", UnityWebRequest.kHttpVerbGET))
+        {
+            www.downloadHandler = new DownloadHandlerBuffer();
+            
+            string sid = PlayerPrefs.GetString("sid", "");
+            if (!string.IsNullOrEmpty(sid))
+            {
+                www.SetRequestHeader("Cookie", sid);
+            }
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError ||
+                www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                if (www.responseCode == 403)
+                {
+                    Debug.Log("로그인이 필요합니다.");
+                }
+                
+                failure?.Invoke();
+            }
+            else
+            {
+                var result = www.downloadHandler.text;
+                var userCoin = JsonUtility.FromJson<Coin>(result);
+                
+                Debug.Log(userCoin.coin);
+                Debug.Log(userCoin.nickname);
+                success?.Invoke(userCoin);
+            }
+        }
+    }
 }
