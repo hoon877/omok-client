@@ -104,7 +104,7 @@ public class SignupPanelController : MonoBehaviour
     private void CloseProfilePanel() 
     {
             ForDestroy = GameObject.Find("ProfileSelect Panel(Clone)");
-            Destroy(ForDestroy);
+            Destroy(ForDestroy, 0.1f);
     }
 
     private void Update()
@@ -122,6 +122,6 @@ public class SignupPanelController : MonoBehaviour
     public void OnClickBackButton()
     {
         ForDestroy = GameObject.Find("Signup Panel(Clone)");
-        Destroy(ForDestroy);
+        Destroy(ForDestroy, 0.1f);
     }
 }

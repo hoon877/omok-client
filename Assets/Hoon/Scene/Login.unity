@@ -122,6 +122,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &9507276 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1676540119916932853, guid: 95e0577c24dda234286b5d988fcfe37b, type: 3}
+  m_PrefabInstance: {fileID: 461177189066812578}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &263772492
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,8 +381,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cacb9d30f709c954fa3f88b6b6bc93cd, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: cacb9d30f709c954fa3f88b6b6bc93cd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -639,10 +644,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Login Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 434515985513262926, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 828395008509865743, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -777,6 +778,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5691091572363943278, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674880201630035414, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
+      propertyPath: _mainPanel
+      value: 
+      objectReference: {fileID: 9507276}
+    - target: {fileID: 7998341704839085510, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}
+      propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

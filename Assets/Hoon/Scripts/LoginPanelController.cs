@@ -19,7 +19,8 @@ public struct LoginResult
 public class LoginPanelController : MonoBehaviour
 {
     [SerializeField] private GameObject _signupPanel;
-    [SerializeField] private GameObject confirmPanel;
+    [SerializeField] private GameObject _confirmPanel;
+    [SerializeField] private GameObject _mainPanel;
     [SerializeField] private TMP_InputField _usernameInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     private Canvas _canvas;
@@ -43,6 +44,8 @@ public class LoginPanelController : MonoBehaviour
         {
             Debug.Log("성공");
             Destroy(gameObject);
+            _mainPanel.SetActive(true);
+            
         }, result =>
         {
             if (result == 0)
