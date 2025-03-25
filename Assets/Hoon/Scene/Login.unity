@@ -1914,8 +1914,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cacb9d30f709c954fa3f88b6b6bc93cd, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: cacb9d30f709c954fa3f88b6b6bc93cd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2385,6 +2385,7 @@ MonoBehaviour:
   _womanProfileSprite: {fileID: -706547532, guid: 26af0bf01d8ccf945b926698f5077eaa, type: 3}
   _coinText: {fileID: 454784016}
   _profileText: {fileID: 1273428939}
+  _gameTypePanel: {fileID: 3322007610722072902, guid: e4dee18639ed24ef69d21878d67e00d1, type: 3}
 --- !u!224 &1763663207 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2456654623570824912, guid: 27def13055d4eae4782e3a1bf73341f4, type: 3}

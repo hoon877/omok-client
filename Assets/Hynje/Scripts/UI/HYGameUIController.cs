@@ -18,6 +18,15 @@ public class HYGameUIController : MonoBehaviour
         
         OnTurnChanged += ChangeTurnUI;
     }
+
+    public void OnClickGiveUpButton()
+    {
+        HGameManager.Instance.OpenConfirmPanel("GiveUp", () =>
+        {
+            _gameController.GameOverOnGiveUp();
+            HGameManager.Instance.EndGame();
+        });
+    }
     
     public void OnClickSetStoneButton()
     {

@@ -14,9 +14,11 @@ public class GameController
     private Timer _timer;
     
     private HYConstants.MarkerType[,] _board;
+    private (int currentMove, string currentMarker) _currentData;
 
     public GameController(HYConstants.GameType gameType)
     {
+        Debug.Log(gameType);
         _timer = Object.FindObjectOfType<Timer>();
         _timer.OnTimeout += GameOverOnTimeOut;
         
@@ -25,14 +27,17 @@ public class GameController
 
         _boardController = Object.FindObjectOfType<BoardController>();
         _boardClickHandler = Object.FindObjectOfType<BoardClickHandler>();
+        
         _turnManager = new TurnManager(gameType, this);
+        
         _renjuRuleChecker = new HYRenjuRuleChecker(_board, _turnManager);
+        
         _gameUIController = Object.FindObjectOfType<HYGameUIController>();
         _gameUIController.InitGameUIController(this);
 
         _turnManager.OnTurnChanged += HandleTurnChanged;
         
-        _timer.StartTImer(); 
+        //_timer.StartTImer(); 
     }
 
     private void InitBoard()
@@ -98,6 +103,8 @@ public class GameController
 
         var marker = isBlackPlayer ? HYConstants.MarkerType.Black : HYConstants.MarkerType.White;
 
+        SetCurrentData(gridPos, marker);
+        
         // 보드에 마커 저장 및 표시
         _board[gridPos.x, gridPos.y] = marker;
         _boardController.SetMarker(marker, markerPos);
@@ -106,6 +113,49 @@ public class GameController
         CheckGameResult(gridPos, marker);
 
         return true;
+    }
+    
+    // 네트워크에서 받은 데이터로 마커 배치 (MultiPlayerState에서 사용)
+    public bool TryPlaceMarkerFromNetwork(int position, bool isBlackPlayer)
+    {
+        // 1D 포지션을 2D 그리드 좌표로 변환
+        int x = position % HYConstants.BoardSize;
+        int y = position / HYConstants.BoardSize;
+        Vector2Int gridPos = new Vector2Int(x, y);
+        
+        // 그리드 좌표를 월드 좌표로 변환
+        Vector3 markerPos = _boardClickHandler.GetWorldPositionFromGrid(gridPos);
+        
+        // 마커 타입 결정
+        var marker = isBlackPlayer ? HYConstants.MarkerType.Black : HYConstants.MarkerType.White;
+
+        // 이미 마커가 있는지 확인
+        if (_board[gridPos.x, gridPos.y] != HYConstants.MarkerType.None)
+            return false;
+            
+        // 현재 데이터 설정
+        SetCurrentData(gridPos, marker);
+        
+        // 보드에 마커 저장 및 표시
+        _board[gridPos.x, gridPos.y] = marker;
+        _boardController.SetMarker(marker, markerPos);
+
+        // 승리 조건 확인
+        CheckGameResult(gridPos, marker);
+
+        return true;
+    }
+
+    public (int, string) GetCurrentData()
+    {
+        return _currentData;
+    }
+
+    private void SetCurrentData(Vector2Int gridPos, HYConstants.MarkerType marker)
+    {
+        var position = gridPos.y * HYConstants.BoardSize + gridPos.x;
+        var markerString = marker ==  HYConstants.MarkerType.Black ? "X" : "O";
+        _currentData = (position, markerString);
     }
 
     private bool IsInBoardRange(Vector2Int pos)
@@ -186,7 +236,21 @@ public class GameController
         }
         return count;
     }
-    
+
+    public void GameOverOnGiveUp()
+    {
+        if (_turnManager.IsGameStarted())
+        {
+            HYConstants.GameResult gameResult = 
+                _turnManager.IsBlackPlayerTurn() ? HYConstants.GameResult.WhiteWin : HYConstants.GameResult.BlackWin;
+            GameOver(gameResult);
+        }
+        else
+        {
+            Dispose();
+            HGameManager.Instance.EndGame();
+        }
+    }
     private void GameOverOnTimeOut()
     {
         HYConstants.GameResult gameResult = 
@@ -198,7 +262,16 @@ public class GameController
         _gameUIController.ShowGameOverUI();
         _timer.InitTimer();
         string winner = gameResult.ToString();
+        Dispose();
         Debug.Log(winner);
     }
     #endregion
+
+    public void Dispose()
+    {
+        _turnManager?.Dispose();
+        _turnManager = null;
+        _boardController = null;
+        _board = null;
+    }
 }

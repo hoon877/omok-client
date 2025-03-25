@@ -14,18 +14,33 @@ public class PlayerState : ITurnState
 {
     private HYConstants.PlayerType _playerType;
     private TurnManager _turnManager;
+    private MultiPlayManager _multiPlayManager;
     private bool _isBlackPlayer;
+    private string _roomId;
+    private bool _isMultiPlay;
+    private (int, string) _currentData;
 
     public PlayerState(bool isBlackPlayer, TurnManager turnManager)
     {
         _isBlackPlayer = isBlackPlayer;
        _playerType = isBlackPlayer ? HYConstants.PlayerType.BlackPlayer : HYConstants.PlayerType.WhitePlayer;
        _turnManager = turnManager;
+       _isMultiPlay = false;
     }
+
+    public PlayerState(bool isBlackPlayer, TurnManager turnManager, MultiPlayManager multiPlayManager, string roomId)
+        : this(isBlackPlayer, turnManager)
+    {
+        _multiPlayManager = multiPlayManager;
+        _roomId = roomId;
+        _isMultiPlay = true;
+    }
+    
     public void OnEnter(GameController gameController)
     {
         Debug.Log($"{_playerType} 턴 시작");
         // UI 요소 활성화 등의 작업
+        UnityThread.executeInUpdate(gameController.HandleTimer);
     }
 
     public void OnExecute(GameController gameController)
@@ -33,6 +48,8 @@ public class PlayerState : ITurnState
         // 플레이어의 입력에 따라 마커 배치
         if (gameController.TryPlaceMarker(_isBlackPlayer))
         {
+            _currentData = gameController.GetCurrentData();
+            
             // 마커 배치 성공시 턴 변경
             _turnManager.AdvanceToNextTurn();
         }
@@ -41,8 +58,12 @@ public class PlayerState : ITurnState
     public void OnExit(GameController gameController)
     {
         Debug.Log($"{_playerType} 턴 종료");
+        if (_isMultiPlay)
+        {
+            _multiPlayManager.SendPlayerMove(_roomId, _currentData.Item1, _currentData.Item2);
+        }
         // UI 요소 비활성화 등의 작업
-        gameController.HandleTimer();
+        //gameController.HandleTimer();
     }
 }
 
@@ -64,19 +85,84 @@ public class AIState : ITurnState
     }
 }
 
-public class TurnManager
+public class MultiPlayerState :  ITurnState
+{
+    private HYConstants.PlayerType _playerType;
+    private GameController _gameController;
+    private TurnManager _turnManager;
+    private MultiPlayManager _multiPlayManager;
+    private bool _isBlackPlayer;
+    public MultiPlayerState(bool isBlackPlayer, TurnManager turnManager, MultiPlayManager multiPlayManager)
+    {
+        _isBlackPlayer = isBlackPlayer;
+        _playerType = _isBlackPlayer ? HYConstants.PlayerType.BlackPlayer :  HYConstants.PlayerType.WhitePlayer;
+        _turnManager = turnManager;
+        _multiPlayManager = multiPlayManager;
+        
+        // 상대방 돌 놓기 이벤트 등록
+        _multiPlayManager.OnOpponentMove += HandleOpponentMove;
+    }
+    
+    public void OnEnter(GameController gameController)
+    {
+        _gameController = gameController;
+        Debug.Log($"{_playerType} 턴 시작 (상대방 턴)");
+    }
+
+    public void OnExecute(GameController gameController)
+    {
+        // 이 상태는 상대방의 턴을 나타내므로, 여기서는 아무 것도 하지 않음
+        // 상대방의 입력은 HandleOpponentMove에서 처리됨
+    }
+
+    public void OnExit(GameController gameController)
+    {
+        Debug.Log($"{_playerType} 턴 종료 (상대방 턴)");
+    }
+    
+    // 상대방 돌 놓기 이벤트 처리
+    private void HandleOpponentMove(MoveData moveData)
+    {
+        // 상대방이 놓은 위치에 돌 놓기
+        int position = moveData.position;
+        int x = position % HYConstants.BoardSize;
+        int y = position / HYConstants.BoardSize;
+        
+        // 네트워크에서 받은 위치에 마커를 배치함
+        UnityThread.executeInUpdate(()=>
+        {
+            if (_gameController.TryPlaceMarkerFromNetwork(position, _isBlackPlayer))
+            {
+                _turnManager.AdvanceToNextTurn();
+            }
+        });
+
+    }
+    
+    // 리소스 정리
+    public void Dispose()
+    {
+        _multiPlayManager.OnOpponentMove -= HandleOpponentMove;
+    }
+}
+
+public class TurnManager : IDisposable
 {
     public event Action OnTurnChanged;
     
     private ITurnState _currentState;
     private Dictionary<HYConstants.PlayerType, ITurnState> _states = new();
     private GameController _gameController;
+    private MultiPlayManager _multiPlayManager;
+    private string _roomId;
+    private HYConstants.PlayerType _myPlayerType;
+
+    private bool _isGameStarted = false;
 
     public TurnManager(HYConstants.GameType gameType, GameController gameController)
     {
         _gameController = gameController;
         InitializeStates(gameType);
-        SetInitialTurn();
     }
 
     private void InitializeStates(HYConstants.GameType gameType)
@@ -89,11 +175,48 @@ public class TurnManager
             case HYConstants.GameType.DualPlay:
                 _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this);
                 _states[HYConstants.PlayerType.WhitePlayer] = new PlayerState(false, this);
+                _isGameStarted = true;
                 break;
             case HYConstants.GameType.MultiPlay:
-                // todo: 멀티 기능 추가 
+                _multiPlayManager = new MultiPlayManager((state, roomId) =>
+                {
+                    switch (state)
+                    {
+                        case HConstants.MultiplayManagerState.CreateRoom:
+                            Debug.Log("## Create Room");
+                            break;
+                        case HConstants.MultiplayManagerState.JoinRoom:
+                            Debug.Log("## Join Room");
+                            _myPlayerType = HYConstants.PlayerType.WhitePlayer;
+                            _states[HYConstants.PlayerType.BlackPlayer] = new MultiPlayerState(true,this, _multiPlayManager);
+                            _states[HYConstants.PlayerType.WhitePlayer] = new PlayerState(false, this, _multiPlayManager, roomId);
+                            _isGameStarted = true;
+                            SetInitialTurn();
+                            break;
+                        case HConstants.MultiplayManagerState.StartGame:
+                            Debug.Log("## Start Game");
+                            _myPlayerType = HYConstants.PlayerType.BlackPlayer;
+                            _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this, _multiPlayManager, roomId);
+                            _states[HYConstants.PlayerType.WhitePlayer] = new MultiPlayerState(false, this, _multiPlayManager);
+                            _isGameStarted = true;
+                            SetInitialTurn();
+                            break;
+                        case HConstants.MultiplayManagerState.ExitRoom:
+                            Debug.Log("## Exit Room");
+                            _isGameStarted = false;
+                            break;
+                        case HConstants.MultiplayManagerState.EndGame:
+                            Debug.Log("## End Game");
+                            _isGameStarted = false;
+                            break;
+                    }
+                });
                 break;
-            
+        }
+
+        if (_isGameStarted && gameType != HYConstants.GameType.MultiPlay)
+        {
+            SetInitialTurn();
         }
     }
 
@@ -127,5 +250,23 @@ public class TurnManager
     public bool IsBlackPlayerTurn()
     {
         return _currentState == _states[HYConstants.PlayerType.BlackPlayer];
+    }
+
+    public bool IsGameStarted()
+    {
+        return _isGameStarted;
+    }
+
+    public void Dispose()
+    {
+        foreach (var state in _states.Values)
+        {
+            if (state is MultiPlayerState multiPlayerState)
+            {
+                multiPlayerState.Dispose();
+            }
+        }
+        _multiPlayManager?.LeaveRoom(_roomId);
+        _multiPlayManager?.Dispose();
     }
 }
