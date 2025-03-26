@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class CoinManager : HSingleton<CoinManager>, ISubject
 {
     // PS. Edit > ProjectSetting > Script Execution Order 에서 스크립트 우선순위를 조정하였음
+    // 추후 싱글톤 스크립트로 우선순위 조정
 
     /// <summary>
     /// 코인 데이터 경로, 
@@ -32,9 +33,6 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
 
     // 코인갯수를 확인하는 옵저버들
     public List<IObserver> observers;
-
-    public bool isPaymentShow { get; set; }
-    public bool isShopShow {  get; set; }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -134,11 +132,7 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (observers != null)
-        {
-            observers.Clear();
-        }
-        isPaymentShow = false;
-        isShopShow = false;
+        // ??= 로 null인지 판별후 Clear()
+        (observers ??= new List<IObserver>()).Clear();
     }
 }

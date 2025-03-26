@@ -260,4 +260,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 8986715657789910005}
-  animateTime: 0
+  animateTime: 0.5
