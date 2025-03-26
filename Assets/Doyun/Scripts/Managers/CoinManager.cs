@@ -40,8 +40,6 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
         }
     }
 
-    [SerializeField] private bool resetCoin;
-
     // 코인갯수를 확인하는 옵저버들
     public List<IObserver> observers;
 
