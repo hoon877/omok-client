@@ -191,4 +191,78 @@ public class NetworkManager : HSingleton<NetworkManager>
             }
         }
     }
+    
+    public IEnumerator AddCoin(Coin coin, Action success, Action failure)
+    {
+        string jsonString = JsonUtility.ToJson(coin);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonString);
+
+        using (UnityWebRequest www =
+               new UnityWebRequest(HConstants.ServerURL + "/users/addcoin", UnityWebRequest.kHttpVerbPOST))
+        {
+            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            www.downloadHandler = new DownloadHandlerBuffer();
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError ||
+                www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("Error: " + www.error);
+
+                if (www.responseCode == 400)
+                {
+                    Debug.Log("유효한 값을 입력해주세요");
+                    HGameManager.Instance.OpenConfirmPanel("not a valid value", () =>
+                    {
+                        failure?.Invoke();
+                    });
+                }
+                else if (www.responseCode == 403)
+                {
+                    Debug.Log("로그인이 필요합니다.");
+                    HGameManager.Instance.OpenConfirmPanel("Login required", () =>
+                    {
+                        failure?.Invoke();
+                    });
+                }
+                else if (www.responseCode == 404)
+                {
+                    Debug.Log("사용자를 찾을 수 없습니다.");
+                    HGameManager.Instance.OpenConfirmPanel("User not found", () =>
+                    {
+                        failure?.Invoke();
+                    });
+                }
+                else if (www.responseCode == 500)
+                {
+                    Debug.Log("서버 오류 발생");
+                    HGameManager.Instance.OpenConfirmPanel("Server error", () =>
+                    {
+                        failure?.Invoke();
+                    });
+                }
+                else
+                {
+                    Debug.Log("알 수 없는 오류 발생: " + www.responseCode);
+                    HGameManager.Instance.OpenConfirmPanel("Unknown error", () =>
+                    {
+                        failure?.Invoke();
+                    });
+                }
+            }
+            else
+            {
+                var result = www.downloadHandler.text;
+                Debug.Log("Result: " + result);
+                
+                // 코인 변경 팝업 표시
+                HGameManager.Instance.OpenConfirmPanel("Get Coin.", () =>
+                {
+                    success?.Invoke();
+                });
+            }
+        }
+    }
 }

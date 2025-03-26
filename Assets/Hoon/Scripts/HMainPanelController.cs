@@ -77,7 +77,7 @@ public class HMainPanelController : MonoBehaviour
 
     public void OnClickStoreButton()
     {
-        
+        SceneManager.LoadScene("Doyun/Scenes/DoyunTestScene");
     }
 
     public void OnClickSettingButton()

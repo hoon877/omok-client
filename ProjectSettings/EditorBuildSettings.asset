@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/LeeJongYup/Scenes/Game.unity
     guid: d4c1fce5d7d53254a8ce68ddb78b2187
+  - enabled: 1
+    path: Assets/Doyun/Scenes/DoyunTestScene.unity
+    guid: 629fc4e36d750b54b83849fec12ef5f0
   m_configObjects: {}
