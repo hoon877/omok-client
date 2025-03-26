@@ -113,7 +113,8 @@ public class GradeSystem : MonoBehaviour
         // DevideLine
         for (int i = 1; i < div; i++)
         {
-            Vector2 pos = new Vector2((i - div / 2) * bar / (div * 192), sdGrade.transform.position.y);
+            Vector2 pos = new Vector2((i - div / 2) * bar / (div * 108), sdGrade.transform.position.y);
+            Debug.Log(pos);
             GameObject obj = Instantiate(line, pos, Quaternion.identity, transform.Find("/Canvas/UI").transform);
             obj.name = "Line" + i;
 
