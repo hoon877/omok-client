@@ -441,6 +441,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_coins: 0
+  testUserName: asdf@naver.com
+  testPassword: 1234
   resetCoin: 0
 --- !u!4 &1991473031
 Transform:
