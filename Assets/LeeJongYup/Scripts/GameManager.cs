@@ -23,6 +23,9 @@ public class GameManager : Singleton<GameManager>
     
     public enum GameType { SinglePlayer, DualPlayer }
     private GameType _gameType;
+    
+    public enum Difficulty { Easy, Hard }
+    private Difficulty _difficulty;
 
     private void Start()
     {
@@ -61,6 +64,8 @@ public class GameManager : Singleton<GameManager>
         // Game UI 초기화
         _gameUIController.SetGameUIMode(GameUIController.GameUIMode.Init);
         
+        // 난이도
+        _difficulty = Difficulty.Easy;
         // 턴 시작
         SetTurn(TurnType.PlayerA);
     }
@@ -148,25 +153,52 @@ public class GameManager : Singleton<GameManager>
                 //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnB);
                 if (_gameType == GameType.SinglePlayer)
                 {
-                    var result = MinimaxAIController.GetBestMove(_board);
-                    if (result.HasValue)
+                    if (_difficulty == Difficulty.Easy)
                     {
-                        if (SetNewBoardValue(Constants.PlayerType.PlayerB, result.Value.row, result.Value.col))
+                        var result = MCTSAIController.GetBestMove(_board);
+                        if (result.HasValue)
                         {
-                            var gameResult = _gameLogic.CheckGameResult();
-                            if (gameResult == Constants.GameResult.None)
-                                SetTurn(TurnType.PlayerA);
+                            if (SetNewBoardValue(Constants.PlayerType.PlayerB, result.Value.row, result.Value.col))
+                            {
+                                var gameResult = _gameLogic.CheckGameResult();
+                                if (gameResult == Constants.GameResult.None)
+                                    SetTurn(TurnType.PlayerA);
+                                else
+                                    EndGame(gameResult);
+                            }
                             else
-                                EndGame(gameResult);
+                            {
+                                // 이미 있는 곳을 터치했을 때 처리
+                            }
                         }
                         else
                         {
-                            // 이미 있는 곳을 터치했을 때 처리
+                            EndGame(Constants.GameResult.Win);
                         }
                     }
-                    else
+
+                    if (_difficulty == Difficulty.Hard)
                     {
-                        EndGame(Constants.GameResult.Win);
+                        var result = MinimaxAIController.GetBestMove(_board);
+                        if (result.HasValue)
+                        {
+                            if (SetNewBoardValue(Constants.PlayerType.PlayerB, result.Value.row, result.Value.col))
+                            {
+                                var gameResult = _gameLogic.CheckGameResult();
+                                if (gameResult == Constants.GameResult.None)
+                                    SetTurn(TurnType.PlayerA);
+                                else
+                                    EndGame(gameResult);
+                            }
+                            else
+                            {
+                                // 이미 있는 곳을 터치했을 때 처리
+                            }
+                        }
+                        else
+                        {
+                            EndGame(Constants.GameResult.Win);
+                        }
                     }
                     break;
                 }
