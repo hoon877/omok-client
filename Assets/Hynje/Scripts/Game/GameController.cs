@@ -36,8 +36,6 @@ public class GameController
         _gameUIController.InitGameUIController(this);
 
         _turnManager.OnTurnChanged += HandleTurnChanged;
-        
-        //_timer.StartTImer(); 
     }
 
     private void InitBoard()
@@ -110,7 +108,7 @@ public class GameController
         _boardController.SetMarker(marker, markerPos);
 
         // 승리 조건 확인
-        CheckGameResult(gridPos, marker);
+        if (CheckGameResult(gridPos, marker)) return false;
 
         return true;
     }
@@ -141,7 +139,7 @@ public class GameController
         _boardController.SetMarker(marker, markerPos);
 
         // 승리 조건 확인
-        CheckGameResult(gridPos, marker);
+        if (CheckGameResult(gridPos, marker)) return false;
 
         return true;
     }
@@ -241,15 +239,23 @@ public class GameController
     {
         if (_turnManager.IsGameStarted())
         {
+            // 게임을 시작했을 때 
             HYConstants.GameResult gameResult = 
                 _turnManager.IsBlackPlayerTurn() ? HYConstants.GameResult.WhiteWin : HYConstants.GameResult.BlackWin;
             GameOver(gameResult);
         }
         else
         {
+            // 아직 게임을 시작하지 않았을 때 
             Dispose();
             HGameManager.Instance.EndGame();
         }
+    }
+    public void GameOverByOpponentDisconnect(HYConstants.GameResult gameResult)
+    {
+        string winner = gameResult.ToString();
+        _timer.InitTimer();
+        _gameUIController.ShowGameOverUI(winner);
     }
     private void GameOverOnTimeOut()
     {
@@ -259,11 +265,10 @@ public class GameController
     }
     private void GameOver(HYConstants.GameResult gameResult)
     {
-        _gameUIController.ShowGameOverUI();
-        _timer.InitTimer();
         string winner = gameResult.ToString();
-        Dispose();
-        Debug.Log(winner);
+        _turnManager.GameOver(winner);
+        _timer.InitTimer();
+        _gameUIController.ShowGameOverUI(winner);
     }
     #endregion
 
@@ -271,7 +276,5 @@ public class GameController
     {
         _turnManager?.Dispose();
         _turnManager = null;
-        _boardController = null;
-        _board = null;
     }
 }

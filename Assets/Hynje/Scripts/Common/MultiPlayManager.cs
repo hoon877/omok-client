@@ -50,7 +50,7 @@ public class GameRecordData
 public class MultiPlayManager : IDisposable
 {
     private SocketIOUnity _socket;
-
+    private HYConstants.PlayerType _myPlayerType;
     private event Action<HConstants.MultiplayManagerState, string> _onMultiplayStateChanged;
     public Action<MoveData> OnOpponentMove;
     public Action<string> OnGameEnded; // winner 정보 전달
@@ -80,6 +80,11 @@ public class MultiPlayManager : IDisposable
         _socket.Connect();
     }
     
+    public void SetMyPlayerType(HYConstants.PlayerType playerType)
+    {
+        _myPlayerType = playerType;
+    }
+    
     private void CreateRoom(SocketIOResponse response)
     {
         var data = response.GetValue<RoomData>();
@@ -104,7 +109,10 @@ public class MultiPlayManager : IDisposable
     }
 
     private void EndGame(SocketIOResponse response)
-    {
+    {Debug.Log("상대방이 게임에서 나갔습니다.");
+        // 상대방이 나갔을 때 자동 승리 처리
+        var winner = _myPlayerType == HYConstants.PlayerType.BlackPlayer ? "BlackWin" : "WhiteWin";
+        OnGameEnded?.Invoke(winner);
         _onMultiplayStateChanged?.Invoke(HConstants.MultiplayManagerState.EndGame, null);
     }
 

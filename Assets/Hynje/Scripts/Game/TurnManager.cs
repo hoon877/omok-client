@@ -40,7 +40,11 @@ public class PlayerState : ITurnState
     {
         Debug.Log($"{_playerType} 턴 시작");
         // UI 요소 활성화 등의 작업
-        UnityThread.executeInUpdate(gameController.HandleTimer);
+        if (_isMultiPlay)
+        {
+            UnityThread.executeInUpdate(gameController.HandleTimer);
+        }
+        else gameController.HandleTimer();
     }
 
     public void OnExecute(GameController gameController)
@@ -149,6 +153,7 @@ public class MultiPlayerState :  ITurnState
 public class TurnManager : IDisposable
 {
     public event Action OnTurnChanged;
+    private Action<string, string> _gameOverCallback;
     
     private ITurnState _currentState;
     private Dictionary<HYConstants.PlayerType, ITurnState> _states = new();
@@ -188,6 +193,8 @@ public class TurnManager : IDisposable
                         case HConstants.MultiplayManagerState.JoinRoom:
                             Debug.Log("## Join Room");
                             _myPlayerType = HYConstants.PlayerType.WhitePlayer;
+                            _multiPlayManager.SetMyPlayerType(_myPlayerType); // 내 플레이어 타입 설정
+                            _roomId = roomId;
                             _states[HYConstants.PlayerType.BlackPlayer] = new MultiPlayerState(true,this, _multiPlayManager);
                             _states[HYConstants.PlayerType.WhitePlayer] = new PlayerState(false, this, _multiPlayManager, roomId);
                             _isGameStarted = true;
@@ -196,6 +203,8 @@ public class TurnManager : IDisposable
                         case HConstants.MultiplayManagerState.StartGame:
                             Debug.Log("## Start Game");
                             _myPlayerType = HYConstants.PlayerType.BlackPlayer;
+                            _multiPlayManager.SetMyPlayerType(_myPlayerType); // 내 플레이어 타입 설정
+                            _roomId = roomId;
                             _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this, _multiPlayManager, roomId);
                             _states[HYConstants.PlayerType.WhitePlayer] = new MultiPlayerState(false, this, _multiPlayManager);
                             _isGameStarted = true;
@@ -211,6 +220,9 @@ public class TurnManager : IDisposable
                             break;
                     }
                 });
+                // 상대방 종료 시 게임 오버 처리 이벤트 등록
+                _multiPlayManager.OnGameEnded += HandleOpponentDisconnected;
+                _gameOverCallback += _multiPlayManager.SendGameOver;
                 break;
         }
 
@@ -251,10 +263,31 @@ public class TurnManager : IDisposable
     {
         return _currentState == _states[HYConstants.PlayerType.BlackPlayer];
     }
+    
+    private void HandleOpponentDisconnected(string winner)
+    {
+        // UI 쓰레드에서 실행하기 위해 UnityThread 사용
+        UnityThread.executeInUpdate(() => {
+            Debug.Log($"상대방이 게임을 떠났습니다. 승자: {winner}");
+        
+            // 승리 처리 (X는 흑돌, O는 백돌)
+            HYConstants.GameResult gameResult = winner == "BlackWin" ? 
+                HYConstants.GameResult.BlackWin : HYConstants.GameResult.WhiteWin;
+            
+            // 게임 컨트롤러의 GameOver 메서드 호출
+            _gameController.GameOverByOpponentDisconnect(gameResult);
+        });
+    }
+
 
     public bool IsGameStarted()
     {
         return _isGameStarted;
+    }
+
+    public void GameOver(string winner)
+    {
+        _gameOverCallback?.Invoke(_roomId, winner);
     }
 
     public void Dispose()
@@ -266,7 +299,13 @@ public class TurnManager : IDisposable
                 multiPlayerState.Dispose();
             }
         }
-        _multiPlayManager?.LeaveRoom(_roomId);
-        _multiPlayManager?.Dispose();
+        _gameOverCallback = null;
+        
+        if (_multiPlayManager != null)
+        {
+            _multiPlayManager.OnGameEnded -= HandleOpponentDisconnected;
+            _multiPlayManager.LeaveRoom(_roomId);
+            _multiPlayManager.Dispose();
+        }
     }
 }

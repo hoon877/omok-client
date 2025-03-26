@@ -49,9 +49,13 @@ public class HYGameUIController : MonoBehaviour
         }
     }
 
-    public void ShowGameOverUI()
+    public void ShowGameOverUI(string winner)
     {
-        // todo : show gameover ui 
-        OnTurnChanged = null;
+        // todo : 급수 점수 적용, 한판 더 할지 메인화면으로 돌아갈지, 필요하다면 패널 제작 
+        HGameManager.Instance.OpenConfirmPanel(winner, () =>
+        {
+            OnTurnChanged = null;
+            _gameController.Dispose();
+        });
     }
 }
