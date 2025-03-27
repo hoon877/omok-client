@@ -31,7 +31,7 @@ public class HGameManager : HSingleton<HGameManager>
 
     public void EndGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
     
     private void InitializeGame(HYConstants.GameType gameType)
