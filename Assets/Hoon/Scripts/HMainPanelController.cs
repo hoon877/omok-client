@@ -75,12 +75,12 @@ public class HMainPanelController : MonoBehaviour
 
     public void OnClickRankButton()
     {
-        
+        SceneManager.LoadScene("Ranking Board Cell Scene");
     }
 
     public void OnClickStoreButton()
     {
-        
+        SceneManager.LoadScene("Doyun/Scenes/DoyunTestScene");
     }
 
     public void OnClickSettingButton()

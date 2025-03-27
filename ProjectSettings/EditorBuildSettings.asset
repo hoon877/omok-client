@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/LeeJongYup/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 6e8f906dfd4dc4bbe87778456e6d1185
+  - enabled: 1
+    path: Assets/LeeGyuDae/Scenes/Ranking Board Cell Scene.unity
+    guid: 770b007cb4bbd45449f0e1ae06bebcfb
+  - enabled: 0
+    path: Assets/LeeJongYup/Scenes/Game.unity
+    guid: d4c1fce5d7d53254a8ce68ddb78b2187
+  - enabled: 1
+    path: Assets/Doyun/Scenes/DoyunTestScene.unity
+    guid: 629fc4e36d750b54b83849fec12ef5f0
   m_configObjects: {}

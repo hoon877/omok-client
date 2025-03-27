@@ -10,7 +10,7 @@ namespace LeeGyuDae
     {
         public static IEnumerator GetRecords(Action<List<UserRecordData>> successCallback)
         {
-            using (UnityWebRequest www = new UnityWebRequest("http://localhost:6000/records/getallrecords", UnityWebRequest.kHttpVerbGET))
+            using (UnityWebRequest www = new UnityWebRequest("http://localhost:3000/records/getallrecords", UnityWebRequest.kHttpVerbGET))
             {
                 www.downloadHandler = new DownloadHandlerBuffer();
 
