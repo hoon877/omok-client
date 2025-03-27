@@ -15,7 +15,7 @@ public class ProductPrefab : MonoBehaviour
     {
         // UI에 상품 데이터 반영
         productAmountText.text = $"{(product.coinAmount/1000).ToString()}K";
-        productPriceText.text = $"{product.coinPrice.ToString()}krw";
+        productPriceText.text = $"{product.coinPrice.ToString("N0")}krw";
         productImage.sprite = product.coinSprite;
 
         // 구매 버튼에 이벤트 등록
