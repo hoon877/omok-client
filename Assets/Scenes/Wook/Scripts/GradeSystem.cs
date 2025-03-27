@@ -13,7 +13,7 @@ public class GradeSystem : MonoBehaviour
 {
     public Button btnWin, btnLose, btnReset;        // Test
     public Slider sdGrade;
-    public GameObject line, zero;
+    public GameObject ui, line, zero;
     public TextMeshProUGUI txtGrade, txtState, txtMax;
 
     private int grade, score, div;
@@ -36,6 +36,7 @@ public class GradeSystem : MonoBehaviour
         
         txtState.text = "Your Score is : " + (score - 30);
         GradeView();
+        StartCoroutine(UIFadeIn());
     }
     
     void Start()
@@ -45,12 +46,25 @@ public class GradeSystem : MonoBehaviour
         btnReset.onClick.AddListener(Reset);    // Test
     }
 
-    void Reset()
+    void Reset()                // Test
     {
         grade = 18;
         score = 30;
         MaxValueSet();
+        txtState.text = "Your Score is : " + (score - 30);
         GradeView();
+        StartCoroutine(UIFadeIn());
+    }
+
+    IEnumerator UIFadeIn()
+    {
+        ui.GetComponent<CanvasGroup>().alpha = 0;
+        
+        while (ui.GetComponent<CanvasGroup>().alpha < 1)
+        {
+            ui.GetComponent<CanvasGroup>().alpha += Time.deltaTime;
+            yield return null;
+        }
     }
 
     void GradeView()
@@ -114,7 +128,6 @@ public class GradeSystem : MonoBehaviour
         for (int i = 1; i < div; i++)
         {
             Vector2 pos = new Vector2((i - div / 2) * bar / (div * 108), sdGrade.transform.position.y);
-            Debug.Log(pos);
             GameObject obj = Instantiate(line, pos, Quaternion.identity, transform.Find("/Canvas/UI").transform);
             obj.name = "Line" + i;
 
@@ -125,13 +138,28 @@ public class GradeSystem : MonoBehaviour
         }
     }
 
+    IEnumerator SliderAnimation(float sliderValue)
+    {
+        float time = 0;
+
+        while (time < 2)
+        {
+            time += Time.deltaTime;
+            sdGrade.value = Mathf.Lerp(sdGrade.value, sliderValue, time / 2);
+            Debug.Log("Slider Moving");
+            yield return null;
+        }
+    }
+
     void Win()
     {
+        StartCoroutine(UIFadeIn());
+        
         txtState.text = "YOU WIN";
         
         sdGrade.value += 10;
-        score += 10;
         
+        score += 10;
         if (score >= (int)sdGrade.maxValue)
         {
             UpGrade();
@@ -158,6 +186,8 @@ public class GradeSystem : MonoBehaviour
 
     void Lose()
     {
+        StartCoroutine(UIFadeIn());
+        
         txtState.text = "YOU LOSE";
         
         sdGrade.value -= 10;
