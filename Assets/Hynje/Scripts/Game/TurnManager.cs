@@ -153,7 +153,7 @@ public class MultiPlayerState :  ITurnState
 public class TurnManager : IDisposable
 {
     public event Action OnTurnChanged;
-    private Action<string, string> _gameOverCallback;
+    private Action<string, string, string> _gameOverCallback;
     
     private ITurnState _currentState;
     private Dictionary<HYConstants.PlayerType, ITurnState> _states = new();
@@ -221,7 +221,8 @@ public class TurnManager : IDisposable
                     }
                 });
                 // 상대방 종료 시 게임 오버 처리 이벤트 등록
-                _multiPlayManager.OnGameEnded += HandleOpponentDisconnected;
+                _multiPlayManager.OnPlayerDisconnected += HandleOpponentDisconnected; // 강제 종료만 처리
+                _multiPlayManager.OnGameEnded += HandleGameEnded; // 정상 게임 종료 처리
                 _gameOverCallback += _multiPlayManager.SendGameOver;
                 break;
         }
@@ -268,14 +269,28 @@ public class TurnManager : IDisposable
     {
         // UI 쓰레드에서 실행하기 위해 UnityThread 사용
         UnityThread.executeInUpdate(() => {
-            Debug.Log($"상대방이 게임을 떠났습니다. 승자: {winner}");
+            if (_isGameStarted)
+            {
+                Debug.Log($"상대방이 게임을 비정상적으로 종료했습니다. 승자: {winner}");
+    
+                // 승리 처리 (X는 흑돌, O는 백돌)
+                HYConstants.GameResult gameResult = winner == "BlackWin" ? 
+                    HYConstants.GameResult.BlackWin : HYConstants.GameResult.WhiteWin;
         
-            // 승리 처리 (X는 흑돌, O는 백돌)
-            HYConstants.GameResult gameResult = winner == "BlackWin" ? 
-                HYConstants.GameResult.BlackWin : HYConstants.GameResult.WhiteWin;
-            
-            // 게임 컨트롤러의 GameOver 메서드 호출
-            _gameController.GameOverByOpponentDisconnect(gameResult);
+                // 게임 컨트롤러의 GameOver 메서드 호출
+                _gameController.GameOverByOpponentDisconnect(gameResult);
+            }
+        });
+    }
+    
+    private void HandleGameEnded(string winner)
+    {
+        // UI 쓰레드에서 실행하기 위해 UnityThread 사용
+        UnityThread.executeInUpdate(() => {
+            if (_isGameStarted)
+            {
+                Debug.Log($"게임이 정상적으로 종료되었습니다. 승자: {winner}");
+            }
         });
     }
 
@@ -287,7 +302,8 @@ public class TurnManager : IDisposable
 
     public void GameOver(string winner)
     {
-        _gameOverCallback?.Invoke(_roomId, winner);
+        string myPlayerType = _myPlayerType.ToString();
+        _gameOverCallback?.Invoke(_roomId, winner, myPlayerType);
     }
 
     public void Dispose()

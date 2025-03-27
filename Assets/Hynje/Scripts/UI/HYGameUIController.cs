@@ -56,6 +56,8 @@ public class HYGameUIController : MonoBehaviour
         {
             OnTurnChanged = null;
             _gameController.Dispose();
+            // 확인 누르면 메인화면으로 
+            HGameManager.Instance.EndGame();
         });
     }
 }

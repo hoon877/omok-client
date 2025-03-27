@@ -47,14 +47,43 @@ public class GameRecordData
     public List<GameMove> gameRecord { get; set; }
 }
 
+// 게임 요약 정보 클래스
+[Serializable]
+public class GameSummary
+{
+    [JsonProperty("roomId")]
+    public string roomId;
+    
+    [JsonProperty("winner")]
+    public string winner;
+    
+    [JsonProperty("myPlayerType")]
+    public string myPlayerType;
+    
+    [JsonProperty("createdAt")]
+    public string createdAt;
+    
+    [JsonProperty("finishedAt")]
+    public string finishedAt;
+}
+
+// 유저의 여러 게임 기록을 담는 클래스
+[Serializable]
+public class UserGameRecordsData
+{
+    [JsonProperty("games")]
+    public List<GameSummary> games;
+}
+
 public class MultiPlayManager : IDisposable
 {
     private SocketIOUnity _socket;
     private HYConstants.PlayerType _myPlayerType;
     private event Action<HConstants.MultiplayManagerState, string> _onMultiplayStateChanged;
     public Action<MoveData> OnOpponentMove;
-    public Action<string> OnGameEnded; // winner 정보 전달
-    
+    public Action<string> OnGameEnded; // 정상적인 게임 종료 (승자 정보 전달)
+    public Action<string> OnPlayerDisconnected; // 상대방이 비정상 종료했을 때 (승자 정보 전달)
+
     public MultiPlayManager(Action<HConstants.MultiplayManagerState, string> onMultiplayStateChanged)
     {
         _onMultiplayStateChanged = onMultiplayStateChanged;
@@ -109,11 +138,14 @@ public class MultiPlayManager : IDisposable
     }
 
     private void EndGame(SocketIOResponse response)
-    {Debug.Log("상대방이 게임에서 나갔습니다.");
-        // 상대방이 나갔을 때 자동 승리 처리
+    {
+        Debug.Log("상대방이 게임에서 나갔습니다.");
+        // 상대방이 비정상적으로 나갔을 때만 자동 승리 처리
         var winner = _myPlayerType == HYConstants.PlayerType.BlackPlayer ? "BlackWin" : "WhiteWin";
-        OnGameEnded?.Invoke(winner);
         _onMultiplayStateChanged?.Invoke(HConstants.MultiplayManagerState.EndGame, null);
+        
+        // 상대방 강제 종료 이벤트 발생
+        OnPlayerDisconnected?.Invoke(winner);
     }
 
     // 상대방의 착수 정보 수신
@@ -130,13 +162,6 @@ public class MultiPlayManager : IDisposable
         OnGameEnded?.Invoke(data.winner);
     }
 
-    // // 게임 기보 수신
-    // private void GameRecord(SocketIOResponse response)
-    // {
-    //     var data = response.GetValue<GameRecordData>();
-    //     OnGameRecordReceived?.Invoke(data.gameRecord);
-    // }
-
     // 플레이어 착수 정보 전송
     public void SendPlayerMove(string roomId, int position, string player)
     {
@@ -149,17 +174,11 @@ public class MultiPlayManager : IDisposable
         _socket.Emit("leaveRoom", new { roomId });
     }
 
-    // 게임 종료 알림 (승리 시)
-    public void SendGameOver(string roomId, string winner)
+    // 게임 종료 알림
+    public void SendGameOver(string roomId, string winner, string myPlayerType)
     {
-        _socket.Emit("gameOver", new { roomId, winner });
+        _socket.Emit("gameOver", new { roomId, winner, myPlayerType });
     }
-
-    // // 게임 기보 요청
-    // public void GetGameRecord(string roomId)
-    // {
-    //     _socket.Emit("getGameRecord", roomId);
-    // }
 
     public void Dispose()
     {

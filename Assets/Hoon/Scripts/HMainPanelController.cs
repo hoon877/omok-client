@@ -26,6 +26,7 @@ public class HMainPanelController : MonoBehaviour
     [SerializeField] private TMP_Text _coinText;
     [SerializeField] private TMP_Text _profileText;
     [SerializeField] private GameObject _gameTypePanel;
+    [SerializeField] private GameObject _gameRecordPanel;
     
     private int _selectedProfileIndex;
     private int _coinCount;
@@ -69,7 +70,7 @@ public class HMainPanelController : MonoBehaviour
 
     public void OnClickReplayButton()
     {
-        
+        Instantiate(_gameRecordPanel, transform);
     }
 
     public void OnClickRankButton()

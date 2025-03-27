@@ -50,7 +50,7 @@ public class HGameManager : HSingleton<HGameManager>
 
     private void OnApplicationQuit()
     {
-        _gameController.Dispose();
+        _gameController?.Dispose();
         _gameController = null;
     }
 }

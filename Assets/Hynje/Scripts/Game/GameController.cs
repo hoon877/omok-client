@@ -211,6 +211,7 @@ public class GameController
             // 오목 완성, 승리 
             if (count >= 5)
             {
+                Debug.Log("GameOver");
                 HYConstants.GameResult gameResult = 
                     marker == HYConstants.MarkerType.Black ? HYConstants.GameResult.BlackWin : HYConstants.GameResult.WhiteWin;
                 GameOver(gameResult);
@@ -239,6 +240,7 @@ public class GameController
     {
         if (_turnManager.IsGameStarted())
         {
+            Debug.Log("GameOver-GiveUp");
             // 게임을 시작했을 때 
             HYConstants.GameResult gameResult = 
                 _turnManager.IsBlackPlayerTurn() ? HYConstants.GameResult.WhiteWin : HYConstants.GameResult.BlackWin;
@@ -253,12 +255,12 @@ public class GameController
     }
     public void GameOverByOpponentDisconnect(HYConstants.GameResult gameResult)
     {
-        string winner = gameResult.ToString();
-        _timer.InitTimer();
-        _gameUIController.ShowGameOverUI(winner);
+        Debug.Log("GameOver-OpponentDisconnect");
+        GameOver(gameResult);
     }
     private void GameOverOnTimeOut()
     {
+        Debug.Log("GameOver-TimeOut");
         HYConstants.GameResult gameResult = 
             _turnManager.IsBlackPlayerTurn() ? HYConstants.GameResult.WhiteWin : HYConstants.GameResult.BlackWin;
         GameOver(gameResult);
