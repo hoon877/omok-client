@@ -23,7 +23,10 @@ public class CoinShopContent : MonoBehaviour
     public void OnClickedButton()
     {
         PaymentPanel pay = CoinUIManager.Instance.PaymentPanel;
-        pay.Subscribe(() => { CoinManager.Instance.AddCoin(amount); });
+        pay.Subscribe(() =>
+        {
+            CoinManager.Instance.AddCoin(amount);
+        });
         pay.InitPanel(amount, price);
         pay.ShowPanel();
     }
