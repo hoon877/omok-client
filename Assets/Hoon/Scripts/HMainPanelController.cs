@@ -25,6 +25,9 @@ public class HMainPanelController : MonoBehaviour
     [SerializeField] private Sprite _womanProfileSprite; // 여자 프로필 이미지
     [SerializeField] private TMP_Text _coinText;
     [SerializeField] private TMP_Text _profileText;
+    [SerializeField] private GameObject _gameTypePanel;
+    [SerializeField] private GameObject _gameRecordPanel;
+    
     private int _selectedProfileIndex;
     private int _coinCount;
     private void Awake()
@@ -62,12 +65,12 @@ public class HMainPanelController : MonoBehaviour
 
     public void OnClickGamestartButton()
     {
-        SceneManager.LoadScene("Game");
+        Instantiate(_gameTypePanel, transform).GetComponent<PanelController>().Show();
     }
 
     public void OnClickReplayButton()
     {
-        
+        Instantiate(_gameRecordPanel, transform);
     }
 
     public void OnClickRankButton()

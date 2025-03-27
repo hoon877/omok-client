@@ -13,9 +13,4 @@ public class HYGameManager : MonoBehaviour
     {
         _gameController = new GameController(HYConstants.GameType.DualPlay);
     }
-
-    public void OnClickSetStoneButton()
-    {
-        _gameController.ExecuteCurrentTurn();
-    }
 }
