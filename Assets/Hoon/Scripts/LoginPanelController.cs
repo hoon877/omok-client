@@ -46,6 +46,7 @@ public class LoginPanelController : MonoBehaviour
             // Destroy(gameObject);
             gameObject.SetActive(false);
             _mainPanel.SetActive(true);
+            CoinManager.Instance.LoadCoin();
             
         }, result =>
         {
