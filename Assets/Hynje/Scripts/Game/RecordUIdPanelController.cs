@@ -5,14 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameRecordPanelController : MonoBehaviour
+public class RecordUIdPanelController : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject panel;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI dateText;
     [SerializeField] private TextMeshProUGUI resultText;
-    [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private Button closeButton;
     [SerializeField] private Button replayButton;
     
@@ -43,32 +42,31 @@ public class GameRecordPanelController : MonoBehaviour
         titleText.text = "게임 기록 로드 중...";
         dateText.text = "";
         resultText.text = "";
-        durationText.text = "";
         
         // 기존 보드와 돌 제거
         ClearBoard();
         
         // 게임 기록 로드
-        StartCoroutine(LoadGameRecord(roomId));
+        //StartCoroutine(LoadGameRecord(roomId));
     }
     
-    private IEnumerator LoadGameRecord(string roomId)
-    {
-        yield return StartCoroutine(NetworkManager.Instance.GetGameRecord(
-            roomId,
-            // 성공 콜백
-            (moves) => {
-                gameRecordMoves = moves;
-                DisplayGameInfo(roomId);
-                SetupBoard();
-            },
-            // 실패 콜백
-            () => {
-                Debug.LogError("게임 기록 상세 정보 로드 실패");
-                titleText.text = "게임 기록을 불러오지 못했습니다";
-            }
-        ));
-    }
+    // private IEnumerator LoadGameRecord(string roomId)
+    // {
+    //     yield return StartCoroutine(NetworkManager.Instance.GetGameRecord(
+    //         roomId,
+    //         // 성공 콜백
+    //         (moves) => {
+    //             gameRecordMoves = moves;
+    //             DisplayGameInfo(roomId);
+    //             SetupBoard();
+    //         },
+    //         // 실패 콜백
+    //         () => {
+    //             Debug.LogError("게임 기록 상세 정보 로드 실패");
+    //             titleText.text = "게임 기록을 불러오지 못했습니다";
+    //         }
+    //     ));
+    // }
     
     private void DisplayGameInfo(string roomId)
     {
@@ -88,7 +86,6 @@ public class GameRecordPanelController : MonoBehaviour
         
         // 게임 시간
         TimeSpan duration = lastMoveTime - firstMoveTime;
-        durationText.text = $"게임 시간: {FormatDuration(duration)}";
         
         // 승패 결과 (마지막 돌의 플레이어 또는 다른 방식으로 결정)
         string winner = DetermineWinner();
@@ -117,22 +114,6 @@ public class GameRecordPanelController : MonoBehaviour
         if (myRole == "White" && winner == "O") return true;
         
         return false;
-    }
-    
-    private string FormatDuration(TimeSpan duration)
-    {
-        if (duration.TotalHours >= 1)
-        {
-            return $"{duration.Hours}시간 {duration.Minutes}분";
-        }
-        else if (duration.TotalMinutes >= 1)
-        {
-            return $"{duration.Minutes}분 {duration.Seconds}초";
-        }
-        else
-        {
-            return $"{duration.Seconds}초";
-        }
     }
     
     private void SetupBoard()
