@@ -1,12 +1,12 @@
-# Default ignored files
+# 디폴트 무시된 파일
 /shelf/
 /workspace.xml
-# Rider ignored files
-/projectSettingsUpdater.xml
+# Rider에서 무시된 파일
 /.idea.omok-client.iml
 /modules.xml
 /contentModel.xml
-# Editor-based HTTP Client requests
+/projectSettingsUpdater.xml
+# 에디터 기반 HTTP 클라이언트 요청
 /httpRequests/
 # Datasource local storage ignored files
 /dataSources/
