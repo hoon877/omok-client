@@ -27,7 +27,8 @@ public class HMainPanelController : MonoBehaviour
     [SerializeField] private TMP_Text _profileText;
     [SerializeField] private GameObject _gameTypePanel;
     [SerializeField] private GameObject _gameRecordPanel;
-    
+    [SerializeField] private GameObject _settingPanel;
+
     private int _selectedProfileIndex;
     private int _coinCount;
     private void Awake()
@@ -85,6 +86,6 @@ public class HMainPanelController : MonoBehaviour
 
     public void OnClickSettingButton()
     {
-        
+        _settingPanel.SetActive(true);
     }
 }

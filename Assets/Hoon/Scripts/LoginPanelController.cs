@@ -43,7 +43,8 @@ public class LoginPanelController : MonoBehaviour
         StartCoroutine(NetworkManager.Instance.Signin(signinData, () =>
         {
             Debug.Log("성공");
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            gameObject.SetActive(false);
             _mainPanel.SetActive(true);
             
         }, result =>
