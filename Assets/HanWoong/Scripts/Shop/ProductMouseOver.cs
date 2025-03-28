@@ -10,12 +10,14 @@ public class ProductMouseOver : MonoBehaviour
     public Color32 altColor;
     
     private bool isMouseOverBgImage;
-    public bool isMouseOverBuyButton;
+    private bool isMouseOverBuyButton;
 
     private void Awake()
     {
         normalColor = ProdBgImage.color;
         altColor = new Color32(255,178,103,255);
+        isMouseOverBgImage = false;
+        isMouseOverBuyButton = false;
     }
 
     public void IsMouseOverBgImage()
@@ -27,6 +29,7 @@ public class ProductMouseOver : MonoBehaviour
     public void IsMouseOverBuyButton()
     {
         isMouseOverBuyButton = !isMouseOverBuyButton;
+        ChangeColor();
     }
     
     private void ChangeColor()
