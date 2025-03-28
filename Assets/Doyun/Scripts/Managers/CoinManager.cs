@@ -13,6 +13,11 @@ struct CoinResponse
     public string nickname;
     public int coin;
 }
+public enum SaveType
+{
+    Add,
+    Overwrite
+}
 
 public class CoinManager : HSingleton<CoinManager>, ISubject
 {
@@ -48,8 +53,6 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
     private void Start()
     {
         observers = new List<IObserver>();
-        TestLogin();
-        // LoadCoin();
     }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -117,14 +120,14 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
 
     #region 코인 저장
 
-    void SaveCoin(int value)
+    public void SaveCoin(int value)
     {
-        StartCoroutine(SaveCoinCoroutine(CoinsCount));
+        StartCoroutine(SaveCoinCoroutine(value));
     }
 
     IEnumerator SaveCoinCoroutine(int value)
     {
-        string url = path + "/savecoin";
+        string url = url = path + "/savecoin";
 
         WWWForm form = new WWWForm();
         form.AddField("coin", value);
@@ -191,7 +194,7 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
     }
     #endregion
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     #region 옵저버
 

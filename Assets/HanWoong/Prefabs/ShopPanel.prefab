@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 551f08b736433854393e8981ed2627e3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d7582af2bb4dab41945452c49a721fd, type: 3}
   m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f40835e4f197c547ac9bf125de7f25c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0473b6667bd7fb042bc5de8b09e539d0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -180,10 +180,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 04715256639f03e4293bc582793fca8d, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 1a0058c24e2f7cf4591b226a9e4e7178, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: 0137d9581382ee6438634f05c217f845, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 0db3492304076cf4eba306d38f40c9a1, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: 4ccd8306ee111e64b928ee9abd150fbb, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: cf40099fb6e992542ac13c82108b4868, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: cf40099fb6e992542ac13c82108b4868, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 7db426c40626b794cbf11904433f8de0, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -4013411287287885261}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopPanel, Assembly-CSharp
         m_MethodName: ShopOpenClose
         m_Mode: 1
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb0c77946b8aecb47af13317e549093f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 56c54752b9105894cae301e96676b265, type: 3}
   m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -354,15 +354,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4554329479226940365}
   - component: {fileID: 7576514527963008635}
-  - component: {fileID: -4013411287287885261}
   - component: {fileID: 3183150842100208552}
+  - component: {fileID: 5351412435680786677}
   m_Layer: 5
   m_Name: ShopPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4554329479226940365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -394,19 +394,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8868633497521797341}
   m_CullTransparentMesh: 1
---- !u!114 &-4013411287287885261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8868633497521797341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a4a3df99943d89498c86a0d4d0f0c76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _productsPanel: {fileID: 2352423986550566309}
 --- !u!114 &3183150842100208552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,3 +424,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5351412435680786677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868633497521797341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b666bb01fd4c14f8a935a45d1a48e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _productsPanel: {fileID: 2352423986550566309}

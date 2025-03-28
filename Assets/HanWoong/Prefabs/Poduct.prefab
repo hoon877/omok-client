@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 2026104373382849786}
   - component: {fileID: 7553699965653612833}
   - component: {fileID: 1550085608824445592}
-  - component: {fileID: 5539494405636334723}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -275,7 +274,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5539494405636334723}
+        - m_Target: {fileID: 4861882105971270624}
           m_TargetAssemblyTypeName: ProductMouseOver, Assembly-CSharp
           m_MethodName: IsMouseOverBuyButton
           m_Mode: 1
@@ -291,7 +290,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5539494405636334723}
+        - m_Target: {fileID: 4861882105971270624}
           m_TargetAssemblyTypeName: ProductMouseOver, Assembly-CSharp
           m_MethodName: IsMouseOverBuyButton
           m_Mode: 1
@@ -303,25 +302,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &5539494405636334723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2197346424750797071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49eca69751a5a0849b82cf57bbdb80e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProdBgImage: {fileID: 6990527217492083786}
-  buyButton: {fileID: 2197346424750797071}
-  normalColor: {r: 0, g: 0, b: 0, a: 0}
-  altColor:
-    serializedVersion: 2
-    rgba: 0
-  isMouseOverBuyButton: 0
 --- !u!1 &5439489259104039497
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +312,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4938154084653452277}
   - component: {fileID: 5885227640637609885}
-  - component: {fileID: 7917052682867581876}
+  - component: {fileID: 8337671071219285976}
+  - component: {fileID: 4861882105971270624}
   m_Layer: 5
   m_Name: Poduct
   m_TagString: Untagged
@@ -369,7 +350,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5439489259104039497}
   m_CullTransparentMesh: 1
---- !u!114 &7917052682867581876
+--- !u!114 &8337671071219285976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,13 +359,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5439489259104039497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1e855fdedab084488517cefc8ad240b, type: 3}
+  m_Script: {fileID: 11500000, guid: 862c117db58fc084ebadba732661a8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   productAmountText: {fileID: 5254682967085853055}
   productPriceText: {fileID: 1257746822374487833}
   productImage: {fileID: 3713320879412023045}
   buyButton: {fileID: 7553699965653612833}
+--- !u!114 &4861882105971270624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5439489259104039497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63984f1e04d1494f98d2f3308310fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProdBgImage: {fileID: 6990527217492083786}
+  buyButton: {fileID: 2197346424750797071}
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  altColor:
+    serializedVersion: 2
+    rgba: 0
 --- !u!1 &6898416988067018518
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +450,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52ea723c34075e54190b9eb3d88c0cb2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a0182a440228db240841729176f0a877, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -536,7 +535,6 @@ GameObject:
   - component: {fileID: 7106572830864605863}
   - component: {fileID: 5338075025233677281}
   - component: {fileID: 6990527217492083786}
-  - component: {fileID: 7502092551819425932}
   - component: {fileID: 7786651176908117666}
   m_Layer: 5
   m_Name: ProductBackground
@@ -592,7 +590,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb0c77946b8aecb47af13317e549093f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 56c54752b9105894cae301e96676b265, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -602,25 +600,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 4.5
---- !u!114 &7502092551819425932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7221966913171901877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49eca69751a5a0849b82cf57bbdb80e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProdBgImage: {fileID: 6990527217492083786}
-  buyButton: {fileID: 2197346424750797071}
-  normalColor: {r: 0, g: 0, b: 0, a: 0}
-  altColor:
-    serializedVersion: 2
-    rgba: 0
-  isMouseOverBuyButton: 0
 --- !u!114 &7786651176908117666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,7 +617,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 7502092551819425932}
+        - m_Target: {fileID: 4861882105971270624}
           m_TargetAssemblyTypeName: ProductMouseOver, Assembly-CSharp
           m_MethodName: IsMouseOverBgImage
           m_Mode: 1
@@ -654,7 +633,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 7502092551819425932}
+        - m_Target: {fileID: 4861882105971270624}
           m_TargetAssemblyTypeName: ProductMouseOver, Assembly-CSharp
           m_MethodName: IsMouseOverBgImage
           m_Mode: 1
