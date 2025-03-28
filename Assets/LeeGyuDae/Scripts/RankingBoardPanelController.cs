@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LeeGyuDae
@@ -43,6 +44,14 @@ namespace LeeGyuDae
         private void Start()
         {
             LoadData();
+        }
+        
+        /// <summary>
+        /// 로그인 씬으로 돌아가는 함수
+        /// </summary>
+        public void OnClickBackButton()
+        {
+            SceneManager.LoadScene("Hoon/Scene/Login");
         }
 
         /// <summary>
