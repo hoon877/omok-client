@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 8495077813317950265}
   - component: {fileID: 9013820599939598184}
   m_Layer: 5
-  m_Name: CoinShop_Panel
+  m_Name: CoinShop_Panel (Doyun)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

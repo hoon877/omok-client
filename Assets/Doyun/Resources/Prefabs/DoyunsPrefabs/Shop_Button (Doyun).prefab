@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6273757894498672460}
   - component: {fileID: 86953834804650419}
   m_Layer: 5
-  m_Name: Shop_Button
+  m_Name: Shop_Button (Doyun)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

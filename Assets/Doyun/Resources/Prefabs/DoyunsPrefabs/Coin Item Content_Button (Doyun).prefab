@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8776687527791379233}
   - component: {fileID: 5960028194871487452}
   m_Layer: 5
-  m_Name: Coin Item Content_Button
+  m_Name: Coin Item Content_Button (Doyun)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

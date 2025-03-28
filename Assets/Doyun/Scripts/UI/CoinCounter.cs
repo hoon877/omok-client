@@ -12,7 +12,7 @@ public class CoinCounter : MonoBehaviour, IObserver
 
     private void Start()
     {
-        CoinManager.Instance.AddObserver(this);
+        CoinUIManager.Instance.AddObserver(this);
         OnNotify();
     }
 
