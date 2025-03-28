@@ -27,7 +27,6 @@ public class CoinCounter : MonoBehaviour, IObserver
         // (값을 가져오는 함수, 값을 설정하는 함수, 목표값, 애니메이션 시간)
         DOTween.To(() => startValue, x => startValue = x, endValue, time)
             .OnUpdate(() => coinText.text = startValue.ToString("N0"))      // startCoin의 값이 변경될때마다 호출
-            .SetEase(Ease.Linear).                                          // 애니메이션의 ease 타입 설정 (선택 가능)
-            onComplete += () => Debug.Log("asdasd");
+            .SetEase(Ease.Linear);                                          // 애니메이션의 ease 타입 설정 (선택 가능)
     }
 }
