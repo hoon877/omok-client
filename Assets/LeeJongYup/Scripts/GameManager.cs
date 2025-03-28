@@ -6,16 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    //[SerializeField] private GameObject settingsPanel;
-    //[SerializeField] private GameObject confirmPanel;
-    //[SerializeField] private GameObject signinPanel;
-    //[SerializeField] private GameObject signupPanel;
     
     private BlockController _blockController;
     private GameUIController _gameUIController;
     private GameLogic _gameLogic;
     private RenjuRuleChecker _renjuRuleChecker;
     private Canvas _canvas;
+    [SerializeField] private GameObject confirmPanel;
     
     private Constants.PlayerType[,] _board;
     
@@ -29,9 +26,18 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        // 로그인 관련 처리
-        //OpenSigninPanel();
         ChangeToGameScene(GameType.SinglePlayer);
+    }
+    
+    
+    public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClick onConfirmButtonClick)
+    {
+        if (_canvas != null)
+        {
+            var confirmPanelObject = Instantiate(confirmPanel, _canvas.transform);
+            confirmPanelObject.GetComponent<ConfirmPanelController>()
+                .Show(message, onConfirmButtonClick);
+        }
     }
 
     public void ChangeToGameScene(GameType gameType)
@@ -66,6 +72,7 @@ public class GameManager : Singleton<GameManager>
         
         // 난이도
         _difficulty = Difficulty.Easy;
+        
         // 턴 시작
         SetTurn(TurnType.PlayerA);
     }
@@ -125,7 +132,6 @@ public class GameManager : Singleton<GameManager>
         switch (turnType)
         {
             case TurnType.PlayerA:
-                //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnA);
                 _blockController.OnBlockClickedDelegate = (row, col) =>
                 {
                     // 금수 판정을 먼저 수행합니다.
@@ -150,7 +156,7 @@ public class GameManager : Singleton<GameManager>
                 };
                 break;
             case TurnType.PlayerB:
-                //_gameUIController.SetGameUIMode(GameUIController.GameUIMode.TurnB);
+                
                 if (_gameType == GameType.SinglePlayer)
                 {
                     if (_difficulty == Difficulty.Easy)
