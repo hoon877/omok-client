@@ -48,8 +48,6 @@ public class CoinManager : HSingleton<CoinManager>, ISubject
     private void Start()
     {
         observers = new List<IObserver>();
-        TestLogin();
-        // LoadCoin();
     }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
