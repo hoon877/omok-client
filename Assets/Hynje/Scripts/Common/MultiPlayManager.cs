@@ -41,6 +41,7 @@ public class GameMove
     public string timestamp { get; set; }
 }
 
+[Serializable]
 public class GameRecordData
 {
     [JsonProperty("gameRecord")]

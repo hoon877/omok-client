@@ -13,6 +13,10 @@ public class HGameManager : HSingleton<HGameManager>
     private GameController _gameController;
     private HYConstants.GameType _gameType;
     
+    public bool isRecordMode;
+    public string currentRoomId;
+    private RecordController _recordController;
+    
     public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClick onConfirmButtonClick)
     {
         if (_canvas != null)
@@ -25,12 +29,14 @@ public class HGameManager : HSingleton<HGameManager>
 
     public void StartGame(HYConstants.GameType gameType)
     {
+        isRecordMode = false;
         _gameType = gameType;
         SceneManager.LoadScene("Game");
     }
 
     public void EndGame()
     {
+        // Login 씬으로 이동 
         SceneManager.LoadScene(0);
     }
     
@@ -38,12 +44,31 @@ public class HGameManager : HSingleton<HGameManager>
     {
         _gameController = new GameController(gameType);
     }
+    
+    public void ViewGameRecord(string roomId)
+    {
+        isRecordMode = true;
+        currentRoomId = roomId;
+        SceneManager.LoadScene("Game");
+    }
+
+    private void InitializeRecordMode(string roomId)
+    {
+        _recordController = new RecordController(roomId);
+    }
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Game")
         {
-            InitializeGame(_gameType);
+            if (isRecordMode)
+            {
+                InitializeRecordMode(currentRoomId);
+            }
+            else
+            {
+                InitializeGame(_gameType);
+            }
         }
         _canvas = GameObject.FindObjectOfType<Canvas>();
     }

@@ -155,16 +155,17 @@ public class GameRecordListController : MonoBehaviour
         var gameRecordCell = cellObject.GetComponent<GameRecordCell>();
 
         gameRecordCell.SetData(gameRecordList[index], index);
-        gameRecordCell.OnClick = () => OnCellClicked(gameRecordList[index].roomId);
+        gameRecordCell.OnClick = () => OnViewButtonClicked(gameRecordList[index].roomId);
 
         gameRecordCell.transform.localPosition = new Vector3(0, -index * cellSize, 0);
         return gameRecordCell;
     }
 
-    private void OnCellClicked(string roomId)
+    private void OnViewButtonClicked(string roomId)
     {
         Debug.Log($"게임 기록 선택: {roomId}");
-        OnGameRecordSelected?.Invoke(roomId);
+        // 게임 매니저의 ViewGameRecord 메서드 호출
+        HGameManager.Instance.ViewGameRecord(roomId);
     }
 
     private void OnValueChanged(Vector2 value)

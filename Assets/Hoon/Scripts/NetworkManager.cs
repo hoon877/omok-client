@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
@@ -243,8 +244,20 @@ public class NetworkManager : HSingleton<NetworkManager>
                 try
                 {
                     string jsonResult = www.downloadHandler.text;
-                    GameRecordData recordData = JsonUtility.FromJson<GameRecordData>(jsonResult);
-                    success?.Invoke(recordData.gameRecord);
+                    Debug.Log($"게임 기록 응답: {jsonResult}");
+                
+                    //GameRecordData recordData = JsonUtility.FromJson<GameRecordData>(jsonResult);
+                    GameRecordData recordData = JsonConvert.DeserializeObject<GameRecordData>(jsonResult);
+                
+                    if (recordData != null && recordData.gameRecord != null)
+                    {
+                        success?.Invoke(recordData.gameRecord);
+                    }
+                    else
+                    {
+                        Debug.LogError("게임 기록 데이터가 null입니다");
+                        failure?.Invoke();
+                    }
                 }
                 catch (Exception ex)
                 {

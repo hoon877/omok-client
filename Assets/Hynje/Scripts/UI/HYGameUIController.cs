@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class HYGameUIController : MonoBehaviour
 {
+    [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Image blackTurnFillImage;
     [SerializeField] private Image whiteTurnFillImage;
 
@@ -15,7 +16,7 @@ public class HYGameUIController : MonoBehaviour
     public void InitGameUIController(GameController gameController)
     {
         _gameController = gameController;
-        
+        rectTransform.anchoredPosition = Vector2.zero;
         OnTurnChanged += ChangeTurnUI;
     }
 
