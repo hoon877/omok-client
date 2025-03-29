@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class LRenjuRuleChecker : MonoBehaviour
 {
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     /// <summary>
     /// 주어진 보드에서 (row, col)에 player 돌을 두었을 때, Renju 금수(예: 장목, 쌍4, 쌍3)가 되는지 검사합니다.
     /// PlayerA와 PlayerB 모두에 대해 금수 판정을 수행합니다.

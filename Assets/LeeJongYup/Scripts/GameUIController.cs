@@ -8,7 +8,11 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroupA;
     [SerializeField] private CanvasGroup canvasGroupB;
     //[SerializeField] private Button gameOverButton;
-
+    
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     public enum GameUIMode
     {
         Init,
