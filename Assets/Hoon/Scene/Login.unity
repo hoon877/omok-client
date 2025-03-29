@@ -1303,6 +1303,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confirmPanel: {fileID: 3322007610722072902, guid: 3261f9e8ca415ad48b4d5ab787b2369e, type: 3}
+  isRecordMode: 0
+  currentRoomId: 
 --- !u!4 &1545358044
 Transform:
   m_ObjectHideFlags: 0
@@ -1752,6 +1754,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4684385013152147733, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231825079330663295, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231825079330663295, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5231825079330663295, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6936469000135582052, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6936469000135582052, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6936469000135582052, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6936469000135582052, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7857326541621547942, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
