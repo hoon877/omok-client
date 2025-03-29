@@ -24,6 +24,22 @@ public class BoardController : MonoBehaviour
         _lastMarker.SetLastPositionMarker(true);
     }
 
+    public GameObject GetMarker(HYConstants.MarkerType markerType, Vector3 position)
+    {
+        _lastMarker?.SetLastPositionMarker(false);
+        
+        var markerPrefab = (markerType == HYConstants.MarkerType.Black) ? blackMarkerPrefab : whiteMarkerPrefab;
+        var markerObject = Instantiate(markerPrefab, position, Quaternion.identity);
+        markerObject.transform.SetParent(markersParent);
+        var markerController = markerObject.GetComponent<MarkerController>();
+        
+        _lastMarker = markerController;
+        
+        _lastMarker.SetLastPositionMarker(true);
+        
+        return markerObject;
+    }
+
     public void SetForbiddenMarker(Vector3 position)
     {
         var forbiddenMarkerObject = ObjectPool.Instance.GetObject();
