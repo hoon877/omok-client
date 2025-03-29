@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -19,7 +19,8 @@ public struct LoginResult
 public class LoginPanelController : MonoBehaviour
 {
     [SerializeField] private GameObject _signupPanel;
-    [SerializeField] private GameObject confirmPanel;
+    [SerializeField] private GameObject _confirmPanel;
+    [SerializeField] private GameObject _mainPanel;
     [SerializeField] private TMP_InputField _usernameInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     private Canvas _canvas;
@@ -42,7 +43,11 @@ public class LoginPanelController : MonoBehaviour
         StartCoroutine(NetworkManager.Instance.Signin(signinData, () =>
         {
             Debug.Log("성공");
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            gameObject.SetActive(false);
+            _mainPanel.SetActive(true);
+            CoinManager.Instance.LoadCoin();
+            
         }, result =>
         {
             if (result == 0)

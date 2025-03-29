@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    private Constants.PlayerType[,] _board;
+    private LConstants.PlayerType[,] _board;
     public BlockController _blockController;
 
-    public void SetBoard(Constants.PlayerType[,] board)
+    public void SetBoard(LConstants.PlayerType[,] board)
     {
         _board = board;
     }
@@ -20,16 +20,16 @@ public class GameLogic : MonoBehaviour
     /// 게임 결과 확인 함수
     /// </summary>
     /// <returns>플레이어 기준 게임 결과</returns>
-    public Constants.GameResult CheckGameResult()
+    public LConstants.GameResult CheckGameResult()
     {
-        if (CheckGameWin(Constants.PlayerType.PlayerA)) { return Constants.GameResult.Win; }
-        if (CheckGameWin(Constants.PlayerType.PlayerB)) { return Constants.GameResult.Lose; }
-        if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return Constants.GameResult.Draw; }
+        if (CheckGameWin(LConstants.PlayerType.PlayerA)) { return LConstants.GameResult.Win; }
+        if (CheckGameWin(LConstants.PlayerType.PlayerB)) { return LConstants.GameResult.Lose; }
+        if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return LConstants.GameResult.Draw; }
         
-        return Constants.GameResult.None;
+        return LConstants.GameResult.None;
     }
     // 게임의 승패를 판단하는 함수
-    private bool CheckGameWin(Constants.PlayerType playerType)
+    private bool CheckGameWin(LConstants.PlayerType playerType)
     {
         int winCount = 5;
         int numRows = _board.GetLength(0);
