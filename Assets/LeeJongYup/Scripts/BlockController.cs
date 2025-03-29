@@ -6,7 +6,12 @@ public class BlockController : MonoBehaviour
     
     public delegate void OnBlockClicked(int row, int col);
     public OnBlockClicked OnBlockClickedDelegate;
-
+    
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+    
     public void InitBlocks()
     {
         for (int i = 0; i < blocks.Length; i++)

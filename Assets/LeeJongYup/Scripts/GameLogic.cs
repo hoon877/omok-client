@@ -9,6 +9,10 @@ public class GameLogic : MonoBehaviour
     private LConstants.PlayerType[,] _board;
     public BlockController _blockController;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     public void SetBoard(LConstants.PlayerType[,] board)
     {
         _board = board;
