@@ -1274,7 +1274,7 @@ GameObject:
   - component: {fileID: 8067551359812990862}
   - component: {fileID: 8043024446288817022}
   m_Layer: 5
-  m_Name: Payment_Panel
+  m_Name: Payment_Panel (Doyun)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,5 +49,6 @@ public class ProductManager : MonoBehaviour
     {
         Debug.Log($"{product.coinAmount} 코인 구매 (가격: {product.coinPrice}krw)");
         // TODO: 코인 시스템 연동
+        CoinManager.Instance.AddCoin(product.coinAmount);
     }
 }
