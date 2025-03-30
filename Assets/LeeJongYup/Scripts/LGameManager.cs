@@ -10,7 +10,6 @@ public class GameManager : LSingleton<GameManager>
     private BlockController _blockController;
     private GameUIController _gameUIController;
     private GameLogic _gameLogic;
-    //private HYRenjuRuleChecker _renjuRuleChecker;
     private LRenjuRuleChecker _renjuRuleChecker;
     private TurnManager _turnManager;
     private Canvas _canvas;
