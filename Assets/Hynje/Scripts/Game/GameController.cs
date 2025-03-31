@@ -74,10 +74,12 @@ public class GameController
             // 백돌을 놓으면 금수를 계산하여 표시 
             _renjuRuleChecker.CalculateForbiddenPositions();
             UpdateForbiddenMarkers();
+            
         }
         // 다음 턴의 UI로 변경 
         _gameUIController.OnTurnChanged?.Invoke(!isBlackTurn);
     }
+    
 
     private void UpdateForbiddenMarkers()
     {
@@ -91,6 +93,18 @@ public class GameController
                 _boardController.SetForbiddenMarker(markerPos);
             }
         }
+    }
+    
+    public HYConstants.MarkerType[,] GetBoard()
+    {
+        return _board;
+    }
+
+    // AI 계산 위치 설정 (TryPlaceMarker 호출 전에 설정)
+    public void SetAISelectedPosition(Vector2Int gridPos)
+    {
+        // _boardClickHandler의 선택된 위치 설정
+        _boardClickHandler.SetSelectedPosition(gridPos);
     }
 
     public bool TryPlaceMarker(bool isBlackPlayer)
