@@ -32,14 +32,7 @@ public class HGameManager : HSingleton<HGameManager>
     {
         isRecordMode = false;
         _gameType = gameType;
-        if (_gameType == HYConstants.GameType.SinglePlay)
-        {
-            SceneManager.LoadScene("LJYGame");
-        }
-        else
-        {
-            SceneManager.LoadScene("Game");
-        }
+        SceneManager.LoadScene("Game");
         
     }
 
