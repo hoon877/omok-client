@@ -24,7 +24,15 @@ public class LoginPanelController : MonoBehaviour
     [SerializeField] private TMP_InputField _usernameInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     private Canvas _canvas;
-    
+
+    public void Awake()
+    {
+        if (HGameManager.Instance.isLoggedIn == true)
+        {
+            gameObject.SetActive(false);
+            _mainPanel.SetActive(true);
+        }
+    }
     public void OnClickLogin()
     {
         string username = _usernameInputField.text;
@@ -45,7 +53,8 @@ public class LoginPanelController : MonoBehaviour
             Debug.Log("성공");
             // Destroy(gameObject);
             gameObject.SetActive(false);
-            _mainPanel.SetActive(true);
+            _mainPanel.SetActive(true); 
+            HGameManager.Instance.isLoggedIn = true;
             CoinManager.Instance.LoadCoin();
             
         }, result =>

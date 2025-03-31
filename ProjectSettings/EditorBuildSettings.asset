@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/LeeJongYup/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Doyun/Scenes/LoginTest.unity
+    guid: a548708ae2bfe0c45a39350581db4be1
+  - enabled: 0
     path: Assets/Hoon/Scene/Login.unity
     guid: a0c911df7a75dbd41a828dfd4f3331e6
   - enabled: 1

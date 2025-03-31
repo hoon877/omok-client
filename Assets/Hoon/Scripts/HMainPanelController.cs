@@ -88,4 +88,5 @@ public class HMainPanelController : MonoBehaviour
     {
         _settingPanel.SetActive(true);
     }
+    
 }

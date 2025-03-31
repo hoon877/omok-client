@@ -6,7 +6,7 @@ public class GameTypePanelController : PanelController
 {
     public void OnClickSinglePlayButton()
     {
-        //HGameManager.Instance.StartGame(HYConstants.GameType.SinglePlay);
+        HGameManager.Instance.StartGame(HYConstants.GameType.SinglePlay);
     }
 
     public void OnClickDualPlayButton()

@@ -16,6 +16,7 @@ public class HGameManager : HSingleton<HGameManager>
     public bool isRecordMode;
     public string currentRoomId;
     private RecordController _recordController;
+    public bool isLoggedIn = false;
     
     public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClick onConfirmButtonClick)
     {

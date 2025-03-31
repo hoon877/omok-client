@@ -1169,6 +1169,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4532210621493310952, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1818939566}
+    - target: {fileID: 4532210621493310952, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnClickWomanProfileButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4684385013152147733, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1276,6 +1284,14 @@ PrefabInstance:
     - target: {fileID: 6936469000135582052, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857326541621547942, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1818939566}
+    - target: {fileID: 7857326541621547942, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnClickManProfileButton
       objectReference: {fileID: 0}
     - target: {fileID: 8121244147319950441, guid: 8f2b4488de264fe46b51bd8d7b3ab7d0, type: 3}
       propertyPath: m_Name
@@ -1398,6 +1414,7 @@ MonoBehaviour:
   confirmPanel: {fileID: 6479629605079883788, guid: 6cc41be3bbd5a7b429551f95525c0503, type: 3}
   isRecordMode: 0
   currentRoomId: 
+  isLoggedIn: 0
 --- !u!4 &1545358044
 Transform:
   m_ObjectHideFlags: 0
@@ -1423,6 +1440,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 181260764711576081, guid: 5528353f8acf69f41801b6a309915d0c, type: 3}
   m_PrefabInstance: {fileID: 1365605345}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1818939566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2688753981594915186, guid: 5528353f8acf69f41801b6a309915d0c, type: 3}
+  m_PrefabInstance: {fileID: 1365605345}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818939564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a72aabd106024d74b9f8a1ebc675d61e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1891438164
 PrefabInstance:
   m_ObjectHideFlags: 0
