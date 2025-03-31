@@ -125,4 +125,10 @@ public class BoardClickHandler : MonoBehaviour
     {
         return gridPos.x >= 0 && gridPos.x < HYConstants.BoardSize && gridPos.y >= 0 && gridPos.y < HYConstants.BoardSize;
     }
+    
+    // AI를 위한 위치 설정 메서드
+    public void SetSelectedPosition(Vector2Int gridPos)
+    {
+        SetPositionSelector(gridPos);
+    }
 }

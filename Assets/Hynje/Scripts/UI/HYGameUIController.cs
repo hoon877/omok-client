@@ -53,7 +53,8 @@ public class HYGameUIController : MonoBehaviour
     public void ShowGameOverUI(string winner)
     {
         // todo : 급수 점수 적용, 한판 더 할지 메인화면으로 돌아갈지, 필요하다면 패널 제작 
-        HGameManager.Instance.OpenConfirmPanel(winner, () =>
+        var text = winner == "BlackWin" ? "흑돌 승리!" : "백돌 승리!";
+        HGameManager.Instance.OpenConfirmPanel(text, () =>
         {
             OnTurnChanged = null;
             _gameController.Dispose();

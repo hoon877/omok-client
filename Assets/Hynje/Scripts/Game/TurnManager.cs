@@ -66,26 +66,64 @@ public class PlayerState : ITurnState
         {
             _multiPlayManager.SendPlayerMove(_roomId, _currentData.Item1, _currentData.Item2);
         }
-        // UI 요소 비활성화 등의 작업
-        //gameController.HandleTimer();
     }
 }
 
 public class AIState : ITurnState
 {
+    private TurnManager _turnManager;
+    private HYMinimaxAIController _aiController;
+    
+    public AIState(TurnManager turnManager, int aiDifficulty = 4)
+    {
+        _turnManager = turnManager;
+        _aiController = new HYMinimaxAIController(aiDifficulty);
+    }
+    
     public void OnEnter(GameController gameController)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("AI 턴 시작 (백돌)");
+        gameController.HandleTimer();
+        
+        // AI 턴이 시작되면 즉시 OnExecute 호출
+        OnExecute(gameController);    
     }
 
     public void OnExecute(GameController gameController)
     {
-        throw new System.NotImplementedException();
+        // AI 계산 로직 - 백돌만 사용
+        HYConstants.MarkerType[,] board = gameController.GetBoard();
+        
+        // AI의 최적 수 계산
+        var bestMove = _aiController.GetBestMove(board);
+        
+        if (bestMove.HasValue)
+        {
+            // 계산된 위치를 게임 좌표로 변환
+            Vector2Int gridPos = new Vector2Int(bestMove.Value.col, bestMove.Value.row);
+            
+            // BoardClickHandler에 선택된 위치 설정
+            gameController.SetAISelectedPosition(gridPos);
+            
+            // 마커 배치 시도 (백돌은 false)
+            if (gameController.TryPlaceMarker(false))
+            {
+                _turnManager.AdvanceToNextTurn();
+            }
+            else
+            {
+                Debug.LogWarning("AI가 선택한 위치에 마커를 배치할 수 없습니다");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("AI가 유효한 이동을 찾지 못했습니다");
+        }
     }
 
     public void OnExit(GameController gameController)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("AI 턴 종료 (백돌)");
     }
 }
 
@@ -175,7 +213,10 @@ public class TurnManager : IDisposable
         switch (gameType)
         {
             case HYConstants.GameType.SinglePlay:
-                // todo: AI 기능 추가 
+                // 사용자는 흑돌, AI는 백돌
+                _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this);
+                _states[HYConstants.PlayerType.WhitePlayer] = new AIState(this, 4); // 난이도 4로 설정
+                _isGameStarted = true;
                 break;
             case HYConstants.GameType.DualPlay:
                 _states[HYConstants.PlayerType.BlackPlayer] = new PlayerState(true, this);
@@ -258,6 +299,11 @@ public class TurnManager : IDisposable
         _currentState?.OnExit(_gameController);
         _currentState = newState;
         _currentState.OnEnter(_gameController);
+    }
+    
+    public ITurnState GetCurrentState()
+    {
+        return _currentState;
     }
 
     public bool IsBlackPlayerTurn()
