@@ -73,11 +73,7 @@ public class GradeSystem : MonoBehaviour
         sdGrade.value = score;
         
         // Color
-        if (sdGrade.value > 30)
-        {
-            sdGrade.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue;
-        }
-        else if (sdGrade.value < 30)
+        if (sdGrade.value < 30)
         {
             sdGrade.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
         }
@@ -142,22 +138,36 @@ public class GradeSystem : MonoBehaviour
     {
         float time = 0;
 
-        while (time < 2)
+        if (sliderValue - score > 0)
+        {
+            sdGrade.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.blue;
+        }
+        else
+        {
+            sdGrade.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+        }
+        
+
+        while (time < 1f)
         {
             time += Time.deltaTime;
-            sdGrade.value = Mathf.Lerp(sdGrade.value, sliderValue, time / 2);
-            Debug.Log("Slider Moving");
+            sdGrade.value = Mathf.Lerp(sdGrade.value, sliderValue, time * 0.4f);
             yield return null;
         }
     }
 
     void Win()
     {
-        StartCoroutine(UIFadeIn());
+        StartCoroutine(Increase());
+    }
+
+    IEnumerator Increase()
+    {
+        yield return StartCoroutine(UIFadeIn());
         
         txtState.text = "YOU WIN";
         
-        sdGrade.value += 10;
+        yield return StartCoroutine(SliderAnimation(sdGrade.value + 10));
         
         score += 10;
         if (score >= (int)sdGrade.maxValue)
@@ -186,11 +196,17 @@ public class GradeSystem : MonoBehaviour
 
     void Lose()
     {
-        StartCoroutine(UIFadeIn());
+        StartCoroutine(Decrease());
+    }
+
+    IEnumerator Decrease()
+    {
+        yield return StartCoroutine(UIFadeIn());
         
         txtState.text = "YOU LOSE";
         
-        sdGrade.value -= 10;
+        yield return StartCoroutine(SliderAnimation(sdGrade.value - 10));
+        
         score -= 10;
         
         if (score <= 0)
