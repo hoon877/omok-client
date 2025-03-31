@@ -20,8 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LeeGyuDae/Scenes/Ranking Board Cell Scene.unity
     guid: 770b007cb4bbd45449f0e1ae06bebcfb
-  - enabled: 0
-    path: Assets/LeeJongYup/Scenes/Game.unity
+  - enabled: 1
+    path: Assets/LeeJongYup/Scenes/LJYGame.unity
     guid: d4c1fce5d7d53254a8ce68ddb78b2187
   - enabled: 1
     path: Assets/Doyun/Scenes/DoyunTestScene.unity
